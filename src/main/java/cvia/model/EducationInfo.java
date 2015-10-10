@@ -7,7 +7,7 @@ public class EducationInfo {
     private Date startDate;
     private Date endDate;
     private String institutionName;
-    private String grade;
+    private Grade grade;
     private String educationLevel;
     private String major;
 
