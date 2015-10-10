@@ -1,7 +1,7 @@
-package parser;
+package cvia.analyzer;
 
 /**
  * Created by Michael Limantara on 9/23/2015.
  */
-public class CVParseResult {
+public class Report {
 }
