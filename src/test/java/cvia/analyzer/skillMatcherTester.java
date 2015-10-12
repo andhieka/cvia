@@ -1,7 +1,5 @@
 package cvia.analyzer;
 
-
-
 import cvia.model.JDParseResult;
 import cvia.model.CVParseResult;
 import cvia.analyzer.Matcher;
@@ -110,7 +108,7 @@ public class skillMatcherTester {
         Skill ruby = new Skill("Ruby");
         Skill python = new Skill("Python");
         Skill leadership = new Skill("Leadership");
-        Skill sql = new Skill("SQL");
+        Skill sql = new Skill("Zzz");
         Skill django = new Skill("Django");
         Skill sleep = new Skill("Sleep");
 
