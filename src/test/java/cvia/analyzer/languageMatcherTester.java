@@ -18,12 +18,12 @@ import java.util.List;
 /**
  * Created by johnkevin on 13/10/15.
  */
-public class languageMatcherTester {
+public class LanguageMatcherTester {
     Matcher matcher;
     CVParseResult parsedCV;
     JDParseResult parsedJD;
 
-    public languageMatcherTester() {
+    public LanguageMatcherTester() {
 
     }
 

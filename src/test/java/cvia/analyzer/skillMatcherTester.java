@@ -19,12 +19,12 @@ import java.util.List;
 /**
  * Created by johnkevin on 13/10/15.
  */
-public class skillMatcherTester {
+public class SkillMatcherTester {
     Matcher matcher;
     CVParseResult parsedCV;
     JDParseResult parsedJD;
 
-    public skillMatcherTester() {
+    public SkillMatcherTester() {
 
     }
 
