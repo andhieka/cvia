@@ -2,9 +2,7 @@ package cvia.parser;
 
 
 import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.parser.ContentByteUtils;
-import com.itextpdf.text.pdf.parser.PdfContentStreamProcessor;
-import com.itextpdf.text.pdf.parser.RenderListener;
+import com.itextpdf.text.pdf.parser.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +11,8 @@ import org.junit.Assert.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by andhieka on 12/10/15.
@@ -31,8 +31,22 @@ public class PdfReaderTest {
 
     @Test
     public void testReadPDF() throws Exception {
-        PdfReader reader = new PdfReader("Andhieka_Resume.pdf");
-        extractText("Andhieka_Resume.pdf", "andhieka_resume.txt");
+        PdfReader reader = new PdfReader("Resume Michael Limantara.pdf");
+        HashMap<String, String> infos = reader.getInfo();
+        for (String key : infos.keySet()) {
+            String value = infos.get(key);
+            System.out.println(key + ": " + value);
+        }
+
+        System.out.println();
+
+        PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+        TextExtractionStrategy strategy = parser.processContent(1, new SimpleTextExtractionStrategy());
+        System.out.println(strategy.getResultantText());
+
+
+
+
     }
 
     /**
