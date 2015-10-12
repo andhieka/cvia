@@ -35,11 +35,11 @@ public class EducationInfo {
         this.institutionName = institutionName;
     }
 
-    public String getGrade() {
+    public Grade getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade) {
+    public void setGrade(Grade grade) {
         this.grade = grade;
     }
 
