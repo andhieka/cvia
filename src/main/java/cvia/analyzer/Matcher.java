@@ -159,10 +159,10 @@ public class Matcher {
 
 
         numOfExtraSkills += numOfSkills - skillPointer;
-        numOfRequiredSkills += numOfRequiredSkills - requiredSkillPointer;
+        numOfUnmatchedSkills += numOfRequiredSkills - requiredSkillPointer;
 
-        total += (numOfSkills - skillPointer) * EXTRA_SKILL_SCORE;
-        total -= (numOfRequiredSkills - requiredSkillPointer) * NO_SKILL_PENALTY;
+        total += numOfExtraSkills * EXTRA_SKILL_SCORE;
+        total -= numOfUnmatchedSkills * NO_SKILL_PENALTY;
 
         addRemaningUnmatchedSkills(requiredSkills, numOfRequiredSkills, requiredSkillPointer);
         addRemainingExtraSkills(skills, numOfSkills, skillPointer);

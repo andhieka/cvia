@@ -97,7 +97,7 @@ public class skillMatcherTester {
 
         assertEquals(175, totalSkillScore);
     }
-    
+
     @Test
     public void skillMatcherTester3() {
         parsedCV = new CVParseResult();
