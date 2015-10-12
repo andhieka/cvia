@@ -17,6 +17,11 @@ public class CVParseResult {
     private List<WorkExperience> workExperiences;
     private String rawContents;
 
+    //temporary constructor for the purpose of testing
+    public CVParseResult() {
+
+    }
+
     public PersonalInfo getPersonalInfo() {
         return personalInfo;
     }

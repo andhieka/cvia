@@ -12,6 +12,13 @@ public class JDParseResult {
     private Float minimumYearsOfWorkExperience;
     private List<Language> requiredLanguages;
 
+
+    //temporary constructor for the purpose of testing
+
+    public JDParseResult() {
+
+    }
+
     // For manual verification by humans
     private List<String> responsibilities;
 
