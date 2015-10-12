@@ -25,6 +25,10 @@ public class Matcher {
     private final int NO_SKILL_PENALTY = 50;
     private final int NO_LANGUAGE_PENALTY = 75;
 
+    private final Float WORK_EXPERIENCE_BASE = new Float(100);
+    private final Float WORK_EXPERIENCE_SCORE = new Float(10);
+    private final Float WORK_EXPERIENCE_PENALTY = new Float(20);
+
     public Matcher(CVParseResult parsedCV, JDParseResult parsedJD) {
         this.parsedCV = parsedCV;
         this.parsedJD = parsedJD;
@@ -36,6 +40,39 @@ public class Matcher {
         int skillScore = getSkillScore();
         int educationScore = getEducationScore();
         int languageScore = getLanguageScore();
+    }
+
+    public Float getWorkExperienceScore() {
+        Float minimumWorkExperience = parsedJD.getMinimumYearsOfWorkExperience();
+        List<WorkExperience> listOfWorkExperience = parsedCV.getWorkExperienceList();
+
+        Float totalWorkExperience = new Float(0);
+
+        for (WorkExperience we : listOfWorkExperience) {
+            Date startDate = we.getStartDate();
+            Date endDate = we.getEndDate();
+
+            Float numOfYears = getNumOfYears(startDate, endDate);
+
+            totalWorkExperience += numOfYears;
+        }
+
+        Float difference = totalWorkExperience - minimumWorkExperience;
+
+        if (difference > 0) {
+            return WORK_EXPERIENCE_BASE + difference * WORK_EXPERIENCE_SCORE;
+        } else if (difference < 0) {
+            return WORK_EXPERIENCE_BASE - Math.abs(difference) * WORK_EXPERIENCE_PENALTY
+        } else {
+            return WORK_EXPERIENCE_BASE;
+        }
+
+    }
+
+    private Float getNumOfYears(Date startDate, Date endDate) {
+        //TODO: implement getYear method in Date
+
+        return null;
     }
 
     public int getLanguageScore() {
