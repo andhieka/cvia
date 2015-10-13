@@ -241,7 +241,7 @@ public class Matcher {
 
         System.out.print("Language Score = ");
         int languageScore = match.getLanguageScore();
-        System.out.println(match.getLanguageScore());
+        System.out.println(languageScore);
 
         Report r = match.getReport();
 
@@ -268,7 +268,7 @@ public class Matcher {
 
         System.out.print("\nSkill Score = ");
         int skillScore = match.getSkillScore();
-        System.out.println(match.getSkillScore());
+        System.out.println(skillScore);
 
         List<Skill> matchedSkills = r.getMatchedSkills();
         List<Skill> unmatchedSkills = r.getUnmatchedSkills();
@@ -338,20 +338,7 @@ public class Matcher {
         List<Language> unmatchedLanguages = r.getUnmatchedLanguages();
         List<Language> extraLanguages = r.getExtraLanguages();
 
-        System.out.print("Matched Languages = ");
-        for (Language l : matchedLanguages) {
-            System.out.print(l.getName() + " ");
-        }
 
-        System.out.print("\nUnmatched Languages = ");
-        for (Language l : unmatchedLanguages) {
-            System.out.print(l.getName() + " ");
-        }
-
-        System.out.print("\nExtra Languages = ");
-        for (Language l : extraLanguages) {
-            System.out.print(l.getName() + " ");
-        }
     }
 
     private static void skillSimulator(Scanner sc, CVParseResult parsedCV, JDParseResult parsedJD) {
