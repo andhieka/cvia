@@ -1,3 +1,4 @@
+
 package cvia.parser;
 
 import org.json.JSONArray;
@@ -17,11 +18,13 @@ import java.util.regex.Pattern;
 /**
  * Created by andhieka on 13/10/15.
  */
+
 public class SkillParser {
+
     private static String SKILL_KEYWORDS_FILENAME = "skills.json";
 
-    private ArrayList<String> keywords = new ArrayList<>();
-    private ArrayList<Pattern> patterns = new ArrayList<>();
+    private ArrayList<String> keywords = new ArrayList<String>();
+    private ArrayList<Pattern> patterns = new ArrayList<Pattern>();
 
     public SkillParser() {
         loadKeywords();
@@ -80,3 +83,4 @@ public class SkillParser {
     }
 
 }
+
