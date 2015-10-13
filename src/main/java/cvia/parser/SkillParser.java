@@ -38,8 +38,6 @@ public class SkillParser {
             for (int i = 0; i < array.length(); i++) {
                 String keyword = array.getString(i);
                 keywords.add(keyword);
-                Pattern pattern = Pattern.compile(keyword + "\\W", Pattern.CASE_INSENSITIVE);
-                patterns.add(pattern);
             }
         } catch (FileNotFoundException e) {
             Logger logger = Logger.getGlobal();
@@ -51,10 +49,7 @@ public class SkillParser {
         ArrayList<String> presentKeywords = new ArrayList<String>();
         for (int i = 0; i < keywords.size(); i++) {
             String keyword = keywords.get(i);
-            Pattern pattern = patterns.get(i);
-            Matcher matcher = pattern.matcher(input);
-
-            if (matcher.matches()) {
+            if (containsIgnoreCase(input, keyword)) {
                 presentKeywords.add(keyword);
             }
         }
