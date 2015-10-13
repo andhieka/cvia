@@ -1,8 +1,11 @@
 package ui;
 
 import cvia.model.CVParseResult;
+import cvia.model.Skill;
 import cvia.parser.CVParser;
 import cvia.reader_writer.PdfToTextReader;
+
+import java.util.List;
 
 /**
  * Created by Michael Limantara on 10/13/2015.
@@ -20,8 +23,10 @@ public class TextUI {
             System.out.println("# PERSONAL PARTICULARS");
             System.out.println(cvParseResult.getPersonalInfo().toString());
             System.out.println("# SKILLS");
-            System.out.println(cvParseResult.getSkills().toString());
-
+            List<Skill> skills = cvParseResult.getSkills();
+            for(Skill s: skills) {
+                System.out.println(" - " + s);
+            }
         } catch (Exception e) {
 
         }
