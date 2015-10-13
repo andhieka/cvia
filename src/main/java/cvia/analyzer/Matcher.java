@@ -5,6 +5,7 @@ import cvia.model.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Collections;
+import java.util.Scanner;
 
 
 /**
@@ -222,6 +223,169 @@ public class Matcher {
             this.report.addUnMatchedSkill(currentRequiredSkill);
             requiredSkillPointer++;
         }
+    }
+
+    public Report getReport() {
+        return this.report;
+    }
+
+    public static void main(String[] args) {
+        CVParseResult parsedCV = new CVParseResult();
+        JDParseResult parsedJD = new JDParseResult();
+
+        Scanner sc = new Scanner(System.in);
+        languageSimulator(sc, parsedCV, parsedJD);
+        skillSimulator(sc, parsedCV, parsedJD);
+
+        Matcher match = new Matcher(parsedCV, parsedJD);
+
+        System.out.print("Language Score = ");
+        int languageScore = match.getLanguageScore();
+        System.out.println(match.getLanguageScore());
+
+        Report r = match.getReport();
+
+        List<Language> matchedLanguages = r.getMatchedLanguages();
+        List<Language> unmatchedLanguages = r.getUnmatchedLanguages();
+        List<Language> extraLanguages = r.getExtraLanguages();
+
+        System.out.print("Matched Languages = ");
+        for (Language l : matchedLanguages) {
+            System.out.print(l.getName() + " ");
+        }
+
+        System.out.print("\nUnmatched Languages = ");
+        for (Language l : unmatchedLanguages) {
+            System.out.print(l.getName());
+        }
+
+        System.out.print("\nExtra Languages = ");
+        for (Language l : extraLanguages) {
+            System.out.print(l.getName());
+        }
+
+
+
+        System.out.print("Skill Score = ");
+        int skillScore = match.getSkillScore();
+        System.out.println(match.getSkillScore());
+
+        List<Skill> matchedSkills = r.getMatchedSkills();
+        List<Skill> unmatchedSkills = r.getUnmatchedSkills();
+        List<Skill> extraSkills = r.getExtraSkills();
+
+        System.out.print("Matched Skills = ");
+        for (Skill s : matchedSkills) {
+            System.out.print(s.getName() + " ");
+        }
+
+        System.out.print("\nUnmatched Skills = ");
+        for (Skill s : unmatchedSkills) {
+            System.out.print(s.getName());
+        }
+
+        System.out.print("\nExtra Skills = ");
+        for (Skill s : extraSkills) {
+            System.out.print(s.getName());
+        }
+
+
+
+
+    }
+
+    private static void languageSimulator(Scanner sc, CVParseResult parsedCV, JDParseResult parsedJD) {
+
+
+        List<Language> languages = new LinkedList<Language>();
+        List<Language> requiredLanguages = new LinkedList<Language>();
+
+        System.out.print("How many required languages: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter required language #" + i + " :");
+            String language = sc.nextLine();
+
+            Language newLanguage = new Language(language);
+            requiredLanguages.add(newLanguage);
+        }
+
+        System.out.print("How many languages in the CV: ");
+        int m = sc.nextInt();
+
+        for (int i = 0; i < m; i++) {
+            System.out.print("Enter language skill #" + i + " :");
+            String language = sc.nextLine();
+
+            Language newLanguage = new Language(language);
+            languages.add(newLanguage);
+        }
+
+        parsedCV.setLanguages(languages);
+        parsedJD.setRequiredLanguages(requiredLanguages);
+
+        Matcher match = new Matcher(parsedCV, parsedJD);
+
+        System.out.print("Language Score = ");
+        System.out.println(match.getLanguageScore());
+
+        Report r = match.getReport();
+
+        List<Language> matchedLanguages = r.getMatchedLanguages();
+        List<Language> unmatchedLanguages = r.getUnmatchedLanguages();
+        List<Language> extraLanguages = r.getExtraLanguages();
+
+        System.out.print("Matched Languages = ");
+        for (Language l : matchedLanguages) {
+            System.out.print(l.getName() + " ");
+        }
+
+        System.out.print("\nUnmatched Languages = ");
+        for (Language l : unmatchedLanguages) {
+            System.out.print(l.getName());
+        }
+
+        System.out.print("\nExtra Languages = ");
+        for (Language l : extraLanguages) {
+            System.out.print(l.getName());
+        }
+    }
+
+    private static void skillSimulator(Scanner sc, CVParseResult parsedCV, JDParseResult parsedJD) {
+
+
+        List<Skill> skills = new LinkedList<Skill>();
+        List<Skill> requiredSkills = new LinkedList<Skill>();
+
+        System.out.print("How many required skills: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter required skill #" + i + " :");
+            String skill = sc.nextLine();
+
+            Skill newSkill = new Skill(skill);
+            requiredSkills.add(newSkill);
+        }
+
+        System.out.print("How many skills in the CV: ");
+        int m = sc.nextInt();
+
+        for (int i = 0; i < m; i++) {
+            System.out.print("Enter skill #" + i + " :");
+            String skill = sc.nextLine();
+
+            Skill newSkill = new Skill(skill);
+            skills.add(newSkill);
+        }
+
+        parsedCV.setSkills(skills);
+        parsedJD.setRequiredSkills(requiredSkills);
+
+
     }
 
 
