@@ -10,6 +10,7 @@ public class EducationInfo {
     private Grade grade;
     private String educationLevel;
     private String major;
+    
 
     public Date getStartDate() {
         return startDate;

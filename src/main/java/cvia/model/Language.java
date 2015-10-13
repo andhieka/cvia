@@ -1,10 +1,17 @@
 package cvia.model;
 
+import java.util.Comparator;
+
 /**
  * Created by andhieka on 10/10/15.
  */
-public class Language {
+public class Language implements Comparable<Language>{
     private String name;
+    private String proficiencyLevel;
+
+    public Language(String languageName) {
+        this.name = languageName;
+    }
 
     public String getProficiencyLevel() {
         return proficiencyLevel;
@@ -22,5 +29,9 @@ public class Language {
         this.name = name;
     }
 
-    private String proficiencyLevel;
+
+
+    public int compareTo(Language other) {
+        return this.getName().compareTo(other.getName());
+    }
 }
