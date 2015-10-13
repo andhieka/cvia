@@ -62,7 +62,7 @@ public class Matcher {
         if (difference > 0) {
             return WORK_EXPERIENCE_BASE + difference * WORK_EXPERIENCE_SCORE;
         } else if (difference < 0) {
-            return WORK_EXPERIENCE_BASE - Math.abs(difference) * WORK_EXPERIENCE_PENALTY
+            return WORK_EXPERIENCE_BASE - Math.abs(difference) * WORK_EXPERIENCE_PENALTY;
         } else {
             return WORK_EXPERIENCE_BASE;
         }
