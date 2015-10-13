@@ -266,7 +266,7 @@ public class Matcher {
 
 
 
-        System.out.print("Skill Score = ");
+        System.out.print("\nSkill Score = ");
         int skillScore = match.getSkillScore();
         System.out.println(match.getSkillScore());
 
@@ -281,15 +281,15 @@ public class Matcher {
 
         System.out.print("\nUnmatched Skills = ");
         for (Skill s : unmatchedSkills) {
-            System.out.print(s.getName());
+            System.out.print(s.getName() + " ");
         }
 
         System.out.print("\nExtra Skills = ");
         for (Skill s : extraSkills) {
-            System.out.print(s.getName());
+            System.out.print(s.getName() + " ");
         }
 
-
+        System.out.println("\n\nTotal Score = " + (languageScore + skillScore));
 
 
     }
@@ -305,7 +305,7 @@ public class Matcher {
         sc.nextLine();
 
         for (int i = 0; i < n; i++) {
-            System.out.print("Enter required language #" + i + " :");
+            System.out.print("Enter required language #" + (i+1) + " : ");
             String language = sc.nextLine();
 
             Language newLanguage = new Language(language);
@@ -314,9 +314,10 @@ public class Matcher {
 
         System.out.print("How many languages in the CV: ");
         int m = sc.nextInt();
+        sc.nextLine();
 
         for (int i = 0; i < m; i++) {
-            System.out.print("Enter language skill #" + i + " :");
+            System.out.print("Enter language skill #" + (i+1) + " : ");
             String language = sc.nextLine();
 
             Language newLanguage = new Language(language);
@@ -344,12 +345,12 @@ public class Matcher {
 
         System.out.print("\nUnmatched Languages = ");
         for (Language l : unmatchedLanguages) {
-            System.out.print(l.getName());
+            System.out.print(l.getName() + " ");
         }
 
         System.out.print("\nExtra Languages = ");
         for (Language l : extraLanguages) {
-            System.out.print(l.getName());
+            System.out.print(l.getName() + " ");
         }
     }
 
@@ -359,12 +360,12 @@ public class Matcher {
         List<Skill> skills = new LinkedList<Skill>();
         List<Skill> requiredSkills = new LinkedList<Skill>();
 
-        System.out.print("How many required skills: ");
+        System.out.print("\nHow many required skills: ");
         int n = sc.nextInt();
         sc.nextLine();
 
         for (int i = 0; i < n; i++) {
-            System.out.print("Enter required skill #" + i + " :");
+            System.out.print("Enter required skill #" + (i+1) + " :");
             String skill = sc.nextLine();
 
             Skill newSkill = new Skill(skill);
@@ -373,9 +374,10 @@ public class Matcher {
 
         System.out.print("How many skills in the CV: ");
         int m = sc.nextInt();
+        sc.nextLine();
 
         for (int i = 0; i < m; i++) {
-            System.out.print("Enter skill #" + i + " :");
+            System.out.print("Enter skill #" + (i+1) + " :");
             String skill = sc.nextLine();
 
             Skill newSkill = new Skill(skill);

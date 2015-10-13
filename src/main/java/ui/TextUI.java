@@ -12,12 +12,16 @@ public class TextUI {
     public static void main(String args[]) {
         PdfToTextReader pdfToTextReader = new PdfToTextReader();
         CVParser cvParser = new CVParser();
-        String pathToPdf = "Resume Michael Limantara.pdf";
+        String pathToPdf = "resume.pdf";
 
         try {
             String cv = pdfToTextReader.read(pathToPdf);
             CVParseResult cvParseResult = cvParser.parse(cv);
+            System.out.println("# PERSONAL PARTICULARS");
             System.out.println(cvParseResult.getPersonalInfo().toString());
+            System.out.println("# SKILLS");
+            System.out.println(cvParseResult.getSkills().toString());
+
         } catch (Exception e) {
 
         }
