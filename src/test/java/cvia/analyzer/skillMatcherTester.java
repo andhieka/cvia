@@ -121,8 +121,8 @@ public class SkillMatcherTester {
         requiredSkills.add(java);
         requiredSkills.add(ruby);
         requiredSkills.add(python);
-        skills.add(django);
-        skills.add(sleep);
+        requiredSkills.add(django);
+        requiredSkills.add(sleep);
 
         //extra 2 missing 2 match 3
 
