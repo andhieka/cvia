@@ -1,10 +1,15 @@
 package cvia.storage;
 
 import cvia.model.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +73,30 @@ public class CVManager {
         return cv;
     }
 
+    public RawSource getCVRawSourceById(Long id) {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        CV cv = null;
+
+        try {
+            transaction = session.beginTransaction();
+            cv = session.get(CV.class, id);
+            if (cv != null) {
+                Hibernate.initialize(cv.getRawSource());
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println("Error getCVRawSourceById:");
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return cv.getRawSource();
+    }
+
     public void updateCV(Long id, CV newCV) {
         Session session = factory.openSession();
         Transaction transaction = null;
@@ -81,7 +110,6 @@ public class CVManager {
             cv.setPublications(newCV.getPublications());
             cv.setSkills(newCV.getSkills());
             cv.setWorkExperienceList(newCV.getWorkExperienceList());
-            cv.setRawContents(newCV.getRawContents());
             session.update(cv);
             transaction.commit();
         } catch (HibernateException e) {
@@ -168,6 +196,16 @@ public class CVManager {
         workExperience.setPosition("software engineer");
         List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
 
+        RawSource rawSource = new RawSource();
+        try {
+            File pdf = new File("resume.pdf");
+            byte[] rawContent = FileUtils.readFileToByteArray(pdf);
+            rawSource.setFilename(pdf.getName());
+            rawSource.setRawContent(rawContent);
+        } catch (IOException e) {
+            e.getMessage();
+        }
+
         CV cv1 = new CV();
         cv1.setPersonalInfo(personalInfo);
         cv1.setEducationInfoList(educationList);
@@ -175,24 +213,27 @@ public class CVManager {
         cv1.setPublications(publicationList);
         cv1.setSkills(skillList);
         cv1.setWorkExperienceList(workExperienceList);
-        cv1.setRawContents("link to pdf cv 1");
+        cv1.setRawSource(rawSource);
 
         Long id = cvManager.createCV(cv1);
-        CV cvParseResult1 = cvManager.getCVContentById(id);
-        System.out.println(cvParseResult1.getPersonalInfo().toString());
+        CV cv2 = cvManager.getCVContentById(id);
+        System.out.println(cv2.getPersonalInfo().toString());
 
-        for (EducationInfo educationInfo: cvParseResult1.getEducationInfoList()) {
+        for (EducationInfo educationInfo: cv2.getEducationInfoList()) {
             System.out.println(educationInfo.getInstitutionName() + "," + educationInfo.getEducationLevel());
         }
 
-        for (Skill skillInfo: cvParseResult1.getSkills()) {
+        for (Skill skillInfo: cv2.getSkills()) {
             System.out.println(skillInfo.getName());
         }
+
+        byte[] rawContentInDb = cvManager.getCVRawSourceById(id).getRawContent();
+        System.out.println(rawSource.getRawContent().length == rawContentInDb.length);
 
         cv1.getPersonalInfo().setName("user2");
         cvManager.updateCV(id, cv1);
 
-        CV cv2 = cvManager.getCVContentById(id);
-        System.out.println(cv2.getPersonalInfo().toString());
+        CV cv3 = cvManager.getCVContentById(id);
+        System.out.println(cv3.getPersonalInfo().toString());
     }
 }

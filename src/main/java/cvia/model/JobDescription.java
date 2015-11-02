@@ -14,6 +14,9 @@ public class JobDescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
     @ElementCollection
     @CollectionTable(name = "jd_skill", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<Skill> requiredSkills;
@@ -30,7 +33,7 @@ public class JobDescription {
 
     // For manual verification by humans
     @ElementCollection
-    @CollectionTable(name = "jd_responsibility")
+    @CollectionTable(name = "jd_responsibility", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<String> responsibilities;
 
     // Empty constructor for Hibernate
@@ -42,6 +45,14 @@ public class JobDescription {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<Skill> getRequiredSkills() {

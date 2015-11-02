@@ -29,6 +29,7 @@
         <mapping class="cvia.model.Publication"/>
         <mapping class="cvia.model.WorkExperience"/>
         <mapping class="cvia.model.Grade"/>
+        <mapping class="cvia.model.RawSource"/>
 
     </session-factory>
 </hibernate-configuration>

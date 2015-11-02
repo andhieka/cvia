@@ -38,8 +38,9 @@ public class CV {
     @CollectionTable(name = "publication", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<Publication> publications;
 
-    @Column(name = "raw_content")
-    private String rawContents;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private RawSource rawSource;
 
     // Empty Constructor for Hibernate
     public CV() { }
@@ -100,12 +101,11 @@ public class CV {
         this.publications = publications;
     }
 
-    public String getRawContents() {
-        return rawContents;
+    public RawSource getRawSource() {
+        return rawSource;
     }
 
-    public void setRawContents(String rawContents) {
-        this.rawContents = rawContents;
+    public void setRawSource(RawSource rawSource) {
+        this.rawSource = rawSource;
     }
-
 }

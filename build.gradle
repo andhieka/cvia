@@ -15,4 +15,5 @@ dependencies {
     compile 'org.json:json:20150729'
     compile 'org.hibernate:hibernate-core:5.0.2.Final'
     compile 'org.postgresql:postgresql:9.3-1100-jdbc4'
+    compile 'commons-io:commons-io:2.4'
 }
