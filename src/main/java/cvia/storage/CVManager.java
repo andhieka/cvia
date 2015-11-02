@@ -194,9 +194,5 @@ public class CVManager {
 
         CVParseResult cvParseResult2 = cvManager.getCVContentById(id);
         System.out.println(cvParseResult2.getPersonalInfo().toString());
-
-        cvManager.deleteCV(id);
-        CVParseResult cvParseResult3 = cvManager.getCVContentById(id);
-        System.out.println(cvParseResult3);
     }
 }

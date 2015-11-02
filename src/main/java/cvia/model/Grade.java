@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class Grade implements Comparable<Grade> {
-    @Column(name = "grade_description")
+    @Column(name = "description")
     private String description;
     @Column(name = "grade")
     private Float grade;

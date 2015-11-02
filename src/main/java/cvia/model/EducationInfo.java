@@ -20,6 +20,7 @@ public class EducationInfo {
     private String institutionName;
 
     @Embedded
+    @AttributeOverride(name = "description", column = @Column(name = "grade_description"))
     private Grade grade;
 
     @Column(name = "education_level")
