@@ -1,16 +1,35 @@
 package cvia.model;
 
+import javax.persistence.*;
+import java.util.Date;
+
 /**
  * Created by andhieka on 10/10/15.
  */
+@Embeddable
 public class EducationInfo {
+    @Temporal(TemporalType.DATE)
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "institution_name")
     private String institutionName;
+
+    @Embedded
     private Grade grade;
+
+    @Column(name = "education_level")
     private String educationLevel;
+
+    @Column(name = "major")
     private String major;
-    
+
+    // Empty Constructor for Hibernate
+    public EducationInfo() { }
 
     public Date getStartDate() {
         return startDate;

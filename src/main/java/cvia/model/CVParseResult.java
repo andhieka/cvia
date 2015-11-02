@@ -2,24 +2,54 @@ package cvia.model;
 
 import cvia.model.*;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Michael Limantara on 9/23/2015.
  */
+@Entity
+@Table(name = "cv")
 public class CVParseResult {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Embedded
     private PersonalInfo personalInfo;
+
+    @ElementCollection
+    @CollectionTable(name = "education_info", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<EducationInfo> educationInfoList;
+
+    @ElementCollection
+    @CollectionTable(name = "work_experience", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<WorkExperience> workExperienceList;
+
+    @ElementCollection
+    @CollectionTable(name = "language", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<Language> languages;
+
+    @ElementCollection
+    @CollectionTable(name = "skill", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<Skill> skills;
-    private List<WorkExperience> workExperiences;
+
+    @ElementCollection
+    @CollectionTable(name = "publication", joinColumns = {@JoinColumn(name = "cv_id")})
+    private List<Publication> publications;
+
+    @Column(name = "raw_content")
     private String rawContents;
 
-    //temporary constructor for the purpose of testing
-    public CVParseResult() {
+    // Empty Constructor for Hibernate
+    public CVParseResult() { }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public PersonalInfo getPersonalInfo() {
@@ -62,12 +92,12 @@ public class CVParseResult {
         this.skills = skills;
     }
 
-    public List<WorkExperience> getWorkExperiences() {
-        return workExperiences;
+    public List<Publication> getPublications() {
+        return publications;
     }
 
-    public void setWorkExperiences(List<WorkExperience> workExperiences) {
-        this.workExperiences = workExperiences;
+    public void setPublications(List<Publication> publications) {
+        this.publications = publications;
     }
 
     public String getRawContents() {
@@ -77,6 +107,5 @@ public class CVParseResult {
     public void setRawContents(String rawContents) {
         this.rawContents = rawContents;
     }
-
 
 }

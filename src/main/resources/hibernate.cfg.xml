@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Connection settings, database name: cvia -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/cvia</property>
+        <property name="hibernate.connection.username">cvia</property>
+        <property name="hibernate.connection.password">P@ssw0rd</property>
+
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Print executed SQL to stdout -->
+        <property name="show_sql">true</property>
+
+        <!-- Start with a new database each time -->
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+        <!-- DB schema will be updated if needed -->
+        <mapping class="cvia.model.CVParseResult"/>
+        <mapping class="cvia.model.PersonalInfo"/>
+        <mapping class="cvia.model.EducationInfo"/>
+        <mapping class="cvia.model.Language"/>
+        <mapping class="cvia.model.Skill"/>
+        <mapping class="cvia.model.Publication"/>
+        <mapping class="cvia.model.WorkExperience"/>
+        <mapping class="cvia.model.Grade"/>
+
+    </session-factory>
+</hibernate-configuration>

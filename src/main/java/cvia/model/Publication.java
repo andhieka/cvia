@@ -1,18 +1,33 @@
 package cvia.model;
 
-import cvia.model.Date;
-
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 /**
  * Created by andhieka on 10/10/15.
  */
+@Embeddable
 public class Publication {
+    @Column(name = "title")
     private String title;
+    @Column(name = "author")
     private String author;
+    @Column(name = "publisher")
     private String publisher;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "publication_date")
     private Date publicationDate;
+    @Column(name = "conference")
     private String conference;
+    @Column(name = "num_pages")
     private String pages;
+    @Column(name = "description")
     private String description;
+
+    // Empty Constructor for Hibernate
+    public Publication() {}
 
     public String getTitle() {
         return title;
