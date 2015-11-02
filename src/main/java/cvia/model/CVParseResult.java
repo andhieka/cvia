@@ -27,11 +27,11 @@ public class CVParseResult {
     private List<WorkExperience> workExperienceList;
 
     @ElementCollection
-    @CollectionTable(name = "language", joinColumns = {@JoinColumn(name = "cv_id")})
+    @CollectionTable(name = "cv_language", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<Language> languages;
 
     @ElementCollection
-    @CollectionTable(name = "skill", joinColumns = {@JoinColumn(name = "cv_id")})
+    @CollectionTable(name = "cv_skill", joinColumns = {@JoinColumn(name = "cv_id")})
     private List<Skill> skills;
 
     @ElementCollection

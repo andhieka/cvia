@@ -21,6 +21,7 @@
 
         <!-- DB schema will be updated if needed -->
         <mapping class="cvia.model.CVParseResult"/>
+        <mapping class="cvia.model.JDParseResult"/>
         <mapping class="cvia.model.PersonalInfo"/>
         <mapping class="cvia.model.EducationInfo"/>
         <mapping class="cvia.model.Language"/>
