@@ -1,13 +1,30 @@
 package cvia.model;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.util.Date;
 /**
  * Created by andhieka on 10/10/15.
  */
+@Embeddable
 public class WorkExperience {
+    @Column(name = "position")
     private String position;
+
+    @Column(name = "company")
     private String company;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "description")
+    private String description;
+
+    // Empty Constructor for Hibernate
+    public WorkExperience() { }
 
     public String getDescription() {
         return description;
@@ -48,6 +65,4 @@ public class WorkExperience {
     public void setPosition(String position) {
         this.position = position;
     }
-
-    private String description;
 }

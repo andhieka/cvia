@@ -6,15 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Collections;
 import java.util.Scanner;
-
+import java.util.Date;
 
 /**
  * Created by johnkevin on 12/10/15.
  */
 public class Matcher {
 
-    private CVParseResult parsedCV;
-    private JDParseResult parsedJD;
+    private CV parsedCV;
+    private JobDescription parsedJobDescription;
     private Report report;
 
     private final int SKILL_MATCH_SCORE = 100;
@@ -30,9 +30,9 @@ public class Matcher {
     private final Float WORK_EXPERIENCE_SCORE = new Float(10);
     private final Float WORK_EXPERIENCE_PENALTY = new Float(20);
 
-    public Matcher(CVParseResult parsedCV, JDParseResult parsedJD) {
+    public Matcher(CV parsedCV, JobDescription parsedJobDescription) {
         this.parsedCV = parsedCV;
-        this.parsedJD = parsedJD;
+        this.parsedJobDescription = parsedJobDescription;
         PersonalInfo biodata = parsedCV.getPersonalInfo();
         this.report = new Report(biodata);
     }
@@ -44,7 +44,7 @@ public class Matcher {
     }
 
     public Float getWorkExperienceScore() {
-        Float minimumWorkExperience = parsedJD.getMinimumYearsOfWorkExperience();
+        Float minimumWorkExperience = parsedJobDescription.getMinimumYearsOfWorkExperience();
         List<WorkExperience> listOfWorkExperience = parsedCV.getWorkExperienceList();
 
         Float totalWorkExperience = new Float(0);
@@ -79,7 +79,7 @@ public class Matcher {
     public int getLanguageScore() {
 
         List<Language> languages = parsedCV.getLanguages();
-        List<Language> requiredLanguages = parsedJD.getRequiredLanguages();
+        List<Language> requiredLanguages = parsedJobDescription.getRequiredLanguages();
 
         int total = 0;
 
@@ -157,7 +157,7 @@ public class Matcher {
     public int getSkillScore() {
 
         List<Skill> skills = parsedCV.getSkills();
-        List<Skill> requiredSkills = parsedJD.getRequiredSkills();
+        List<Skill> requiredSkills = parsedJobDescription.getRequiredSkills();
 
         int total = 0;
 
@@ -230,14 +230,14 @@ public class Matcher {
     }
 
     public static void main(String[] args) {
-        CVParseResult parsedCV = new CVParseResult();
-        JDParseResult parsedJD = new JDParseResult();
+        CV parsedCV = new CV();
+        JobDescription parsedJobDescription = new JobDescription();
 
         Scanner sc = new Scanner(System.in);
-        languageSimulator(sc, parsedCV, parsedJD);
-        skillSimulator(sc, parsedCV, parsedJD);
+        languageSimulator(sc, parsedCV, parsedJobDescription);
+        skillSimulator(sc, parsedCV, parsedJobDescription);
 
-        Matcher match = new Matcher(parsedCV, parsedJD);
+        Matcher match = new Matcher(parsedCV, parsedJobDescription);
 
         System.out.print("Language Score = ");
         int languageScore = match.getLanguageScore();
@@ -294,7 +294,7 @@ public class Matcher {
 
     }
 
-    private static void languageSimulator(Scanner sc, CVParseResult parsedCV, JDParseResult parsedJD) {
+    private static void languageSimulator(Scanner sc, CV parsedCV, JobDescription parsedJobDescription) {
 
 
         List<Language> languages = new LinkedList<Language>();
@@ -325,9 +325,9 @@ public class Matcher {
         }
 
         parsedCV.setLanguages(languages);
-        parsedJD.setRequiredLanguages(requiredLanguages);
+        parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        Matcher match = new Matcher(parsedCV, parsedJD);
+        Matcher match = new Matcher(parsedCV, parsedJobDescription);
 
         System.out.print("Language Score = ");
         System.out.println(match.getLanguageScore());
@@ -341,7 +341,7 @@ public class Matcher {
 
     }
 
-    private static void skillSimulator(Scanner sc, CVParseResult parsedCV, JDParseResult parsedJD) {
+    private static void skillSimulator(Scanner sc, CV parsedCV, JobDescription parsedJobDescription) {
 
 
         List<Skill> skills = new LinkedList<Skill>();
@@ -372,7 +372,7 @@ public class Matcher {
         }
 
         parsedCV.setSkills(skills);
-        parsedJD.setRequiredSkills(requiredSkills);
+        parsedJobDescription.setRequiredSkills(requiredSkills);
 
 
     }

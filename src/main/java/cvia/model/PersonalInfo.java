@@ -1,13 +1,26 @@
 package cvia.model;
 
+import javax.persistence.*;
+
 /**
  * Created by andhieka on 10/10/15.
  */
+@Embeddable
 public class PersonalInfo {
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "contact_number")
     private String contactNumber;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "address")
     private String address;
+
+    // Empty constructor for Hibernate
+    public PersonalInfo() { }
 
     public String getContactNumber() {
         return contactNumber;
@@ -44,7 +57,7 @@ public class PersonalInfo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-//        sb.append("Name: " + name + "\n");
+        sb.append("Name: " + name + "\n");
         sb.append("Contact Number: " + contactNumber + "\n");
         sb.append("Email address: " + email + "\n");
         sb.append("Address: " + address);

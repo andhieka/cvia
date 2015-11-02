@@ -2,13 +2,10 @@ package cvia.analyzer;
 
 
 
-import cvia.model.JDParseResult;
-import cvia.model.CVParseResult;
-import cvia.analyzer.Matcher;
+import cvia.model.CV;
+import cvia.model.JobDescription;
 
 import cvia.model.Language;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,8 +17,8 @@ import java.util.List;
  */
 public class LanguageMatcherTester {
     Matcher matcher;
-    CVParseResult parsedCV;
-    JDParseResult parsedJD;
+    CV parsedCV;
+    JobDescription parsedJobDescription;
 
     public LanguageMatcherTester() {
 
@@ -31,8 +28,8 @@ public class LanguageMatcherTester {
 
     @Test
     public void testLanguageMatcher1() {
-        parsedCV = new CVParseResult();
-        parsedJD = new JDParseResult();
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
 
         List<Language> languages = new LinkedList<Language>();
         List<Language> requiredLanguages = new LinkedList<Language>();
@@ -54,9 +51,9 @@ public class LanguageMatcherTester {
         requiredLanguages.add(Chinese);
 
         parsedCV.setLanguages(languages);
-        parsedJD.setRequiredLanguages(requiredLanguages);
+        parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        matcher = new Matcher(parsedCV, parsedJD);
+        matcher = new Matcher(parsedCV, parsedJobDescription);
 
         int totalLanguageScore = matcher.getLanguageScore();
 
@@ -65,8 +62,8 @@ public class LanguageMatcherTester {
 
     @Test
     public void testLanguageMatcher2() {
-        parsedCV = new CVParseResult();
-        parsedJD = new JDParseResult();
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
 
         List<Language> languages = new LinkedList<Language>();
         List<Language> requiredLanguages = new LinkedList<Language>();
@@ -94,9 +91,9 @@ public class LanguageMatcherTester {
         //total = 200 + 25 (extra 1) - 75 (missing 1) = 150
 
         parsedCV.setLanguages(languages);
-        parsedJD.setRequiredLanguages(requiredLanguages);
+        parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        matcher = new Matcher(parsedCV, parsedJD);
+        matcher = new Matcher(parsedCV, parsedJobDescription);
 
         int totalLanguageScore = matcher.getLanguageScore();
 
@@ -109,8 +106,8 @@ public class LanguageMatcherTester {
 
     @Test
     public void testLanguageMatcher3() {
-        parsedCV = new CVParseResult();
-        parsedJD = new JDParseResult();
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
 
         List<Language> languages = new LinkedList<Language>();
         List<Language> requiredLanguages = new LinkedList<Language>();
@@ -141,9 +138,9 @@ public class LanguageMatcherTester {
         //total = 200 + 75 (extra 3) - 150 (missing 2) = 125
 
         parsedCV.setLanguages(languages);
-        parsedJD.setRequiredLanguages(requiredLanguages);
+        parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        matcher = new Matcher(parsedCV, parsedJD);
+        matcher = new Matcher(parsedCV, parsedJobDescription);
 
         int totalLanguageScore = matcher.getLanguageScore();
 

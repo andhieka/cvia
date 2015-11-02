@@ -1,12 +1,24 @@
 package cvia.model;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 /**
  * Created by andhieka on 10/10/15.
  */
+@Embeddable
 public class Skill implements Comparable<Skill> {
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "year_of_experience")
     private String yearsOfExperience;
+
+    @Column(name = "proficiency_level")
     private String proficiencyLevel;
+
+    // Empty Constructor for Hibernate
+    public Skill() { }
 
     public Skill(String name) {
         this.name = name;
