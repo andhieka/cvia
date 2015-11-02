@@ -1,13 +1,9 @@
 package cvia.analyzer;
 
-import cvia.model.JDParseResult;
-import cvia.model.CVParseResult;
-import cvia.analyzer.Matcher;
+import cvia.model.CV;
+import cvia.model.JobDescription;
 
-import cvia.model.Language;
 import cvia.model.Skill;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,8 +15,8 @@ import java.util.List;
  */
 public class SkillMatcherTester {
     Matcher matcher;
-    CVParseResult parsedCV;
-    JDParseResult parsedJD;
+    CV parsedCV;
+    JobDescription parsedJobDescription;
 
     public SkillMatcherTester() {
 
@@ -28,8 +24,8 @@ public class SkillMatcherTester {
 
     @Test
     public void skillMatcherTester1() {
-        parsedCV = new CVParseResult();
-        parsedJD = new JDParseResult();
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
 
         List<Skill> skills = new LinkedList<Skill>();
         List<Skill> requiredSkills = new LinkedList<Skill>();
@@ -50,9 +46,9 @@ public class SkillMatcherTester {
         requiredSkills.add(python);
 
         parsedCV.setSkills(skills);
-        parsedJD.setRequiredSkills(requiredSkills);
+        parsedJobDescription.setRequiredSkills(requiredSkills);
 
-        matcher = new Matcher(parsedCV, parsedJD);
+        matcher = new Matcher(parsedCV, parsedJobDescription);
 
         int totalSkillScore = matcher.getSkillScore();
 
@@ -61,8 +57,8 @@ public class SkillMatcherTester {
 
     @Test
     public void skillMatcherTester2() {
-        parsedCV = new CVParseResult();
-        parsedJD = new JDParseResult();
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
 
         List<Skill> skills = new LinkedList<Skill>();
         List<Skill> requiredSkills = new LinkedList<Skill>();
@@ -86,9 +82,9 @@ public class SkillMatcherTester {
         //1 extra 1 missing
 
         parsedCV.setSkills(skills);
-        parsedJD.setRequiredSkills(requiredSkills);
+        parsedJobDescription.setRequiredSkills(requiredSkills);
 
-        matcher = new Matcher(parsedCV, parsedJD);
+        matcher = new Matcher(parsedCV, parsedJobDescription);
 
         //200 + 25 - 50 = 175
         int totalSkillScore = matcher.getSkillScore();
@@ -98,8 +94,8 @@ public class SkillMatcherTester {
 
     @Test
     public void skillMatcherTester3() {
-        parsedCV = new CVParseResult();
-        parsedJD = new JDParseResult();
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
 
         List<Skill> skills = new LinkedList<Skill>();
         List<Skill> requiredSkills = new LinkedList<Skill>();
@@ -127,9 +123,9 @@ public class SkillMatcherTester {
         //extra 2 missing 2 match 3
 
         parsedCV.setSkills(skills);
-        parsedJD.setRequiredSkills(requiredSkills);
+        parsedJobDescription.setRequiredSkills(requiredSkills);
 
-        matcher = new Matcher(parsedCV, parsedJD);
+        matcher = new Matcher(parsedCV, parsedJobDescription);
 
         //300 + 50 - 100
         int totalSkillScore = matcher.getSkillScore();

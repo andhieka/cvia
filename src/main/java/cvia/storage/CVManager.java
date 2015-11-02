@@ -18,14 +18,14 @@ public class CVManager {
         setUpConnection();
     }
 
-    public Long createCV(CVParseResult cvParseResult) {
+    public Long createCV(CV cv) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Long cvId = null;
 
         try {
             transaction = session.beginTransaction();
-            cvId = (Long) session.save(cvParseResult);
+            cvId = (Long) session.save(cv);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -40,20 +40,20 @@ public class CVManager {
         return cvId;
     }
 
-    public CVParseResult getCVContentById(Long id) {
+    public CV getCVContentById(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-        CVParseResult cvParseResult = null;
+        CV cv = null;
 
         try {
             transaction = session.beginTransaction();
-            cvParseResult = session.get(CVParseResult.class, id);
-            if (cvParseResult != null) {
-                Hibernate.initialize(cvParseResult.getEducationInfoList());
-                Hibernate.initialize(cvParseResult.getWorkExperienceList());
-                Hibernate.initialize(cvParseResult.getPublications());
-                Hibernate.initialize(cvParseResult.getLanguages());
-                Hibernate.initialize(cvParseResult.getSkills());
+            cv = session.get(CV.class, id);
+            if (cv != null) {
+                Hibernate.initialize(cv.getEducationInfoList());
+                Hibernate.initialize(cv.getWorkExperienceList());
+                Hibernate.initialize(cv.getPublications());
+                Hibernate.initialize(cv.getLanguages());
+                Hibernate.initialize(cv.getSkills());
             }
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -65,24 +65,24 @@ public class CVManager {
             session.close();
         }
 
-        return cvParseResult;
+        return cv;
     }
 
-    public void updateCV(Long id, CVParseResult newCVParseResult) {
+    public void updateCV(Long id, CV newCV) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
-            CVParseResult cvParseResult = session.get(CVParseResult.class, id);
-            cvParseResult.setPersonalInfo(newCVParseResult.getPersonalInfo());
-            cvParseResult.setEducationInfoList(newCVParseResult.getEducationInfoList());
-            cvParseResult.setLanguages(newCVParseResult.getLanguages());
-            cvParseResult.setPublications(newCVParseResult.getPublications());
-            cvParseResult.setSkills(newCVParseResult.getSkills());
-            cvParseResult.setWorkExperienceList(newCVParseResult.getWorkExperienceList());
-            cvParseResult.setRawContents(newCVParseResult.getRawContents());
-            session.update(cvParseResult);
+            CV cv = session.get(CV.class, id);
+            cv.setPersonalInfo(newCV.getPersonalInfo());
+            cv.setEducationInfoList(newCV.getEducationInfoList());
+            cv.setLanguages(newCV.getLanguages());
+            cv.setPublications(newCV.getPublications());
+            cv.setSkills(newCV.getSkills());
+            cv.setWorkExperienceList(newCV.getWorkExperienceList());
+            cv.setRawContents(newCV.getRawContents());
+            session.update(cv);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -101,8 +101,8 @@ public class CVManager {
 
         try {
             transaction = session.beginTransaction();
-            CVParseResult cvParseResult = session.get(CVParseResult.class, id);
-            session.delete(cvParseResult);
+            CV cv = session.get(CV.class, id);
+            session.delete(cv);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -168,7 +168,7 @@ public class CVManager {
         workExperience.setPosition("software engineer");
         List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
 
-        CVParseResult cv1 = new CVParseResult();
+        CV cv1 = new CV();
         cv1.setPersonalInfo(personalInfo);
         cv1.setEducationInfoList(educationList);
         cv1.setLanguages(languageList);
@@ -178,7 +178,7 @@ public class CVManager {
         cv1.setRawContents("link to pdf cv 1");
 
         Long id = cvManager.createCV(cv1);
-        CVParseResult cvParseResult1 = cvManager.getCVContentById(id);
+        CV cvParseResult1 = cvManager.getCVContentById(id);
         System.out.println(cvParseResult1.getPersonalInfo().toString());
 
         for (EducationInfo educationInfo: cvParseResult1.getEducationInfoList()) {
@@ -192,7 +192,7 @@ public class CVManager {
         cv1.getPersonalInfo().setName("user2");
         cvManager.updateCV(id, cv1);
 
-        CVParseResult cvParseResult2 = cvManager.getCVContentById(id);
-        System.out.println(cvParseResult2.getPersonalInfo().toString());
+        CV cv2 = cvManager.getCVContentById(id);
+        System.out.println(cv2.getPersonalInfo().toString());
     }
 }

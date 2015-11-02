@@ -1,6 +1,6 @@
 package cvia.parser;
 
-import cvia.model.CVParseResult;
+import cvia.model.CV;
 import cvia.model.PersonalInfo;
 
 /**
@@ -11,10 +11,10 @@ public class CVParser {
     private SkillParser skillParser;
     private String cvContent;
 
-    public CVParseResult parse(String cv) {
+    public CV parse(String cv) {
         this.cvContent = cv;
 
-        CVParseResult cvParseResult = new CVParseResult();
+        CV cvParseResult = new CV();
         PersonalInfo personalInfo = parsePersonalInfo();
         cvParseResult.setPersonalInfo(personalInfo);
 

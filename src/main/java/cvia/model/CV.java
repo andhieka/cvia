@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "cv")
-public class CVParseResult {
+public class CV {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +42,7 @@ public class CVParseResult {
     private String rawContents;
 
     // Empty Constructor for Hibernate
-    public CVParseResult() { }
+    public CV() { }
 
     public Long getId() {
         return id;

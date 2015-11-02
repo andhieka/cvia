@@ -1,6 +1,6 @@
 package cvia.storage;
 
-import cvia.model.JDParseResult;
+import cvia.model.JobDescription;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
@@ -12,14 +12,14 @@ public class JDManager {
 
     public JDManager() { setUpConnection(); }
 
-    public Long createJD(JDParseResult jdParseResult) {
+    public Long createJD(JobDescription jobDescription) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Long jobDescriptionId = null;
 
         try {
             transaction = session.beginTransaction();
-            jobDescriptionId = (Long) session.save(jdParseResult);
+            jobDescriptionId = (Long) session.save(jobDescription);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -34,17 +34,17 @@ public class JDManager {
         return jobDescriptionId;
     }
 
-    public JDParseResult getJobDescriptionDetailById(Long id) {
+    public JobDescription getJobDescriptionDetailById(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-        JDParseResult jdParseResult = null;
+        JobDescription jobDescription = null;
 
         try {
             transaction = session.beginTransaction();
-            jdParseResult = session.get(JDParseResult.class, id);
-            if (jdParseResult != null) {
-                Hibernate.initialize(jdParseResult.getRequiredLanguages());
-                Hibernate.initialize(jdParseResult.getRequiredSkills());
+            jobDescription = session.get(JobDescription.class, id);
+            if (jobDescription != null) {
+                Hibernate.initialize(jobDescription.getRequiredLanguages());
+                Hibernate.initialize(jobDescription.getRequiredSkills());
             }
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -56,22 +56,22 @@ public class JDManager {
             session.close();
         }
 
-        return jdParseResult;
+        return jobDescription;
     }
 
-    public void updateCV(Long id, JDParseResult newJD) {
+    public void updateCV(Long id, JobDescription newJobDescription) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
-            JDParseResult jdParseResult = session.get(JDParseResult.class, id);
-            jdParseResult.setMinimumEducation(newJD.getMinimumEducation());
-            jdParseResult.setMinimumYearsOfWorkExperience(newJD.getMinimumYearsOfWorkExperience());
-            jdParseResult.setRequiredLanguages(newJD.getRequiredLanguages());
-            jdParseResult.setRequiredSkills(newJD.getRequiredSkills());
-            jdParseResult.setResponsibilities(newJD.getResponsibilities());
-            session.update(jdParseResult);
+            JobDescription jobDescription = session.get(JobDescription.class, id);
+            jobDescription.setMinimumEducation(newJobDescription.getMinimumEducation());
+            jobDescription.setMinimumYearsOfWorkExperience(newJobDescription.getMinimumYearsOfWorkExperience());
+            jobDescription.setRequiredLanguages(newJobDescription.getRequiredLanguages());
+            jobDescription.setRequiredSkills(newJobDescription.getRequiredSkills());
+            jobDescription.setResponsibilities(newJobDescription.getResponsibilities());
+            session.update(jobDescription);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -90,8 +90,8 @@ public class JDManager {
 
         try {
             transaction = session.beginTransaction();
-            JDParseResult jdParseResult = session.get(JDParseResult.class, id);
-            session.delete(jdParseResult);
+            JobDescription jobDescription = session.get(JobDescription.class, id);
+            session.delete(jobDescription);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -114,6 +114,6 @@ public class JDManager {
     }
 
     public static void main(String[] args) {
-        JDManager jdManager new JDManager();
+        JDManager jdManager = new JDManager();
     }
 }

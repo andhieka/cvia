@@ -20,8 +20,8 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!-- DB schema will be updated if needed -->
-        <mapping class="cvia.model.CVParseResult"/>
-        <mapping class="cvia.model.JDParseResult"/>
+        <mapping class="cvia.model.CV"/>
+        <mapping class="cvia.model.JobDescription"/>
         <mapping class="cvia.model.PersonalInfo"/>
         <mapping class="cvia.model.EducationInfo"/>
         <mapping class="cvia.model.Language"/>

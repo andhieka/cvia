@@ -8,8 +8,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "jd")
-public class JDParseResult {
-    // Must be used by the Analyzer to match agains CVParseResult
+public class JobDescription {
+    // Must be used by the Analyzer to match agains CV
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +34,7 @@ public class JDParseResult {
     private List<String> responsibilities;
 
     // Empty constructor for Hibernate
-    public JDParseResult() { }
+    public JobDescription() { }
 
     public Long getId() {
         return id;

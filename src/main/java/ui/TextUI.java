@@ -1,6 +1,6 @@
 package ui;
 
-import cvia.model.CVParseResult;
+import cvia.model.CV;
 import cvia.parser.CVParser;
 import cvia.reader_writer.PdfToTextReader;
 
@@ -16,7 +16,7 @@ public class TextUI {
 
         try {
             String cv = pdfToTextReader.read(pathToPdf);
-            CVParseResult cvParseResult = cvParser.parse(cv);
+            CV cvParseResult = cvParser.parse(cv);
             System.out.println("# PERSONAL PARTICULARS");
             System.out.println(cvParseResult.getPersonalInfo().toString());
             System.out.println("# SKILLS");
