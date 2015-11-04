@@ -1,6 +1,7 @@
 
 package cvia.parser;
 
+import cvia.model.Skill;
 import org.json.JSONArray;
 import org.json.JSONTokener;
 
@@ -54,6 +55,18 @@ public class SkillParser {
             }
         }
         return presentKeywords;
+    }
+
+    public List<Skill> findSkills(String input) {
+        ArrayList<Skill> skills= new ArrayList<Skill>();
+        for (int i = 0; i < keywords.size(); i++) {
+            String keyword = keywords.get(i);
+            if (containsIgnoreCase(input, keyword)) {
+                Skill skill = new Skill(keyword);
+                skills.add(skill);
+            }
+        }
+        return skills;
     }
 
     // Case Insensitive String contains method
