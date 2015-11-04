@@ -1,4 +1,4 @@
-package ui;
+package cvia.ui;
 
 import cvia.model.CV;
 import cvia.parser.CVParser;
