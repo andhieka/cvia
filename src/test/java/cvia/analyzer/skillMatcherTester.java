@@ -14,7 +14,7 @@ import java.util.List;
  * Created by johnkevin on 13/10/15.
  */
 public class SkillMatcherTester {
-    Matcher matcher;
+    SkillMatcher matcher = SkillMatcher.getInstance();
     CV parsedCV;
     JobDescription parsedJobDescription;
 
@@ -48,9 +48,9 @@ public class SkillMatcherTester {
         parsedCV.setSkills(skills);
         parsedJobDescription.setRequiredSkills(requiredSkills);
 
-        matcher = new Matcher(parsedCV, parsedJobDescription);
 
-        int totalSkillScore = matcher.getSkillScore();
+
+        int totalSkillScore = matcher.getSkillScore(parsedCV, parsedJobDescription);
 
         assertEquals(300, totalSkillScore);
     }
@@ -84,10 +84,9 @@ public class SkillMatcherTester {
         parsedCV.setSkills(skills);
         parsedJobDescription.setRequiredSkills(requiredSkills);
 
-        matcher = new Matcher(parsedCV, parsedJobDescription);
-
         //200 + 25 - 50 = 175
-        int totalSkillScore = matcher.getSkillScore();
+        int totalSkillScore = matcher.getSkillScore(parsedCV, parsedJobDescription);
+
 
         assertEquals(175, totalSkillScore);
     }
@@ -125,10 +124,10 @@ public class SkillMatcherTester {
         parsedCV.setSkills(skills);
         parsedJobDescription.setRequiredSkills(requiredSkills);
 
-        matcher = new Matcher(parsedCV, parsedJobDescription);
+
 
         //300 + 50 - 100
-        int totalSkillScore = matcher.getSkillScore();
+        int totalSkillScore = matcher.getSkillScore(parsedCV, parsedJobDescription);
 
         assertEquals(250, totalSkillScore);
     }
