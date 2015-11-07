@@ -1,6 +1,7 @@
 package cvia.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -10,11 +11,11 @@ import java.util.Date;
 public class EducationInfo {
     @Temporal(TemporalType.DATE)
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "institution_name")
     private String institutionName;
@@ -32,19 +33,19 @@ public class EducationInfo {
     // Empty Constructor for Hibernate
     public EducationInfo() { }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -70,6 +71,10 @@ public class EducationInfo {
 
     public void setEducationLevel(String educationLevel) {
         this.educationLevel = educationLevel;
+    }
+
+    public int getDuration() {
+        return (endDate.getYear()  - startDate.getYear()) * 12 + endDate.getMonthValue() - startDate.getMonthValue() + 1;
     }
 
     public String getMajor() {

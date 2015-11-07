@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.time.LocalDate;
 import java.util.Date;
 /**
  * Created by andhieka on 10/10/15.
@@ -18,7 +19,7 @@ public class Publication {
     private String publisher;
     @Temporal(TemporalType.DATE)
     @Column(name = "publication_date")
-    private Date publicationDate;
+    private LocalDate publicationDate;
     @Column(name = "conference")
     private String conference;
     @Column(name = "num_pages")
@@ -53,11 +54,11 @@ public class Publication {
         this.publisher = publisher;
     }
 
-    public Date getPublicationDate() {
+    public LocalDate getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 
