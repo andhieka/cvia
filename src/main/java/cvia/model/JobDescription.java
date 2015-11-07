@@ -25,7 +25,7 @@ public class JobDescription {
     private EducationInfo minimumEducation;
 
     @Column(name = "minimum_experience")
-    private Float minimumYearsOfWorkExperience;
+    private int minimumYearsOfWorkExperience;
 
     @ElementCollection
     @CollectionTable(name = "jd_language", joinColumns = {@JoinColumn(name = "jd_id")})
@@ -71,11 +71,11 @@ public class JobDescription {
         this.minimumEducation = minimumEducation;
     }
 
-    public Float getMinimumYearsOfWorkExperience() {
+    public int getMinimumYearsOfWorkExperience() {
         return minimumYearsOfWorkExperience;
     }
 
-    public void setMinimumYearsOfWorkExperience(Float minimumYearsOfWorkExperience) {
+    public void setMinimumYearsOfWorkExperience(int minimumYearsOfWorkExperience) {
         this.minimumYearsOfWorkExperience = minimumYearsOfWorkExperience;
     }
 
