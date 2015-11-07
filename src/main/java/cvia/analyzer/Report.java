@@ -11,11 +11,37 @@ import java.util.LinkedList;
 public class Report implements Comparable<Report>{
     private PersonalInfo biodata;
 
+    private CV parsedCV;
+
+    public void setMatchedSkills(List<Skill> matchedSkills) {
+        this.matchedSkills = matchedSkills;
+    }
+
+    public void setUnmatchedSkills(List<Skill> unmatchedSkills) {
+        this.unmatchedSkills = unmatchedSkills;
+    }
+
+    public void setExtraSkills(List<Skill> extraSkills) {
+        this.extraSkills = extraSkills;
+    }
+
+    private List<Skill> matchedSkills;
+    private List<Skill> unmatchedSkills;
+    private List<Skill> extraSkills;
+
+
+    private List<Language> matchedLanguages;
+    private List<Language> unmatchedLanguages;
+    private List<Language> extraLanguages;
+
+
+
     public List<Skill> getMatchedSkills() {
         return matchedSkills;
     }
 
-    private List<Skill> matchedSkills;
+    private int score;
+
 
     public PersonalInfo getBiodata() {
         return biodata;
@@ -41,12 +67,48 @@ public class Report implements Comparable<Report>{
         return extraLanguages;
     }
 
-    private List<Skill> unmatchedSkills;
-    private List<Skill> extraSkills;
-    private List<Language> matchedLanguages;
-    private List<Language> unmatchedLanguages;
-    private List<Language> extraLanguages;
-    private int score;
+
+
+    public void setParsedCV(CV parsedCV) {
+        this.parsedCV = parsedCV;
+    }
+
+    public int getLanguageScore() {
+        return languageScore;
+    }
+
+    public void setLanguageScore(int languageScore) {
+        this.languageScore = languageScore;
+    }
+
+    public int getSkillScore() {
+        return skillScore;
+    }
+
+    public void setSkillScore(int skillScore) {
+        this.skillScore = skillScore;
+    }
+
+    public int getEduationScore() {
+        return eduationScore;
+    }
+
+    public void setEduationScore(int eduationScore) {
+        this.eduationScore = eduationScore;
+    }
+
+    public int getWorkScore() {
+        return workScore;
+    }
+
+    public void setWorkScore(int workScore) {
+        this.workScore = workScore;
+    }
+
+    private int languageScore;
+    private int skillScore;
+    private int eduationScore;
+    private int workScore;
 
     public Report(PersonalInfo biodata) {
         this.biodata = biodata;
@@ -60,28 +122,18 @@ public class Report implements Comparable<Report>{
         this.extraLanguages = new LinkedList<Language>();
     }
 
-    public void addMatchedSkill(Skill newSkill) {
-        this.matchedSkills.add(newSkill);
+
+
+    public void setMatchedLanguages(List<Language> matchedLanguages) {
+        this.matchedLanguages = matchedLanguages;
     }
 
-    public void addExtraSkill(Skill extraSkill) {
-        this.extraSkills.add(extraSkill);
+    public void setUnmatchedLanguages(List<Language> unmatchedLanguages) {
+        this.unmatchedLanguages = unmatchedLanguages;
     }
 
-    public void addUnMatchedSkill(Skill unmatchedSkill) {
-        this.unmatchedSkills.add(unmatchedSkill);
-    }
-
-    public void addMatchedLanguage(Language newLanguage) {
-        this.matchedLanguages.add(newLanguage);
-    }
-
-    public void addExtraLanguage(Language extraLanguage) {
-        this.extraLanguages.add(extraLanguage);
-    }
-
-    public void addUnmatchedLanguage(Language unmatchedLanguage) {
-        this.unmatchedLanguages.add(unmatchedLanguage);
+    public void setExtraLanguages(List<Language> extraLanguages) {
+        this.extraLanguages = extraLanguages;
     }
 
     public int getScore() {
