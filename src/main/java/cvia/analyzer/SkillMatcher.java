@@ -16,7 +16,10 @@ public class SkillMatcher {
 
     private final int SKILL_MATCH_SCORE = 100;
     private final int EXTRA_SKILL_SCORE = 25;
-    private final int NO_SKILL_PENALTY = 75;
+    private final int NO_SKILL_PENALTY = 50;
+    private final int EXTRA_DURATION_SCORE = 10;
+    private final int LESS_DURATION_PENALTY = 25;
+    private final int EXTRA_CAP = 2;
 
     private List<Skill> matchedSkills;
     private List<Skill> unmatchedSkills;
@@ -80,7 +83,22 @@ public class SkillMatcher {
                 this.matchedSkills.add(currentSkill);
                 SkillPointer++;
                 requiredSkillPointer++;
+
                 total += SKILL_MATCH_SCORE;
+
+                int minimum = currentRequiredSkill.getYearsOfExperience();
+                int yearsOfExperience = currentSkill.getYearsOfExperience();
+
+                if (yearsOfExperience > minimum) {
+                    if (yearsOfExperience - minimum <= EXTRA_CAP) {
+                        total += (yearsOfExperience - minimum) * EXTRA_DURATION_SCORE;
+                    } else {
+                        total += EXTRA_CAP * EXTRA_DURATION_SCORE;
+                    }
+                } else if (yearsOfExperience < minimum) {
+                    total += (minimum - yearsOfExperience) * LESS_DURATION_PENALTY;
+                }
+
             } else if (compareScore < 0) {
                 this.extraSkills.add(currentSkill);
                 numOfExtraSkills++;
@@ -95,7 +113,12 @@ public class SkillMatcher {
         numOfExtraSkills += numOfSkills - SkillPointer;
         numOfUnmatchedSkills += numOfRequiredSkills - requiredSkillPointer;
 
-        total += numOfExtraSkills * EXTRA_SKILL_SCORE;
+        if (numOfExtraSkills <= EXTRA_CAP) {
+            total += numOfExtraSkills * EXTRA_SKILL_SCORE;
+        } else {
+            total += EXTRA_CAP * EXTRA_SKILL_SCORE;
+        }
+
         total -= numOfUnmatchedSkills * NO_SKILL_PENALTY;
 
         addRemainingUnmatchedSkills(requiredSkills, numOfRequiredSkills, requiredSkillPointer);

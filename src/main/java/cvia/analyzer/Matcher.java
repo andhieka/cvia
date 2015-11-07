@@ -18,6 +18,7 @@ public class Matcher {
     private List<Report> reports;
 
     private LanguageMatcher languageMatcher;
+    private SkillMatcher skillMatcher;
 
 
     private final Float WORK_EXPERIENCE_BASE = new Float(100);
@@ -31,6 +32,8 @@ public class Matcher {
         this.reports = new LinkedList<Report>();
 
         this.languageMatcher = LanguageMatcher.getInstance();
+        this.skillMatcher = SkillMatcher.getInstance();
+
     }
 
     public void run() {
@@ -45,6 +48,19 @@ public class Matcher {
 
     public void match(CV cv, Report report) {
         matchLanguage(cv, report);
+        matchSkill(cv, report);
+    }
+
+    private void matchSkill(CV cv, Report report) {
+        int skillScore = skillMatcher.getSkillScore(cv, parsedJobDescription);
+        List<Skill> matchedSkills = skillMatcher.getMatchedSkills();
+        List<Skill> unmatchedSkills = skillMatcher.getUnmatchedSkills();
+        List<Skill> extraSkills = skillMatcher.getExtraSkills();
+
+        report.setSkillScore(skillScore);
+        report.setMatchedSkills(matchedSkills);
+        report.setUnmatchedSkills(unmatchedSkills);
+        report.setExtraSkills(extraSkills);
     }
 
 
@@ -60,6 +76,7 @@ public class Matcher {
         report.setExtraLanguages(extraLanguage);
     }
 
+    /*
     public Float getWorkExperienceScore() {
         Float minimumWorkExperience = parsedJobDescription.getMinimumYearsOfWorkExperience();
         List<WorkExperience> listOfWorkExperience = parsedCV.getWorkExperienceList();
@@ -87,89 +104,15 @@ public class Matcher {
 
     }
 
-    
+    */
 
-    private void addRemainingExtraSkills(List<Skill> skills, int numOfSkills, int skillPointer) {
-        while (skillPointer < numOfSkills) {
-            Skill currentSkill = skills.get(skillPointer);
-            this.report.addExtraSkill(currentSkill);
-            skillPointer++;
-        }
-    }
 
-    private void addRemaningUnmatchedSkills(List<Skill> requiredSkills, int numOfRequiredSkills, int requiredSkillPointer) {
-        while (requiredSkillPointer < numOfRequiredSkills) {
-            Skill currentRequiredSkill = requiredSkills.get(requiredSkillPointer);
-            this.report.addUnMatchedSkill(currentRequiredSkill);
-            requiredSkillPointer++;
-        }
-    }
 
-    public Report getReport() {
-        return this.report;
-    }
+
+
 
     public static void main(String[] args) {
-        CV parsedCV = new CV();
-        JobDescription parsedJobDescription = new JobDescription();
 
-        Scanner sc = new Scanner(System.in);
-        languageSimulator(sc, parsedCV, parsedJobDescription);
-        skillSimulator(sc, parsedCV, parsedJobDescription);
-
-        Matcher match = new Matcher(parsedCV, parsedJobDescription);
-
-        System.out.print("Language Score = ");
-        int languageScore = match.getLanguageScore();
-        System.out.println(languageScore);
-
-        Report r = match.getReport();
-
-        List<Language> matchedLanguages = r.getMatchedLanguages();
-        List<Language> unmatchedLanguages = r.getUnmatchedLanguages();
-        List<Language> extraLanguages = r.getExtraLanguages();
-
-        System.out.print("Matched Languages = ");
-        for (Language l : matchedLanguages) {
-            System.out.print(l.getName() + " ");
-        }
-
-        System.out.print("\nUnmatched Languages = ");
-        for (Language l : unmatchedLanguages) {
-            System.out.print(l.getName());
-        }
-
-        System.out.print("\nExtra Languages = ");
-        for (Language l : extraLanguages) {
-            System.out.print(l.getName());
-        }
-
-
-
-        System.out.print("\nSkill Score = ");
-        int skillScore = match.getSkillScore();
-        System.out.println(skillScore);
-
-        List<Skill> matchedSkills = r.getMatchedSkills();
-        List<Skill> unmatchedSkills = r.getUnmatchedSkills();
-        List<Skill> extraSkills = r.getExtraSkills();
-
-        System.out.print("Matched Skills = ");
-        for (Skill s : matchedSkills) {
-            System.out.print(s.getName() + " ");
-        }
-
-        System.out.print("\nUnmatched Skills = ");
-        for (Skill s : unmatchedSkills) {
-            System.out.print(s.getName() + " ");
-        }
-
-        System.out.print("\nExtra Skills = ");
-        for (Skill s : extraSkills) {
-            System.out.print(s.getName() + " ");
-        }
-
-        System.out.println("\n\nTotal Score = " + (languageScore + skillScore));
 
 
     }
@@ -177,82 +120,9 @@ public class Matcher {
     private void languageSimulator(Scanner sc, CV parsedCV, JobDescription parsedJobDescription) {
 
 
-        List<Language> languages = new LinkedList<Language>();
-        List<Language> requiredLanguages = new LinkedList<Language>();
-
-        System.out.print("How many required languages: ");
-        int n = sc.nextInt();
-        sc.nextLine();
-
-        for (int i = 0; i < n; i++) {
-            System.out.print("Enter required language #" + (i+1) + " : ");
-            String language = sc.nextLine();
-
-            Language newLanguage = new Language(language);
-            requiredLanguages.add(newLanguage);
-        }
-
-        System.out.print("How many languages in the CV: ");
-        int m = sc.nextInt();
-        sc.nextLine();
-
-        for (int i = 0; i < m; i++) {
-            System.out.print("Enter language skill #" + (i+1) + " : ");
-            String language = sc.nextLine();
-
-            Language newLanguage = new Language(language);
-            languages.add(newLanguage);
-        }
-
-        parsedCV.setLanguages(languages);
-        parsedJobDescription.setRequiredLanguages(requiredLanguages);
-
-        Matcher match = new Matcher(parsedCV, parsedJobDescription);
-
-        System.out.print("Language Score = ");
-        System.out.println(match.getLanguageScore());
-
-        Report r = match.getReport();
-
-        List<Language> matchedLanguages = r.getMatchedLanguages();
-        List<Language> unmatchedLanguages = r.getUnmatchedLanguages();
-        List<Language> extraLanguages = r.getExtraLanguages();
-
-
     }
 
     private void skillSimulator(Scanner sc, CV parsedCV, JobDescription parsedJobDescription) {
-
-
-        List<Skill> skills = new LinkedList<Skill>();
-        List<Skill> requiredSkills = new LinkedList<Skill>();
-
-        System.out.print("\nHow many required skills: ");
-        int n = sc.nextInt();
-        sc.nextLine();
-
-        for (int i = 0; i < n; i++) {
-            System.out.print("Enter required skill #" + (i+1) + " :");
-            String skill = sc.nextLine();
-
-            Skill newSkill = new Skill(skill);
-            requiredSkills.add(newSkill);
-        }
-
-        System.out.print("How many skills in the CV: ");
-        int m = sc.nextInt();
-        sc.nextLine();
-
-        for (int i = 0; i < m; i++) {
-            System.out.print("Enter skill #" + (i+1) + " :");
-            String skill = sc.nextLine();
-
-            Skill newSkill = new Skill(skill);
-            skills.add(newSkill);
-        }
-
-        parsedCV.setSkills(skills);
-        parsedJobDescription.setRequiredSkills(requiredSkills);
 
 
     }
