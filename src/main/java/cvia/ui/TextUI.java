@@ -2,8 +2,8 @@ package cvia.ui;
 
 import cvia.model.CV;
 import cvia.model.Skill;
-import cvia.parser.CVParser;
-import cvia.reader_writer.PdfToTextReader;
+import cvia.parser.PDFCVParser;
+import cvia.reader_writer.PDFTextReader;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 public class TextUI {
 
     public static void main(String args[]) {
-        PdfToTextReader pdfToTextReader = new PdfToTextReader();
-        CVParser cvParser = new CVParser();
+        PDFTextReader pdfToTextReader = new PDFTextReader();
+        PDFCVParser cvParser = new PDFCVParser();
         String pathToPdf = "resume.pdf";
 
         try {
