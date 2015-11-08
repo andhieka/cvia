@@ -126,7 +126,7 @@ public class CVDetailController {
         for (HashMap<String, Object> educationMap: educationInfoMap.values()) {
             EducationInfo educationInfo = new EducationInfo();
             educationInfo.setInstitutionName(((TextInputControl) educationMap.get("institution_name")).getText());
-            educationInfo.setEducationLevel(((TextInputControl) educationMap.get("education_level")).getText());
+           // educationInfo.setEducationLevel(((TextInputControl) educationMap.get("education_level")).getText());
             educationInfo.setMajor(((TextInputControl) educationMap.get("major")).getText());
             LocalDate startDate = DateUtilities.dateFromString("01" +
                     ((TextInputControl) educationMap.get("start_date")).getText(), inFormatter);
