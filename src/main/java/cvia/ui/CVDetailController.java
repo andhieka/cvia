@@ -2,6 +2,7 @@ package cvia.ui;
 
 import cvia.model.*;
 import cvia.model.Language.LanguageProficiency;
+import cvia.model.EducationInfo.EducationLevel;
 import cvia.model.Skill.SkillProficiency;
 import cvia.utilities.DateUtilities;
 import javafx.beans.value.ChangeListener;
@@ -109,7 +110,7 @@ public class CVDetailController {
         List<EducationInfo> educationList = new ArrayList<EducationInfo>();
         EducationInfo educationInfo = new EducationInfo();
         educationInfo.setInstitutionName("NUS");
-        educationInfo.setEducationLevel("University");
+        educationInfo.setEducationLevel(EducationLevel.UNDERGRADUATE);
         educationInfo.setMajor("CS");
         educationInfo.setStartDate(LocalDate.now());
         educationInfo.setEndDate(LocalDate.now());
@@ -230,7 +231,8 @@ public class CVDetailController {
         for (HashMap<String, Object> educationMap: educationInfoMap.values()) {
             EducationInfo educationInfo = new EducationInfo();
             educationInfo.setInstitutionName(((TextInputControl) educationMap.get("institution_name")).getText());
-           // educationInfo.setEducationLevel(((TextInputControl) educationMap.get("education_level")).getText());
+            educationInfo.setEducationLevel(
+                    EducationLevel.valueOf(((TextInputControl) educationMap.get("education_level")).getText()));
             educationInfo.setMajor(((TextInputControl) educationMap.get("major")).getText());
             LocalDate startDate = DateUtilities.dateFromString("01 " +
                     ((TextInputControl) educationMap.get("start_date")).getText(), inFormatter);
@@ -331,7 +333,7 @@ public class CVDetailController {
                 "ed_institution_name");
         vBoxInstitutionName.setLayoutX(25);
         vBoxInstitutionName.setLayoutY(40);
-        VBox vBoxEducationLevel = createVBoxWithTextField("Education Level", educationInfo.getEducationLevel(),
+        VBox vBoxEducationLevel = createVBoxWithTextField("Education Level", educationInfo.getEducationLevel().toString(),
                 "ed_education_level");
         vBoxEducationLevel.setLayoutX(25);
         vBoxEducationLevel.setLayoutY(100);
