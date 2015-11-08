@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cvia.ui.JobDescriptionListController">
+   <content>
+      <Pane fx:id="pane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <HBox fx:id="searchBox" alignment="CENTER" layoutX="528.0" layoutY="42.0" prefHeight="25.0" prefWidth="222.0" style="-fx-background-color: white; -fx-border-color: grey;">
+               <children>
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@search.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="195.0" promptText="Search here" style="-fx-background-color: transparent;" />
+               </children>
+            </HBox>
+            <Pane layoutX="300.0" layoutY="414.0" prefHeight="117.0" prefWidth="200.0" style="-fx-background-color: red;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="10.0" maxHeight="40.0" prefHeight="40.0" prefWidth="170.0" text="Sr. Software Engineer hgfhhjhgjg" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="72.0" layoutY="56.0" text="Vacancy: 2" />
+                  <Button alignment="CENTER" layoutX="14.0" layoutY="78.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Edit" />
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Pane>
+         </children>
+      </Pane>
+   </content>
+</ScrollPane>

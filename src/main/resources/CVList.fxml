@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="pane" maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cvia.ui.CVListController">
+   <children>
+      <TableView fx:id="cvTable" layoutX="50.0" layoutY="80.0" prefHeight="500.0">
+        <columns>
+          <TableColumn id="cv_columnNo" fx:id="columnNo" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="No." />
+          <TableColumn fx:id="columnName" maxWidth="250.0" minWidth="150.0" prefWidth="-1.0" text="Name" />
+            <TableColumn fx:id="columnEmail" maxWidth="200.0" minWidth="150.0" prefWidth="-1.0" text="Email" />
+            <TableColumn fx:id="columnCurrentTitle" maxWidth="200.0" minWidth="125.0" prefWidth="125.0" text="Current Title" />
+            <TableColumn fx:id="columnEmail1" maxWidth="200.0" minWidth="150.0" prefWidth="-1.0" text="Add more column" />
+            <TableColumn fx:id="columnAction" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Action" />
+        </columns>
+      </TableView>
+      <HBox fx:id="searchBox" alignment="CENTER" layoutX="528.0" layoutY="42.0" prefHeight="25.0" prefWidth="222.0" style="-fx-background-color: white; -fx-border-color: grey;">
+         <children>
+            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@search.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </ImageView>
+            <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="195.0" promptText="Search here" style="-fx-background-color: transparent;" />
+         </children>
+      </HBox>
+   </children>
+</Pane>

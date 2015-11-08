@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cvia.ui.RootWindowController">
+   <children>
+      <Pane prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #2f3e4d;">
+         <children>
+            <Pane prefHeight="53.0" prefWidth="200.0" style="-fx-background-color: #2b3749;">
+               <children>
+                  <Label layoutX="14.0" layoutY="4.0" prefHeight="46.0" prefWidth="155.0" text="CVestigator" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="manageCVMenu" layoutY="65.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" style="-fx-background-color: #2f3e4d;" text="Manage CVs" textFill="#a59d8e">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="manageJobMenu" layoutY="104.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" style="-fx-background-color: #2f3e4d;" text="Manage Jobs" textFill="#a59d8e">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="searchMenu" layoutY="143.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" style="-fx-background-color: #2f3e4d;" text="Search" textFill="#a59d8e">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+         </children></Pane>
+   </children>
+</Pane>

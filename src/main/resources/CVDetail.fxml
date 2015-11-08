@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane fx:id="splitPane" dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cvia.ui.CVDetailController">
+   <items>
+      <Pane fx:id="imagePane" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="pdfImageView" fitHeight="600.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+      <Pane fx:id="rightPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: dcdcdc;">
+         <children>
+            <TabPane fx:id="tabPane" layoutY="35.0" prefHeight="600.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Personal Information">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <Pane fx:id="personalInfoPane" prefHeight="500.0" prefWidth="490.0" />
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+                <Tab text="Education Information">
+                     <content>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <Pane fx:id="educationPane" prefHeight="500.0" prefWidth="500.0" />
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Work Experiences">
+                     <content>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <Pane fx:id="workPane" prefWidth="500.0" />
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Skills and Languages">
+                     <content>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <Pane fx:id="skillPane" prefWidth="500.0" />
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </Pane>
+   </items>
+</SplitPane>

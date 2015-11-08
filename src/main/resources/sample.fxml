@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="rootPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #6d6969;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="list.view.RootWindowController">
+    <children>
+        <ToolBar prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #2E2E2E;">
+            <items>
+                <Button fx:id="buttonToCategory" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-border-style: none; -fx-background-color: #2E2E2E;">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icon_menu.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="buttonToPrev" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-border-style: none; -fx-background-color: #2E2E2E;">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icon_left.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="buttonToNext" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-border-style: none; -fx-background-color: #2E2E2E;">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icon_right.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="buttonToHome" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-border-style: none; -fx-background-color: #2E2E2E;">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icon_home.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Region maxWidth="435.0" minWidth="33.0" prefHeight="30.0" prefWidth="173.0" />
+                <Label fx:id="labelPageTitle" alignment="CENTER_RIGHT" maxWidth="286.0" minWidth="286.0" prefHeight="23.0" prefWidth="286.0" textFill="#eeeeeebf">
+                    <font>
+                        <Font name="Helvetica Neue Light" size="18.0" />
+                    </font>
+                </Label>
+            </items>
+        </ToolBar>
+        <TextField fx:id="console" layoutY="372.0" prefHeight="28.0" prefWidth="600.0" promptText="Enter command" style="-fx-background-color: #585858; -fx-text-fill: white;" />
+
+    </children>
+</Pane>
