@@ -31,6 +31,18 @@ public class EducationInfoMatcher {
 
     }
 
+    public int getMaximumScore(JobDescription jobDescription) {
+        EducationRequirement minRequirement = jobDescription.getMinimumEducation();
+
+        Grade minimumGrade = minRequirement.getMinimumGrade();
+
+        Float maxRequiredGrade = minimumGrade.getMaxGrade();
+        int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() / maxRequiredGrade) * 100);
+
+        return EDUCATION_BASE + (100 - normalizedMinimumGrade);
+
+    }
+
     public int getEducationScore(CV parsedCV, JobDescription parsedJobDescription) {
 
         int total = 0;

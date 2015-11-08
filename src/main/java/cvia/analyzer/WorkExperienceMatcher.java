@@ -40,8 +40,21 @@ public class WorkExperienceMatcher {
     }
 
     private WorkExperienceMatcher() {
-       hasMatch = false;
+        hasMatch = false;
         extraWorkExperience = new LinkedList<WorkExperience>();
+    }
+
+    public int getMaximumScore(CV myCV) {
+        int total = 0;
+
+        total += WORK_EXPERIENCE_BASE;
+        total += BONUS_CAP * WORK_EXPERIENCE_DIFFERENCE;
+        for (WorkExperience we : myCV.getWorkExperienceList()) {
+            total += we.getWorkDuration();
+        }
+
+        return total;
+
     }
 
     public int getWorkExperienceScore(CV parsedCV, JobDescription parsedJobDescription) {
@@ -65,7 +78,7 @@ public class WorkExperienceMatcher {
                 int diff = duration - minimum;
 
                 if (diff > BONUS_CAP) {
-                    total += diff * BONUS_CAP;
+                    total += BONUS_CAP * WORK_EXPERIENCE_DIFFERENCE;
                 } else {
                     total += diff * WORK_EXPERIENCE_DIFFERENCE;
                 }
