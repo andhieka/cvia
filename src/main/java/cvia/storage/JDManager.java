@@ -8,8 +8,8 @@ import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 /**
  * Created by Michael Limantara on 11/3/2015.
@@ -136,12 +136,12 @@ public class JDManager {
         languages.add(new Language("English"));
         languages.add(new Language("Chinese"));
 
-        Float minimumYear = (float) 2.0;
+        int minimumYear = 2;
 
         EducationInfo education = new EducationInfo();
         education.setMajor("CS");
-        education.setStartDate(new Date());
-        education.setEndDate(new Date());
+        education.setStartDate(LocalDate.now());
+        education.setEndDate(LocalDate.now());
         education.setEducationLevel("university");
 
         JobDescription jobDescription = new JobDescription();

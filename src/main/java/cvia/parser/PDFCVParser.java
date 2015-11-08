@@ -1,7 +1,7 @@
 package cvia.parser;
 
 import cvia.model.CV;
-import cvia.reader_writer.PDFWithTextChunks;
+import cvia.reader_writer.PDFWithTextChunk;
 
 /**
  * Created by Michael Limantara on 9/23/2015.
@@ -9,14 +9,14 @@ import cvia.reader_writer.PDFWithTextChunks;
 public class PDFCVParser {
     private PersonalInfoParser personalInfoParser;
     private SkillParser skillParser;
-    private PDFWithTextChunks rawCV;
+    private PDFWithTextChunk rawCV;
 
     // Public methods
 
     public PDFCVParser() {
     }
 
-    public CV parse(PDFWithTextChunks rawCV) {
+    public CV parse(PDFWithTextChunk rawCV) {
         this.rawCV = rawCV;
 
         CV cvParseResult = new CV();

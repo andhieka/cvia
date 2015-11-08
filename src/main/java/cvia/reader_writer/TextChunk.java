@@ -29,7 +29,7 @@ public class TextChunk implements Comparable<TextChunk> {
         this.distParallelEnd = this.orientationVector.dot(endLocation);
     }
 
-    private void printDiagnostics() {
+    public void printDiagnostics() {
         System.out.println("Text (@" + this.startLocation + " -> " + this.endLocation + "): " + this.text);
         System.out.println("orientationMagnitude: " + this.orientationMagnitude);
         System.out.println("distPerpendicular: " + this.distPerpendicular);
@@ -65,6 +65,7 @@ public class TextChunk implements Comparable<TextChunk> {
     }
 
     private static int compareInts(int int1, int int2) {
-        return int1 == int2?0:(int1 < int2?-1:1);
+        return (int1 == int2) ? 0
+                              : (int1 < int2) ? -1 : 1;
     }
 }
