@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by andhieka on 4/11/15.
  */
-public class PDFTextChunksReader {
+public class PDFTextChunkReader {
     public PDFWithTextChunks readPDFFromFile(File file) throws IOException {
         PdfReader reader = new PdfReader(file.getAbsolutePath());
         PdfReaderContentParser parser = new PdfReaderContentParser(reader);

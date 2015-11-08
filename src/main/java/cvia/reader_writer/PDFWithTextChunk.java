@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * Created by andhieka on 4/11/15.
  */
-public class PDFWithTextChunks {
+public class PDFWithTextChunk {
     private File file;
     private List<TextChunk> textChunks;
 
-    PDFWithTextChunks(File file, List<TextChunk> textChunks) {
+    PDFWithTextChunk(File file, List<TextChunk> textChunks) {
         this.file = file;
         this.textChunks = textChunks;
     }
