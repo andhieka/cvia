@@ -1,7 +1,10 @@
 
 package cvia.parser;
 
+import cvia.model.CV;
 import cvia.model.Skill;
+import cvia.reader_writer.TextChunk;
+import cvia.utilities.StringUtilities;
 import org.json.JSONArray;
 import org.json.JSONTokener;
 
@@ -20,7 +23,7 @@ import java.util.regex.Pattern;
  * Created by andhieka on 13/10/15.
  */
 
-public class SkillParser {
+public class SkillParser implements MiniParser {
 
     private static String SKILL_KEYWORDS_FILENAME = "skills.json";
 
@@ -30,6 +33,18 @@ public class SkillParser {
     public SkillParser() {
         loadKeywords();
     }
+
+    @Override
+    public void parseAndSaveResultToCV(TextChunk textChunk, CV cv) {
+
+    }
+
+    @Override
+    public void reset() {
+        // do nothing
+    }
+
+    // private methods
 
     private void loadKeywords() {
         try {
@@ -50,7 +65,7 @@ public class SkillParser {
         ArrayList<String> presentKeywords = new ArrayList<String>();
         for (int i = 0; i < keywords.size(); i++) {
             String keyword = keywords.get(i);
-            if (containsIgnoreCase(input, keyword)) {
+            if (StringUtilities.containsIgnoreCase(input, keyword)) {
                 presentKeywords.add(keyword);
             }
         }
@@ -61,33 +76,12 @@ public class SkillParser {
         ArrayList<Skill> skills= new ArrayList<Skill>();
         for (int i = 0; i < keywords.size(); i++) {
             String keyword = keywords.get(i);
-            if (containsIgnoreCase(input, keyword)) {
+            if (StringUtilities.containsIgnoreCase(input, keyword)) {
                 Skill skill = new Skill(keyword);
                 skills.add(skill);
             }
         }
         return skills;
-    }
-
-    // Case Insensitive String contains method
-    // Modified from http://stackoverflow.com/questions/86780/is-the-contains-method-in-java-lang-string-case-sensitive
-    private boolean containsIgnoreCase(final String input, final String keyword) {
-        if (keyword.length() == 0) {
-            return true;
-        }
-        final char firstLo = Character.toLowerCase(keyword.charAt(0));
-        final char firstUp = Character.toUpperCase(keyword.charAt(0));
-
-        for (int i = input.length() - keyword.length(); i >= 0; i--) {
-            final char ch = input.charAt(i);
-            if (ch != firstLo && ch != firstUp)
-                continue;
-
-            if (input.regionMatches(true, i, keyword, 0, keyword.length()))
-                return true;
-        }
-
-        return false;
     }
 
 }

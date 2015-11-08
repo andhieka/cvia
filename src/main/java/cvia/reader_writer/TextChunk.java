@@ -15,8 +15,9 @@ public class TextChunk implements Comparable<TextChunk> {
     final float distParallelStart;
     final float distParallelEnd;
     final float charSpaceWidth;
+    final int pageNumber;
 
-    public TextChunk(String string, Vector startLocation, Vector endLocation, float charSpaceWidth) {
+    public TextChunk(String string, Vector startLocation, Vector endLocation, float charSpaceWidth, int pageNumber) {
         this.text = string;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
@@ -27,13 +28,14 @@ public class TextChunk implements Comparable<TextChunk> {
         this.distPerpendicular = (int)startLocation.subtract(origin).cross(this.orientationVector).get(2);
         this.distParallelStart = this.orientationVector.dot(startLocation);
         this.distParallelEnd = this.orientationVector.dot(endLocation);
+        this.pageNumber = pageNumber;
     }
 
     public void printDiagnostics() {
         System.out.println("Text (@" + this.startLocation + " -> " + this.endLocation + "): " + this.text);
-        System.out.println("orientationMagnitude: " + this.orientationMagnitude);
-        System.out.println("distPerpendicular: " + this.distPerpendicular);
-        System.out.println("distParallel: " + this.distParallelStart);
+        // System.out.println("orientationMagnitude: " + this.orientationMagnitude);
+        // System.out.println("distPerpendicular: " + this.distPerpendicular);
+        // System.out.println("distParallel: " + this.distParallelStart);
     }
 
     public boolean sameLine(TextChunk as) {
@@ -46,6 +48,9 @@ public class TextChunk implements Comparable<TextChunk> {
     }
 
     public int compareTo(TextChunk rhs) {
+        if (pageNumber != rhs.pageNumber) {
+            return pageNumber - rhs.pageNumber;
+        }
         if(this == rhs) {
             return 0;
         } else {
@@ -54,7 +59,7 @@ public class TextChunk implements Comparable<TextChunk> {
                 return rslt;
             } else {
                 rslt = compareInts(this.distPerpendicular, rhs.distPerpendicular);
-                if(rslt != 0) {
+                if (rslt != 0) {
                     return rslt;
                 } else {
                     rslt = this.distParallelStart < rhs.distParallelStart?-1:1;
@@ -62,6 +67,31 @@ public class TextChunk implements Comparable<TextChunk> {
                 }
             }
         }
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Vector getStartLocation() {
+        return startLocation;
+    }
+
+    public Vector getEndLocation() {
+        return endLocation;
+    }
+
+    public TextChunk mergedWith(TextChunk other) {
+        return new TextChunk(
+                text + other.text,
+                startLocation,
+                other.endLocation,
+                charSpaceWidth,
+                pageNumber);
+    }
+
+    public boolean hasSpace() {
+        return text.contains(" ");
     }
 
     private static int compareInts(int int1, int int2) {

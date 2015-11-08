@@ -12,10 +12,15 @@ import java.util.List;
  */
 public class TextChunkExtractionStrategy implements TextExtractionStrategy {
     public static final String MESSAGE_IMAGE_NOT_IMPLEMENTED = "Ignoring image in the CV...";
+
     private ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
+    private int pageNumber;
+
+    public TextChunkExtractionStrategy(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
 
     public List<TextChunk> getResultantTextChunks() {
-        Collections.sort(textChunks);
         return textChunks;
     }
     
@@ -60,7 +65,7 @@ public class TextChunkExtractionStrategy implements TextExtractionStrategy {
     @Override
     public void renderText(TextRenderInfo textRenderInfo) {
         LineSegment segment = textRenderInfo.getBaseline();
-        TextChunk textChunk = new TextChunk(textRenderInfo.getText(), segment.getStartPoint(), segment.getEndPoint(), textRenderInfo.getSingleSpaceWidth());
+        TextChunk textChunk = new TextChunk(textRenderInfo.getText(), segment.getStartPoint(), segment.getEndPoint(), textRenderInfo.getSingleSpaceWidth(), pageNumber);
         textChunks.add(textChunk);
     }
 

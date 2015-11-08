@@ -2,35 +2,65 @@ package cvia.parser;
 
 import cvia.model.CV;
 import cvia.reader_writer.PDFWithTextChunk;
+import cvia.reader_writer.TextChunk;
 
 /**
  * Created by Michael Limantara on 9/23/2015.
  */
 public class PDFCVParser {
-    private PersonalInfoParser personalInfoParser;
-    private SkillParser skillParser;
+
+    enum ParseMode {
+        PERSONAL_INFO, SKILL, PAGE_NUMBER, UNKNOWN
+    }
+
+    private PersonalInfoParser personalInfoParser = new PersonalInfoParser();
+    private SkillParser skillParser = new SkillParser();
+    private ParseModeTrigger parseModeTrigger = new ParseModeTrigger();
     private PDFWithTextChunk rawCV;
+    private CV parsedCV;
+    private ParseMode parseMode;
 
     // Public methods
 
-    public PDFCVParser() {
-    }
-
     public CV parse(PDFWithTextChunk rawCV) {
+        reset();
         this.rawCV = rawCV;
-
-        CV cvParseResult = new CV();
-
-        return cvParseResult;
+        this.parsedCV = new CV();
+        runParseLoop();
+        return parsedCV;
     }
 
     // Private methods
 
+    private void reset() {
+        this.rawCV = null;
+        this.parsedCV = null;
+        this.parseMode = ParseMode.UNKNOWN;
+    }
+
+    private void runParseLoop() {
+        for (TextChunk textChunk: rawCV.getTextChunks()) {
+            String text = textChunk.getText();
+            ParseMode triggeredParseMode = parseModeTrigger.triggeredParseMode(text);
+            if (triggeredParseMode != null) {
+                this.parseMode = triggeredParseMode;
+            }
+            processTextChunk(textChunk);
+        }
+
+    }
+
+    private void processTextChunk(TextChunk textChunk) {
+        if (parseMode == ParseMode.PAGE_NUMBER) {
+            // skip
+        } else if (parseMode == ParseMode.SKILL) {
+            skillParser.parseAndSaveResultToCV(textChunk, parsedCV);
+        } else if (parseMode == ParseMode.PERSONAL_INFO) {
+            personalInfoParser.parseAndSaveResultToCV(textChunk, parsedCV);
+        }
+    }
+
 //    private PersonalInfo parsePersonalInfo() {
-//        if (personalInfoParser == null) {
-//            personalInfoParser = new PersonalInfoParser();
-//        }
-//
 //        // Extract personal information from cvContent
 //        // String name = personalInfoParser.parseName();
 //        String contactNumber = personalInfoParser.parseContactNumber(cvContent);

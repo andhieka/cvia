@@ -26,7 +26,7 @@ public class PDFTextChunkReaderTest {
 
     @Test
     public void testOne() throws Exception {
-        File file = new File("resume.pdf");
+        File file = new File("Resume Michael Limantara.pdf");
         assertTrue(file.exists());
         PDFWithTextChunk pdfWithTextChunk = pdfTextChunkReader.readPDFFromFile(file);
         List<TextChunk> textChunks = pdfWithTextChunk.getTextChunks();
@@ -34,6 +34,19 @@ public class PDFTextChunkReaderTest {
         assertFalse("Result must not be empty", textChunks.isEmpty());
         for (TextChunk textChunk: textChunks) {
             textChunk.printDiagnostics();
+        }
+    }
+
+    @Test
+    public void testTextChunkCombinator() throws Exception {
+        File file = new File("desmond2.pdf");
+        assertTrue(file.exists());
+        PDFWithTextChunk pdfWithTextChunk = pdfTextChunkReader.readPDFFromFile(file);
+        List<TextChunk> textChunks = pdfWithTextChunk.getTextChunks();
+        TextChunkCombinator combinator = new TextChunkCombinator();
+        List<TextLine> combinedTextChunks = combinator.combineTextChunks(textChunks);
+        for (TextLine textLine: combinedTextChunks) {
+            System.out.println(textLine.getText());
         }
     }
 
