@@ -27,7 +27,15 @@ public class WorkExperienceMatcher {
             instance = new WorkExperienceMatcher();
         }
 
+        instance.flush();
+
         return instance;
+    }
+
+    private void flush() {
+        matchedWorkExperience = new LinkedList<WorkExperience>();
+        unmatchedWorkExperience = new LinkedList<WorkExperience>();
+        extraWorkExperience = new LinkedList<WorkExperience>();
     }
 
     private WorkExperienceMatcher() {
