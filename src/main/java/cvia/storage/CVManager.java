@@ -10,8 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 /**
  * Created by Michael Limantara on 11/2/2015.
@@ -165,8 +165,8 @@ public class CVManager {
         EducationInfo ed1 = new EducationInfo();
         ed1.setInstitutionName("NUS");
         ed1.setMajor("CS");
-        ed1.setStartDate(new Date());
-        ed1.setEndDate(new Date());
+        ed1.setStartDate(LocalDate.now());
+        ed1.setEndDate(LocalDate.now());
         ed1.setEducationLevel("university");
         EducationInfo ed2 = new EducationInfo();
         ed2.setInstitutionName("TJC");
@@ -191,8 +191,8 @@ public class CVManager {
 
         WorkExperience workExperience = new WorkExperience();
         workExperience.setCompany("company1");
-        workExperience.setStartDate(new Date());
-        workExperience.setEndDate(new Date());
+        workExperience.setStartDate(LocalDate.now());
+        workExperience.setEndDate(LocalDate.now());
         workExperience.setDescription("my first work");
         workExperience.setPosition("software engineer");
         List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();

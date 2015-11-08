@@ -13,12 +13,12 @@ import java.util.List;
 /**
  * Created by johnkevin on 13/10/15.
  */
-public class SkillMatcherTester {
+public class SkillMatcherTest {
     SkillMatcher matcher = SkillMatcher.getInstance();
     CV parsedCV;
     JobDescription parsedJobDescription;
 
-    public SkillMatcherTester() {
+    public SkillMatcherTest() {
 
     }
 

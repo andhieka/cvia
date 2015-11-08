@@ -58,7 +58,7 @@ public class PersonalInfo {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Name: " + name + "\n");
-        sb.append("Contact Number: " + contactNumber + "\n");
+        sb.append("Contact Number: ").append(contactNumber).append("\n");
         sb.append("Email address: " + email + "\n");
         sb.append("Address: " + address);
         return sb.toString();
