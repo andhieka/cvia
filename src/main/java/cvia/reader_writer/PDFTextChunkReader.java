@@ -12,7 +12,7 @@ import java.util.List;
  * Created by andhieka on 4/11/15.
  */
 public class PDFTextChunkReader {
-    public PDFWithTextChunk readPDFFromFile(File file) throws IOException {
+    public PDFReadResult readPDFFromFile(File file) throws IOException {
         PdfReader reader = new PdfReader(file.getAbsolutePath());
         PdfReaderContentParser parser = new PdfReaderContentParser(reader);
         ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
@@ -23,6 +23,6 @@ public class PDFTextChunkReader {
             textChunks.addAll(textChunksInPage);
         }
         reader.close();
-        return new PDFWithTextChunk(file, textChunks);
+        return new PDFReadResult(file, textChunks);
     }
 }

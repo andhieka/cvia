@@ -1,7 +1,8 @@
 package cvia.parser;
 
 import cvia.model.CV;
-import cvia.reader_writer.PDFWithTextChunk;
+import cvia.model.PersonalInfo;
+import cvia.reader_writer.PDFReadResult;
 import cvia.reader_writer.TextChunk;
 
 /**
@@ -16,13 +17,13 @@ public class PDFCVParser {
     private PersonalInfoParser personalInfoParser = new PersonalInfoParser();
     private SkillParser skillParser = new SkillParser();
     private ParseModeTrigger parseModeTrigger = new ParseModeTrigger();
-    private PDFWithTextChunk rawCV;
+    private PDFReadResult rawCV;
     private CV parsedCV;
     private ParseMode parseMode;
 
     // Public methods
 
-    public CV parse(PDFWithTextChunk rawCV) {
+    public CV parse(PDFReadResult rawCV) {
         reset();
         this.rawCV = rawCV;
         this.parsedCV = new CV();
