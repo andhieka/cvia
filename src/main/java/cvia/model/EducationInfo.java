@@ -9,9 +9,6 @@ import java.util.Date;
  */
 @Embeddable
 public class EducationInfo implements Comparable<EducationInfo> {
-
-
-
     public enum EducationLevel {
         PRIMARY, SECONDARY, HIGHSCHOOL, DIPLOMA, UNDERGRADUATE, GRADUATE, PHD
     }
@@ -31,6 +28,7 @@ public class EducationInfo implements Comparable<EducationInfo> {
     @AttributeOverride(name = "description", column = @Column(name = "grade_description"))
     private Grade grade;
 
+    @Enumerated
     @Column(name = "education_level")
     private EducationLevel educationLevel;
 
