@@ -49,6 +49,17 @@ public class SkillParser implements MiniParser {
     @Override
     public void parseAndSave() {
         assert(cv != null);
+        TextChunk combinedTextChunks = null;
+        for (TextChunk textChunk: textChunks) {
+            if (combinedTextChunks == null) {
+                combinedTextChunks = textChunk;
+            } else {
+                combinedTextChunks = combinedTextChunks.mergedWith(textChunk);
+            }
+        }
+        String inputText = combinedTextChunks.getText();
+        List<Skill> skills = findSkills(inputText);
+        cv.setSkills(skills);
     }
 
     @Override
