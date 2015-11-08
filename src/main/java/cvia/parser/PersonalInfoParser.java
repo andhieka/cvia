@@ -1,16 +1,29 @@
 package cvia.parser;
 
+import cvia.model.CV;
+import cvia.reader_writer.TextChunk;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by Michael Limantara on 10/12/2015.
  */
-public class PersonalInfoParser {
+public class PersonalInfoParser implements MiniParser {
     private String PATTERN_PHONE_NUMBER = "(.*?)(\\+[1-9]{1}[0-9 ]{3,14})(.*)";
     private String PATTERN_EMAIL_ADDRESS = "(.*?)([_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+" +
             "(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,}))(.*)";
     private String PATTERN_ADDRESS = "(.*?)(\\d+[A-Za-z ]+ #[\\d-]* [A-Za-z ]+(\\d{6}(\\D|$))?)";
+
+    @Override
+    public void reset() {
+        // do nothing
+    }
+
+    @Override
+    public void parseAndSaveResultToCV(TextChunk textChunk, CV cv) {
+
+    }
 
     String parseName() {
         return null;
@@ -45,4 +58,5 @@ public class PersonalInfoParser {
         }
         return null;
     }
+
 }

@@ -15,12 +15,13 @@ import java.util.List;
 /**
  * Created by johnkevin on 13/10/15.
  */
-public class LanguageMatcherTester {
+public class LanguageMatcherTest {
+
     CV parsedCV;
     JobDescription parsedJobDescription;
     LanguageMatcher matcher = LanguageMatcher.getInstance();
 
-    public LanguageMatcherTester() {
+    public LanguageMatcherTest() {
 
     }
 

@@ -24,8 +24,7 @@ public class JobDescription {
     @Embedded
     private EducationInfo minimumEducation;
 
-    @Column(name = "minimum_experience")
-    private int minimumYearsOfWorkExperience;
+    private WorkRequirement workRequirement;
 
     @ElementCollection
     @CollectionTable(name = "jd_language", joinColumns = {@JoinColumn(name = "jd_id")})
@@ -71,13 +70,14 @@ public class JobDescription {
         this.minimumEducation = minimumEducation;
     }
 
-    public int getMinimumYearsOfWorkExperience() {
-        return minimumYearsOfWorkExperience;
+    public WorkRequirement getWorkRequirement() {
+        return workRequirement;
     }
 
-    public void setMinimumYearsOfWorkExperience(int minimumYearsOfWorkExperience) {
-        this.minimumYearsOfWorkExperience = minimumYearsOfWorkExperience;
+    public void setWorkRequirement(WorkRequirement workRequirement) {
+        this.workRequirement = workRequirement;
     }
+
 
     public List<Language> getRequiredLanguages() {
         return requiredLanguages;

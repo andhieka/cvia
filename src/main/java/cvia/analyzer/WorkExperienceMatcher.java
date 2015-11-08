@@ -3,6 +3,7 @@ package cvia.analyzer;
 import cvia.model.CV;
 import cvia.model.JobDescription;
 import cvia.model.WorkExperience;
+import cvia.model.WorkRequirement;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.List;
 public class WorkExperienceMatcher {
 
     private final int WORK_EXPERIENCE_BASE = 100;
-    private final int WORK_EXPERIENCE_EXTRA = 25;
-    private final int WORK_EXPERIENCE_PENALTY = 50;
+    private final int WORK_EXPERIENCE_DIFFERENCE = 50;
+    private final int WORK_EXPERIENCE_SENIORITY = 10; //10 for each year of work experience in any field
+    private final int BONUS_CAP = 5;
 
     private List<WorkExperience> matchedWorkExperience;
     private List<WorkExperience> unmatchedWorkExperience;
@@ -27,7 +29,15 @@ public class WorkExperienceMatcher {
             instance = new WorkExperienceMatcher();
         }
 
+        instance.flush();
+
         return instance;
+    }
+
+    private void flush() {
+        matchedWorkExperience = new LinkedList<WorkExperience>();
+        unmatchedWorkExperience = new LinkedList<WorkExperience>();
+        extraWorkExperience = new LinkedList<WorkExperience>();
     }
 
     private WorkExperienceMatcher() {
@@ -39,23 +49,45 @@ public class WorkExperienceMatcher {
     public int getWorkExperienceScore(CV parsedCV, JobDescription parsedJobDescription) {
         List<WorkExperience> listOfWorkExperience = parsedCV.getWorkExperienceList();
 
-        int minimum = parsedJobDescription.getMinimumYearsOfWorkExperience();
+        WorkRequirement workRequirement = parsedJobDescription.getWorkRequirement();
+
+        int minimum = workRequirement.getDuration();
 
         int total = 0;
 
+        boolean hasMatch = false;
+
         for (WorkExperience we : listOfWorkExperience) {
-            total += we.getWorkDuration();
+            total += we.getWorkDuration() * WORK_EXPERIENCE_SENIORITY; //for total work experience of any kind
+
+            if (isEquivalent(we, workRequirement) && !hasMatch) {
+                total += WORK_EXPERIENCE_BASE;
+
+                int duration = we.getWorkDuration();
+
+                int diff = duration - minimum;
+
+                total += diff * WORK_EXPERIENCE_DIFFERENCE;
+
+                hasMatch = true;
+            }
         }
 
-        int difference = minimum - total;
+        return total;
 
-        if (difference > 0) {
-            return WORK_EXPERIENCE_BASE + difference * WORK_EXPERIENCE_EXTRA;
-        } else if (difference < 0) {
-            return WORK_EXPERIENCE_BASE - Math.abs(difference) * WORK_EXPERIENCE_PENALTY;
-        } else {
-            return WORK_EXPERIENCE_BASE;
+
+
+    }
+
+    private boolean isEquivalent(WorkExperience we, WorkRequirement workRequirement) {
+
+        for (String keyword : workRequirement.getKeywords()) {
+            if (we.getPosition().contains(keyword)) {
+                return true;
+            }
         }
+
+        return false;
     }
 
     public void setMatchedWorkExperience(List<WorkExperience> matchedWorkExperience) {

@@ -9,25 +9,35 @@ import java.util.Comparator;
  */
 @Embeddable
 public class Language implements Comparable<Language>{
+
+    public enum LanguageProficiency {
+        BASIC, ADVANCED
+    }
+
     @Column(name = "name")
     private String name;
 
     @Column(name = "proficiency_level")
-    private String proficiencyLevel;
+    private LanguageProficiency proficiencyLevel;
 
     // Empty Constructor for Hibernate
     public Language() { }
 
     public Language(String languageName) {
         this.name = languageName;
+        this.proficiencyLevel = LanguageProficiency.ADVANCED;
     }
 
-    public String getProficiencyLevel() {
+    public LanguageProficiency getProficiencyLevel() {
         return proficiencyLevel;
     }
 
-    public void setProficiencyLevel(String proficiencyLevel) {
+    public void setProficiencyLevel(LanguageProficiency proficiencyLevel) {
         this.proficiencyLevel = proficiencyLevel;
+    }
+
+    public int getProficiencyScore() {
+       return this.getProficiencyLevel().equals(LanguageProficiency.ADVANCED) ? 2 : 1;
     }
 
     public String getName() {

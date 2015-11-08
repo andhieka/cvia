@@ -17,6 +17,11 @@ public class LanguageMatcher {
     private final int EXTRA_LANGUAGE_SCORE = 25;
     private final int NO_LANGUAGE_PENALTY = 75;
 
+    private final int PROFICIENCY_BONUS = 10;
+    private final int EXTRA_LEVEL_SCORE = 30;
+    private final int PROFICIENCY_PENALTY = 10;
+
+
     private List<Language> matchedLanguages;
     private List<Language> unmatchedLanguages;
     private List<Language> extraLanguages;
@@ -27,7 +32,15 @@ public class LanguageMatcher {
             instance = new LanguageMatcher();
         }
 
+        instance.flush();
+
         return instance;
+    }
+
+    private void flush() {
+        matchedLanguages = new LinkedList<Language>();
+        unmatchedLanguages = new LinkedList<Language>();
+        extraLanguages = new LinkedList<Language>();
     }
 
     private LanguageMatcher() {
@@ -80,6 +93,15 @@ public class LanguageMatcher {
                 languagePointer++;
                 requiredLanguagePointer++;
                 total += LANGUAGE_MATCH_SCORE;
+
+                if (currentLanguage.getProficiencyScore() == currentRequiredLanguage.getProficiencyScore()) {
+                    total += (currentLanguage.getProficiencyScore() - 1) * EXTRA_LEVEL_SCORE;
+                } else if (currentLanguage.getProficiencyScore() < currentRequiredLanguage.getProficiencyScore()) {
+                    total -= PROFICIENCY_PENALTY;
+                } else {
+                    total += PROFICIENCY_BONUS;
+                }
+
             } else if (compareScore < 0) {
                 this.extraLanguages.add(currentLanguage);
                 numOfExtraLanguages++;
@@ -94,13 +116,11 @@ public class LanguageMatcher {
         numOfExtraLanguages += numOfLanguages - languagePointer;
         numOfUnmatchedLanguages += numOfRequiredLanguages - requiredLanguagePointer;
 
-        total += numOfExtraLanguages * EXTRA_LANGUAGE_SCORE;
-        total -= numOfUnmatchedLanguages * NO_LANGUAGE_PENALTY;
-
         addRemainingUnmatchedLanguages(requiredLanguages, numOfRequiredLanguages, requiredLanguagePointer);
         addRemainingExtraLanguages(languages, numOfLanguages, languagePointer);
 
-
+        total += numOfExtraLanguages * EXTRA_LANGUAGE_SCORE;
+        total -= numOfUnmatchedLanguages * NO_LANGUAGE_PENALTY;
 
         return total;
 

@@ -10,8 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 /**
  * Created by Michael Limantara on 11/2/2015.
@@ -236,4 +236,5 @@ public class CVManager {
 //        CV cv3 = cvManager.getCVContentById(id);
 //        System.out.println(cv3.getPersonalInfo().toString());
 //    }
+
 }
