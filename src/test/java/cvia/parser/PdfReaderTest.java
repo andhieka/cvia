@@ -31,7 +31,7 @@ public class PdfReaderTest {
 
     @Test
     public void testReadPDF() throws Exception {
-        PdfReader reader = new PdfReader("DesmondLim.pdf");
+        PdfReader reader = new PdfReader("resume.pdf");
         HashMap<String, String> infos = reader.getInfo();
         for (String key : infos.keySet()) {
             String value = infos.get(key);
