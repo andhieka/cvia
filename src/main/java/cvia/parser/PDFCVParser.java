@@ -38,6 +38,7 @@ public class PDFCVParser {
         }
         runParseLoop();
         miniParsers.values().forEach(MiniParser::parseAndSave);
+        attachFullTextToCV();
         return parsedCV;
     }
 
@@ -76,5 +77,13 @@ public class PDFCVParser {
             MiniParser selectedParser = miniParsers.get(parseMode);
             selectedParser.appendTextChunk(textChunk);
         }
+    }
+
+    private void attachFullTextToCV() {
+        StringBuilder fullTextBuilder = new StringBuilder();
+        for (TextLine textLine : rawCV.getTextLines()) {
+            fullTextBuilder.append(textLine.getText()).append('\n');
+        }
+        parsedCV.setFullText(fullTextBuilder.toString());
     }
 }
