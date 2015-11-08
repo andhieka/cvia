@@ -54,7 +54,17 @@ public class LanguageParser implements MiniParser {
     @Override
     public void parseAndSave() {
         assert (cv != null);
-
+        TextChunk combinedTextChunk = null;
+        for (TextChunk textChunk: textChunks) {
+            if (combinedTextChunk == null) {
+                combinedTextChunk = textChunk;
+            } else {
+                combinedTextChunk = combinedTextChunk.mergedWith(textChunk);
+            }
+        }
+        String stringInput = combinedTextChunk.getText();
+        List<Language> languages = detectedLanguagesInString(stringInput);
+        cv.setLanguages(languages);
     }
 
     public List<Language> detectedLanguagesInString(String input) {
