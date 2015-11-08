@@ -36,7 +36,6 @@ public class SkillParser implements MiniParser {
 
     @Override
     public void parseAndSaveResultToCV(TextChunk textChunk, CV cv) {
-
     }
 
     @Override
