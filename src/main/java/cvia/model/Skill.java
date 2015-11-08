@@ -8,21 +8,23 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class Skill implements Comparable<Skill> {
+
+    public enum SkillProficiency {
+        BASIC, INTERMEDIATE, ADVANCED
+    }
+
     @Column(name = "name")
     private String name;
 
-    @Column(name = "year_of_experience")
-    private int yearsOfExperience;
-
     @Column(name = "proficiency_level")
-    private String proficiencyLevel;
+    private SkillProficiency proficiencyLevel;
 
     // Empty Constructor for Hibernate
     public Skill() { }
 
     public Skill(String name) {
         this.name = name;
-        this.yearsOfExperience = 0;
+        this.proficiencyLevel = SkillProficiency.INTERMEDIATE;
     }
     public String getName() {
         return name;
@@ -32,20 +34,32 @@ public class Skill implements Comparable<Skill> {
         this.name = name;
     }
 
-    public int getYearsOfExperience() {
-        return yearsOfExperience;
-    }
-
-    public void setYearsOfExperience(int yearsOfExperience) {
-        this.yearsOfExperience = yearsOfExperience;
-    }
-
-    public String getProficiencyLevel() {
+    public SkillProficiency getProficiencyLevel() {
         return proficiencyLevel;
     }
 
-    public void setProficiencyLevel(String proficiencyLevel) {
+    public void setProficiencyLevel(SkillProficiency proficiencyLevel) {
         this.proficiencyLevel = proficiencyLevel;
+    }
+
+    public int compareProficiency (Skill other) {
+
+        int currentLevel = this.getProficiencyScore();
+        int otherLevel = other.getProficiencyScore();
+
+        return currentLevel - otherLevel;
+
+
+    }
+
+    public int getProficiencyScore() {
+        if (this.proficiencyLevel.equals(SkillProficiency.ADVANCED)) {
+            return 3;
+        } else if (this.proficiencyLevel.equals(SkillProficiency.INTERMEDIATE)) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 
     public int compareTo(Skill o) {
