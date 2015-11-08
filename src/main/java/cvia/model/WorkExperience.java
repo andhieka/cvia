@@ -2,7 +2,7 @@ package cvia.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.Date;
+import java.time.*;
 /**
  * Created by andhieka on 10/10/15.
  */
@@ -15,10 +15,10 @@ public class WorkExperience {
     private String company;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "description")
     private String description;
@@ -34,19 +34,23 @@ public class WorkExperience {
         this.description = description;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public int getWorkDuration() {
+        return (endDate.getYear()  - startDate.getYear()) * 12 + endDate.getMonthValue() - startDate.getMonthValue() + 1;
+    }
+
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 

@@ -16,15 +16,13 @@ import java.util.List;
  * Created by johnkevin on 13/10/15.
  */
 public class LanguageMatcherTester {
-    Matcher matcher;
     CV parsedCV;
     JobDescription parsedJobDescription;
+    LanguageMatcher matcher = LanguageMatcher.getInstance();
 
     public LanguageMatcherTester() {
 
     }
-
-
 
     @Test
     public void testLanguageMatcher1() {
@@ -53,9 +51,9 @@ public class LanguageMatcherTester {
         parsedCV.setLanguages(languages);
         parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        matcher = new Matcher(parsedCV, parsedJobDescription);
 
-        int totalLanguageScore = matcher.getLanguageScore();
+
+        int totalLanguageScore = matcher.getLanguageScore(parsedCV, parsedJobDescription);
 
         assertEquals(300, totalLanguageScore);
     }
@@ -93,10 +91,8 @@ public class LanguageMatcherTester {
         parsedCV.setLanguages(languages);
         parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        matcher = new Matcher(parsedCV, parsedJobDescription);
 
-        int totalLanguageScore = matcher.getLanguageScore();
-
+        int totalLanguageScore = matcher.getLanguageScore(parsedCV, parsedJobDescription);
 
 
 
@@ -140,9 +136,8 @@ public class LanguageMatcherTester {
         parsedCV.setLanguages(languages);
         parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
-        matcher = new Matcher(parsedCV, parsedJobDescription);
 
-        int totalLanguageScore = matcher.getLanguageScore();
+        int totalLanguageScore = matcher.getLanguageScore(parsedCV, parsedJobDescription);
 
 
         assertEquals(125, totalLanguageScore);

@@ -12,7 +12,7 @@ public class Skill implements Comparable<Skill> {
     private String name;
 
     @Column(name = "year_of_experience")
-    private String yearsOfExperience;
+    private int yearsOfExperience;
 
     @Column(name = "proficiency_level")
     private String proficiencyLevel;
@@ -22,8 +22,8 @@ public class Skill implements Comparable<Skill> {
 
     public Skill(String name) {
         this.name = name;
+        this.yearsOfExperience = 0;
     }
-
     public String getName() {
         return name;
     }
@@ -32,11 +32,11 @@ public class Skill implements Comparable<Skill> {
         this.name = name;
     }
 
-    public String getYearsOfExperience() {
+    public int getYearsOfExperience() {
         return yearsOfExperience;
     }
 
-    public void setYearsOfExperience(String yearsOfExperience) {
+    public void setYearsOfExperience(int yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
 
