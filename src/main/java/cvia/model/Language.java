@@ -49,6 +49,19 @@ public class Language implements Comparable<Language>{
     }
 
     public int compareTo(Language other) {
-        return this.getName().compareTo(other.getName());
+        if (!name.equalsIgnoreCase(other.name)) {
+            return name.compareToIgnoreCase(other.name);
+        }
+        return proficiencyLevel.compareTo(other.proficiencyLevel);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof Language)) return false;
+        Language other = (Language) o;
+        return this.compareTo(other) == 0;
+    }
+
 }

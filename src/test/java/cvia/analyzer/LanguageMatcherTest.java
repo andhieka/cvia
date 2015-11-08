@@ -1,7 +1,5 @@
 package cvia.analyzer;
 
-
-
 import cvia.model.CV;
 import cvia.model.JobDescription;
 
@@ -53,10 +51,11 @@ public class LanguageMatcherTest {
         parsedJobDescription.setRequiredLanguages(requiredLanguages);
 
 
+        //match 3 advance
 
         int totalLanguageScore = matcher.getLanguageScore(parsedCV, parsedJobDescription);
 
-        assertEquals(300, totalLanguageScore);
+        assertEquals(390, totalLanguageScore);
     }
 
     @Test
@@ -77,17 +76,20 @@ public class LanguageMatcherTest {
 
         languages.add(English);
         languages.add(Indonesian);
-        languages.add(French);
+        languages.add(Chinese);
 
         //extra 1 language
 
-        requiredLanguages.add(English);
+        Language EnglishBasic = new Language("English");
+        EnglishBasic.setProficiencyLevel(Language.LanguageProficiency.BASIC);
+
+        requiredLanguages.add(EnglishBasic);
         requiredLanguages.add(Indonesian);
-        requiredLanguages.add(Chinese);
+        requiredLanguages.add(French);
 
-        //missing 1 language
+        //Match 1 Advanced Need Basic + Exact Match 1 Advanced + 1 Extra (Advanced) Language + 1 Missing (Advanced) Language
 
-        //total = 200 + 25 (extra 1) - 75 (missing 1) = 150
+        //total = 110 + 130 + 25 - 75
 
         parsedCV.setLanguages(languages);
         parsedJobDescription.setRequiredLanguages(requiredLanguages);
@@ -97,7 +99,7 @@ public class LanguageMatcherTest {
 
 
 
-        assertEquals(150, totalLanguageScore);
+        assertEquals(190, totalLanguageScore);
     }
 
 
@@ -117,7 +119,12 @@ public class LanguageMatcherTest {
         Language French = new Language("French");
         Language German = new Language("German");
 
-        languages.add(English);
+        Language EnglishBasic = new Language("English");
+        EnglishBasic.setProficiencyLevel(Language.LanguageProficiency.BASIC);
+
+
+
+        languages.add(EnglishBasic);
         languages.add(Indonesian);
         languages.add(French);
         languages.add(Korean);
@@ -130,9 +137,11 @@ public class LanguageMatcherTest {
         requiredLanguages.add(Chinese);
         requiredLanguages.add(German);
 
-        //missing 2 languages
 
-        //total = 200 + 75 (extra 3) - 150 (missing 2) = 125
+        //match 1 basic but need advanced, match 1 advanced, extra 3 languages, missing 2 (advanced) languages
+
+        //100 - 10 + 130 + 75 - 150
+        //100
 
         parsedCV.setLanguages(languages);
         parsedJobDescription.setRequiredLanguages(requiredLanguages);
@@ -141,7 +150,7 @@ public class LanguageMatcherTest {
         int totalLanguageScore = matcher.getLanguageScore(parsedCV, parsedJobDescription);
 
 
-        assertEquals(125, totalLanguageScore);
+        assertEquals(145, totalLanguageScore);
     }
 
 }

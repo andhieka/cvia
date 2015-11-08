@@ -22,7 +22,7 @@ public class JobDescription {
     private List<Skill> requiredSkills;
 
     @Embedded
-    private EducationInfo minimumEducation;
+    private EducationRequirement minimumEducation;
 
     private WorkRequirement workRequirement;
 
@@ -62,11 +62,11 @@ public class JobDescription {
         this.requiredSkills = requiredSkills;
     }
 
-    public EducationInfo getMinimumEducation() {
+    public EducationRequirement getMinimumEducation() {
         return minimumEducation;
     }
 
-    public void setMinimumEducation(EducationInfo minimumEducation) {
+    public void setMinimumEducation(EducationRequirement minimumEducation) {
         this.minimumEducation = minimumEducation;
     }
 

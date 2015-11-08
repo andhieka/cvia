@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
  */
 
 public class SkillParser implements MiniParser {
+    private CV cv;
+    private ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
 
     private static String SKILL_KEYWORDS_FILENAME = "skills.json";
 
@@ -35,13 +37,24 @@ public class SkillParser implements MiniParser {
     }
 
     @Override
-    public void parseAndSaveResultToCV(TextChunk textChunk, CV cv) {
+    public void setCV(CV cv) {
+        this.cv = cv;
+    }
 
+    @Override
+    public void appendTextChunk(TextChunk textChunk) {
+        textChunks.add(textChunk);
+    }
+
+    @Override
+    public void parseAndSave() {
+        assert(cv != null);
     }
 
     @Override
     public void reset() {
-        // do nothing
+        cv = null;
+        textChunks.clear();
     }
 
     // private methods

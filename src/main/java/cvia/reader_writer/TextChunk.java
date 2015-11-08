@@ -69,6 +69,15 @@ public class TextChunk implements Comparable<TextChunk> {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof TextChunk)) return false;
+        TextChunk other = (TextChunk) o;
+        return this.compareTo(other) == 0;
+    }
+
     public String getText() {
         return text;
     }

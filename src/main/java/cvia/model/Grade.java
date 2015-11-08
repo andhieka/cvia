@@ -8,10 +8,19 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class Grade implements Comparable<Grade> {
-    @Column(name = "description")
-    private String description;
+
     @Column(name = "grade")
     private Float grade;
+
+    public Float getMaxGrade() {
+        return maxGrade;
+    }
+
+    public void setMaxGrade(Float maxGrade) {
+        this.maxGrade = maxGrade;
+    }
+
+    private Float maxGrade;
 
     // Empty constructor for Hibernate
     public Grade() { }
@@ -28,21 +37,15 @@ public class Grade implements Comparable<Grade> {
         this.grade = grade;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int compareTo(Grade o) {
-        if (this.grade > o.getGrade()) {
-            return 1;
-        } else if (this.grade < o.getGrade()) {
-            return -1;
-        } else {
-            return 0;
-        }
+        Float currentGrade = this.getGrade();
+        Float currentMaxGrade = this.getMaxGrade();
+
+        Float otherGrade = o.getGrade();
+        Float otherMaxGrade = o.getMaxGrade();
+
+        Float thisRatio = currentGrade / currentMaxGrade;
+        Float otherRatio = otherGrade / otherMaxGrade;
+        return thisRatio.compareTo(otherRatio);
     }
 }
