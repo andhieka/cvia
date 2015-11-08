@@ -1,6 +1,7 @@
 package cvia.ui;
 
 import cvia.model.*;
+import cvia.utilities.DateUtilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -17,6 +18,9 @@ import org.apache.pdfbox.pdmodel.PDPage;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +62,8 @@ public class CVDetailController {
     private HashMap<Integer, HashMap<String, Object>> educationInfoMap = new HashMap<Integer, HashMap<String, Object>>();
     private Integer educationIndex = 0;
     private Integer workIndex = 0;
+    private DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private DateTimeFormatter outFormatter = DateTimeFormatter.ofPattern("MMM yyyy");
 
     public void setCV(CV cv) {
         this.cv = cv;
@@ -121,7 +127,14 @@ public class CVDetailController {
             EducationInfo educationInfo = new EducationInfo();
             educationInfo.setInstitutionName(((TextInputControl) educationMap.get("institution_name")).getText());
             educationInfo.setEducationLevel(((TextInputControl) educationMap.get("education_level")).getText());
-            educationInfo.setStartDate(((TextInputControl) educationMap.get("education_level")).getText());
+            educationInfo.setMajor(((TextInputControl) educationMap.get("major")).getText());
+            LocalDate startDate = DateUtilities.dateFromString("01" +
+                    ((TextInputControl) educationMap.get("start_date")).getText(), inFormatter);
+            educationInfo.setStartDate(startDate);
+            LocalDate endDate = DateUtilities.dateFromString("01" +
+                    ((TextInputControl) educationMap.get("end_date")).getText(), inFormatter);
+            educationInfo.setEndDate(endDate);
+            educationList.add(educationInfo);
         }
 
         cv.setEducationInfoList(educationList);
@@ -155,7 +168,7 @@ public class CVDetailController {
     }
 
     private void setUpEducationInfoForm() {
-        Pane educationItemPane = createEducationItemView(null, 0);
+        Pane educationItemPane = createEducationItemView(null);
         educationPane.getChildren().addAll(educationItemPane);
 
         //TODO: addMoreEducationForm
@@ -358,7 +371,7 @@ public class CVDetailController {
         return textField;
     }
 
-    private VBox createVBoxWithTextArea(String labelName, String textChunk, Integer tabPosition) {
+    private VBox createVBoxWithTextArea(String labelName, String textChunk) {
         VBox vBox = new VBox();
         Label label = new Label();
         label.setPrefSize(200, 15);
@@ -381,4 +394,6 @@ public class CVDetailController {
         vBox.getChildren().addAll(label, textArea);
         return vBox;
     }
+
+
 }

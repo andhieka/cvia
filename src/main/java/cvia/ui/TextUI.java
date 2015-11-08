@@ -4,7 +4,6 @@ import cvia.model.CV;
 import cvia.model.Skill;
 import cvia.parser.CVParser;
 import cvia.reader_writer.PdfToTextReader;
-import org.jpedal.examples.viewer.OpenViewerFX;
 
 import java.util.List;
 
