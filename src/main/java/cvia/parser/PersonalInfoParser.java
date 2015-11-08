@@ -3,6 +3,7 @@ package cvia.parser;
 import cvia.model.CV;
 import cvia.reader_writer.TextChunk;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,14 +16,28 @@ public class PersonalInfoParser implements MiniParser {
             "(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,}))(.*)";
     private String PATTERN_ADDRESS = "(.*?)(\\d+[A-Za-z ]+ #[\\d-]* [A-Za-z ]+(\\d{6}(\\D|$))?)";
 
+    private CV cv;
+    private ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
+
     @Override
     public void reset() {
-        // do nothing
+        cv = null;
+        textChunks.clear();
     }
 
     @Override
-    public void parseAndSaveResultToCV(TextChunk textChunk, CV cv) {
+    public void setCV(CV cv) {
+        this.cv = cv;
+    }
 
+    @Override
+    public void appendTextChunk(TextChunk textChunk) {
+        textChunks.add(textChunk);
+    }
+
+    @Override
+    public void parseAndSave() {
+        assert(this.cv != null);
     }
 
     String parseName() {
