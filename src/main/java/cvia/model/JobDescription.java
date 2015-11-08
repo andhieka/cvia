@@ -24,8 +24,7 @@ public class JobDescription {
     @Embedded
     private EducationInfo minimumEducation;
 
-    @Column(name = "minimum_experience")
-    private int minimumYearsOfWorkExperience;
+    private WorkRequirement workRequirement;
 
     @ElementCollection
     @CollectionTable(name = "jd_language", joinColumns = {@JoinColumn(name = "jd_id")})
