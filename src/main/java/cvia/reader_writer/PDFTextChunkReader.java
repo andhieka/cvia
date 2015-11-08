@@ -16,8 +16,9 @@ public class PDFTextChunkReader {
         PdfReader reader = new PdfReader(file.getAbsolutePath());
         PdfReaderContentParser parser = new PdfReaderContentParser(reader);
         ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
-        for (int i = 0; i < reader.getNumberOfPages(); i++) {
-            TextChunkExtractionStrategy strategy = parser.processContent(i, new TextChunkExtractionStrategy());
+        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+            TextChunkExtractionStrategy strategy = new TextChunkExtractionStrategy();
+            strategy = parser.processContent(i, strategy);
             List<TextChunk> textChunksInPage = strategy.getResultantTextChunks();
             textChunks.addAll(textChunksInPage);
         }

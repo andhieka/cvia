@@ -15,6 +15,7 @@ public class TextChunkExtractionStrategy implements TextExtractionStrategy {
     private ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
 
     public List<TextChunk> getResultantTextChunks() {
+        Collections.sort(textChunks);
         return textChunks;
     }
     
@@ -59,8 +60,8 @@ public class TextChunkExtractionStrategy implements TextExtractionStrategy {
     @Override
     public void renderText(TextRenderInfo textRenderInfo) {
         LineSegment segment = textRenderInfo.getBaseline();
-        TextChunk location = new TextChunk(textRenderInfo.getText(), segment.getStartPoint(), segment.getEndPoint(), textRenderInfo.getSingleSpaceWidth());
-        textChunks.add(location);
+        TextChunk textChunk = new TextChunk(textRenderInfo.getText(), segment.getStartPoint(), segment.getEndPoint(), textRenderInfo.getSingleSpaceWidth());
+        textChunks.add(textChunk);
     }
 
     @Override
