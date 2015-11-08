@@ -152,6 +152,7 @@ public class CVManager {
         }
     }
 
+    /*
     public static void main(String[] args) {
         CVManager cvManager = new CVManager();
 
@@ -235,5 +236,7 @@ public class CVManager {
 
         CV cv3 = cvManager.getCVContentById(id);
         System.out.println(cv3.getPersonalInfo().toString());
+
     }
+    */
 }

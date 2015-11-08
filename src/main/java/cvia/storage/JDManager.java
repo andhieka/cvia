@@ -120,6 +120,7 @@ public class JDManager {
         }
     }
 
+    /*
     public static void main(String[] args) {
         JDManager jdManager = new JDManager();
 
@@ -164,4 +165,5 @@ public class JDManager {
             System.out.println(language.getName());
         }
     }
+    */
 }
