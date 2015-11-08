@@ -39,7 +39,7 @@ public class PDFTextChunkReaderTest {
 
     @Test
     public void testTextChunkCombinator() throws Exception {
-        File file = new File("desmond2.pdf");
+        File file = new File("resume.pdf");
         assertTrue(file.exists());
         PDFReadResult pdfReadResult = pdfTextChunkReader.readPDFFromFile(file);
         List<TextChunk> textChunks = pdfReadResult.getTextChunks();
