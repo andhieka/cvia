@@ -22,9 +22,7 @@ public class WorkExperienceMatcherTest {
 
     public WorkExperienceMatcherTest() {
 
-
     }
-
 
     @Test
     public void WorkExperienceMatcherTest1() {
@@ -174,6 +172,53 @@ public class WorkExperienceMatcherTest {
         int score = matcher.getWorkExperienceScore(parsedCV, parsedJobDescription);
 
         assertEquals(493, score);
+
+    }
+
+    @Test
+    public void WorkExperienceMatcherTest4() {
+        parsedCV = new CV();
+        parsedJobDescription = new JobDescription();
+
+
+
+        WorkExperience tukangPel = new WorkExperience();
+        tukangPel.setPosition("Tukang Pel");
+        tukangPel.setEndDate(LocalDate.of(2013, 05, 01));
+        tukangPel.setStartDate(LocalDate.of(2012, 05, 01));
+        //13 months
+
+        List<WorkExperience> workExperiences = new ArrayList<WorkExperience>();
+
+        workExperiences.add(tukangPel);
+
+        parsedCV.setWorkExperienceList(workExperiences);
+
+
+
+        WorkRequirement softDev = new WorkRequirement();
+        softDev.setDuration(20);
+        List<String> keywords = new ArrayList<String>();
+
+        keywords.add("software");
+        keywords.add("software engineer");
+        keywords.add("software developer");
+        keywords.add("software engineer");
+        keywords.add("programmer");
+
+        softDev.setKeywords(keywords);
+
+        parsedJobDescription.setWorkRequirement(softDev);
+
+        //match 1 but less 8 months
+
+        //total months = 13
+        //total matched months = 0
+        //total = 13
+
+        int score = matcher.getWorkExperienceScore(parsedCV, parsedJobDescription);
+
+        assertEquals(13, score);
 
     }
 
