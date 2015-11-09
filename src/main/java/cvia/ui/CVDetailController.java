@@ -220,7 +220,7 @@ public class CVDetailController {
 
     private void saveCV() {
         modifyCV();
-        LogicController.getInstance().editCV(cv);
+        LogicController.getInstance().editCV(cv.getId(), cv);
         //TODO: Refresh Table View
     }
 

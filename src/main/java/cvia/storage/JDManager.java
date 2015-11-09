@@ -7,16 +7,22 @@ import org.hibernate.cfg.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Michael Limantara on 11/3/2015.
  */
 public class JDManager {
     private SessionFactory factory;
+    private Logger logger;
 
-    public JDManager() { setUpConnection(); }
+    public JDManager() {
+        setUpConnection();
+        logger = Logger.getLogger("CVManager");
+    }
 
-    public Long createJD(JobDescription jobDescription) {
+    public Long save(JobDescription jobDescription) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Long jobDescriptionId = null;
@@ -29,8 +35,7 @@ public class JDManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Error addJD:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error save JD: %s", e.getMessage()));
         } finally {
             session.close();
         }
@@ -63,7 +68,7 @@ public class JDManager {
         return jobDescription;
     }
 
-    public void updateCV(Long id, JobDescription newJobDescription) {
+    public void update(Long id, JobDescription newJobDescription) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -80,14 +85,13 @@ public class JDManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Error updateJD:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error save CV: %s", e.getMessage()));
         } finally {
             session.close();
         }
     }
 
-    public void deleteCV(Long id) {
+    public void delete(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -100,8 +104,7 @@ public class JDManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Error deleteJD:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error save CV: %s", e.getMessage()));
         } finally {
             session.close();
         }
@@ -167,7 +170,7 @@ public class JDManager {
         educationRequirement.setMinimumGrade(grade);
         jobDescription.setMinimumEducation(educationRequirement);
 
-        Long id = jdManager.createJD(jobDescription);
+        Long id = jdManager.save(jobDescription);
         JobDescription jobDescription1 = jdManager.getJobDescriptionDetailById(id);
         System.out.println(jobDescription1.getTitle());
 
