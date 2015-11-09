@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
  * Created by andhieka on 8/11/15.
  */
 public class ParseModeTrigger {
-    private static final String PERSONAL_INFO_TRIGGER_STRING = "(particulars|personal)";
-    private static final String EDUCATION_TRIGGER_STRING = "(education|award)";
-    private static final String WORK_EXPERIENCE_TRIGGER_STRING = "(work|experience|portfolio|project)";
-    private static final String LANGUAGE_TRIGGER_STRING = "^(?!.*(program{1,2}ing)).*language";
-    private static final String SKILL_TRIGGER_STRING = "(skill|expertise|programming)";
-    private static final String PUBLICATION_TRIGGER_STRING = "(publication|journal)";
+    private static final String PERSONAL_INFO_TRIGGER_STRING = "(.*?)(particulars|personal)(.*)";
+    private static final String EDUCATION_TRIGGER_STRING = "(.*?)(education|award)(.*)";
+    private static final String WORK_EXPERIENCE_TRIGGER_STRING = "(.*?)(work|experience|portfolio|project)(.*)";
+    private static final String LANGUAGE_TRIGGER_STRING = "^(?!.*(program{1,2}ing)).*language(.*)";
+    private static final String SKILL_TRIGGER_STRING = "(.*?)(skill|expertise|programming)(.*)";
+    private static final String PUBLICATION_TRIGGER_STRING = "(.*?)(publication|journal|conference)(.*)";
     private static final String UNKNOWN_TRIGGER_STRING = "";
 
     private static final Pattern PERSONAL_INFO_TRIGGER_PATTERN = Pattern.compile(PERSONAL_INFO_TRIGGER_STRING, Pattern.CASE_INSENSITIVE);
