@@ -30,4 +30,8 @@ public class StringUtilities {
         return input.split("\\s+").length;
     }
 
+    public static String removeRedundantSpaces(String input) {
+        return input.replaceAll("\\s+", " ");
+    }
+
 }

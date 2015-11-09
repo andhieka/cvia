@@ -18,9 +18,9 @@ import java.util.logging.Logger;
  */
 public class UniversityBank {
     public static final String FILENAME_UNIVERSITIES_LIST = "world_universities_and_domains.json";
-    private ArrayList<String> universityNames = new ArrayList<String>();
-    private ArrayList<String> universityAcronyms = new ArrayList<String>();
-    private HashMap<String, String> acronymToNameDict = new HashMap<String, String>();
+    private ArrayList<String> universityNames = new ArrayList<>();
+    private ArrayList<String> universityAcronyms = new ArrayList<>();
+    private HashMap<String, ArrayList<String>> acronymToNameDict = new HashMap<>();
     private static UniversityBank instance;
 
     public static UniversityBank getInstance() {
@@ -42,7 +42,7 @@ public class UniversityBank {
         return universityAcronyms;
     }
 
-    public String fullNameOfAcronym(String acronym) {
+    public List<String> universityNamesWithAcronym(String acronym) {
         return acronymToNameDict.get(acronym.toLowerCase());
     }
 
@@ -58,7 +58,15 @@ public class UniversityBank {
                 String name = university.getString("name");
                 universityNames.add(name);
                 universityAcronyms.add(acronym.toLowerCase());
-                acronymToNameDict.put(acronym.toLowerCase(), name);
+                if (acronymToNameDict.containsKey(acronym.toLowerCase())) {
+                    ArrayList<String> entries = acronymToNameDict.get(acronym.toLowerCase());
+                    entries.add(name);
+                } else {
+                    ArrayList<String> entries = new ArrayList<>();
+                    entries.add(name);
+                    acronymToNameDict.put(acronym.toLowerCase(), entries);
+                }
+
             }
         } catch (FileNotFoundException e) {
             Logger logger = Logger.getGlobal();
