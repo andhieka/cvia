@@ -13,11 +13,9 @@ public class EducationInfo implements Comparable<EducationInfo> {
         PRIMARY, SECONDARY, HIGHSCHOOL, DIPLOMA, UNDERGRADUATE, GRADUATE, PHD
     }
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "end_date")
     private LocalDate endDate;
 
@@ -25,10 +23,9 @@ public class EducationInfo implements Comparable<EducationInfo> {
     private String institutionName;
 
     @Embedded
-    @AttributeOverride(name = "description", column = @Column(name = "grade_description"))
     private Grade grade;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "education_level")
     private EducationLevel educationLevel;
 

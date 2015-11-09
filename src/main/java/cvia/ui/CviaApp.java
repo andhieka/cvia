@@ -18,6 +18,8 @@ public class CviaApp extends Application {
     private Pane rootPane;
     private RootWindowController rootWindowController;
 
+    private LogicController logicController = LogicController.getInstance();
+
     public static void main(String[] args) {
         launch(args);
     }

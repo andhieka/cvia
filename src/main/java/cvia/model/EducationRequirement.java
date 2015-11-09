@@ -2,21 +2,41 @@ package cvia.model;
 
 import cvia.model.EducationInfo.EducationLevel;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by johnkevin on 9/11/15.
  */
+@Entity
+@Table(name = "education_requirement")
 public class EducationRequirement {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "minimum_education")
     private EducationLevel minimumEducation;
+
+    @ElementCollection
+    @CollectionTable(name = "accepted_major", joinColumns = {@JoinColumn(name = "edu_req_id")})
     private List<String> acceptedMajors;
 
+    @Embedded
     private Grade minimumGrade;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // Empty constructor for Hibernate
     public EducationRequirement() {
-        this.acceptedMajors = new ArrayList<String>();
+
     }
 
     public EducationLevel getMinimumEducation() {
@@ -60,5 +80,4 @@ public class EducationRequirement {
             return 6;
         }
     }
-
 }

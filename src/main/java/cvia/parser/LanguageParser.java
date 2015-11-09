@@ -62,6 +62,7 @@ public class LanguageParser implements MiniParser {
                 combinedTextChunk = combinedTextChunk.mergedWith(textChunk);
             }
         }
+        if (combinedTextChunk == null) return;
         String stringInput = combinedTextChunk.getText();
         List<Language> languages = detectedLanguagesInString(stringInput);
         cv.setLanguages(languages);

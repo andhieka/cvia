@@ -1,5 +1,6 @@
 package cvia.reader_writer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ public class TextLine {
     private List<TextChunk> textChunks;
 
     public TextLine(List<TextChunk> textChunks) {
-        this.textChunks = textChunks;
+        this.textChunks = new ArrayList<TextChunk>(textChunks);
         StringBuilder sb = new StringBuilder();
         for(TextChunk textChunk: textChunks) {
             sb.append(textChunk.text);
