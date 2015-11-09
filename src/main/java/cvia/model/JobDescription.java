@@ -35,6 +35,14 @@ public class JobDescription {
     @CollectionTable(name = "jd_responsibility", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<String> responsibilities;
 
+
+
+    //index 0: Education
+    //index 1: Work Experience
+    //index 2: Skills
+    //index 3: Language
+    private int[] weightage;
+
     // Empty constructor for Hibernate
     public JobDescription() { }
 
@@ -94,4 +102,13 @@ public class JobDescription {
     public void setResponsibilities(List<String> responsibilities) {
         this.responsibilities = responsibilities;
     }
+
+    public int[] getWeightage() {
+        return weightage;
+    }
+
+    public void setWeightage(int[] weightage) {
+        this.weightage = weightage;
+    }
+
 }
