@@ -12,14 +12,7 @@ public class Grade implements Comparable<Grade> {
     @Column(name = "grade")
     private Float grade;
 
-    public Float getMaxGrade() {
-        return maxGrade;
-    }
-
-    public void setMaxGrade(Float maxGrade) {
-        this.maxGrade = maxGrade;
-    }
-
+    @Column(name = "max_grade")
     private Float maxGrade;
 
     // Empty constructor for Hibernate
@@ -35,6 +28,14 @@ public class Grade implements Comparable<Grade> {
 
     public void setGrade(Float grade) {
         this.grade = grade;
+    }
+
+    public Float getMaxGrade() {
+        return maxGrade;
+    }
+
+    public void setMaxGrade(Float maxGrade) {
+        this.maxGrade = maxGrade;
     }
 
     public int compareTo(Grade o) {
