@@ -42,6 +42,9 @@ public class CV {
     @PrimaryKeyJoinColumn
     private RawSource rawSource;
 
+    @Column(name = "full_text")
+    private String fullText;
+
     // Empty Constructor for Hibernate
     public CV() { }
 
@@ -107,5 +110,13 @@ public class CV {
 
     public void setRawSource(RawSource rawSource) {
         this.rawSource = rawSource;
+    }
+
+    public String getFullText() {
+        return fullText;
+    }
+
+    public void setFullText(String fullText) {
+        this.fullText = fullText;
     }
 }
