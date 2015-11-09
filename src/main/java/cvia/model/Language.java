@@ -2,6 +2,8 @@ package cvia.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Comparator;
 
 /**
@@ -17,6 +19,7 @@ public class Language implements Comparable<Language>{
     @Column(name = "name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "proficiency_level")
     private LanguageProficiency proficiencyLevel;
 

@@ -110,7 +110,7 @@ public class LanguageMatcher {
             Language currentLanguage = languages.get(languagePointer);
             Language currentRequiredLanguage = requiredLanguages.get(requiredLanguagePointer);
 
-            int compareScore = currentLanguage.compareTo(currentRequiredLanguage);
+            int compareScore = currentLanguage.getName().compareTo(currentRequiredLanguage.getName());
 
             if (compareScore == 0) {
                 this.matchedLanguages.add(currentLanguage);

@@ -199,8 +199,17 @@ public class CVListController {
                             setText(null);
                         } else {
                             final HBox hbox = new HBox();
-                            final ImageButton editBtn = new ImageButton("/add.png", SIZE_EDIT_CV_BUTTON);
-                            final ImageButton deleteBtn = new ImageButton("/add.png", SIZE_DELETE_CV_BUTTON);
+
+
+                            final ImageButton editBtn = new ImageButton("/edit.png", SIZE_EDIT_CV_BUTTON);
+                            final ImageButton deleteBtn = new ImageButton("/delete.png", SIZE_DELETE_CV_BUTTON);
+
+                            Tooltip edit = new Tooltip("Edit");
+                            Tooltip.install(editBtn, edit);
+
+                            Tooltip delete = new Tooltip("Delete");
+                            Tooltip.install(deleteBtn, delete);
+
                             hbox.setSpacing(5);
                             hbox.setAlignment(Pos.CENTER);
                             hbox.getChildren().addAll(editBtn, deleteBtn);

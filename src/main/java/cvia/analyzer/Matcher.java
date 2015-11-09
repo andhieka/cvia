@@ -13,6 +13,8 @@ public class Matcher {
 
     private List<CV> parsedCVs;
     private JobDescription parsedJobDescription;
+
+
     private List<Report> reports;
 
     private LanguageMatcher languageMatcher;
@@ -43,7 +45,7 @@ public class Matcher {
         }
     }
 
-    public void match(CV cv, Report report) {
+    private void match(CV cv, Report report) {
         matchLanguage(cv, report);
         matchSkill(cv, report);
         matchEducation(cv, report);
@@ -98,8 +100,19 @@ public class Matcher {
         report.setExtraLanguages(extraLanguage);
     }
 
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
     public static void main(String[] args) {
 
     }
+
+
 
 }

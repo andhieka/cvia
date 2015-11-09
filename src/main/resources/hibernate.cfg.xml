@@ -30,6 +30,8 @@
         <mapping class="cvia.model.WorkExperience"/>
         <mapping class="cvia.model.Grade"/>
         <mapping class="cvia.model.RawSource"/>
+        <mapping class="cvia.model.EducationRequirement"/>
+        <mapping class="cvia.model.WorkRequirement"/>
 
     </session-factory>
 </hibernate-configuration>

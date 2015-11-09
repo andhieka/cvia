@@ -34,6 +34,14 @@ public class LogicController {
         //TODO: DeleteCV Logic
     }
 
+    public void addJD(JobDescription jobDescription) {
+        //TODO: AddJD Logic
+    }
+
+    public void editJD(JobDescription jobDescription) {
+        //TODO: EditJD Logic
+    }
+
     public void deleteJD(JobDescription jobDescription) {
         //TODO: DeleteJD Logic
     }

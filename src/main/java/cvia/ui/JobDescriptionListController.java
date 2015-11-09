@@ -1,16 +1,21 @@
 package cvia.ui;
 
-import cvia.model.JobDescription;
+import cvia.model.*;
+import cvia.ui.JobDescriptionDetailController.JDDetailMode;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,13 +62,44 @@ public class JobDescriptionListController {
     private void initialize() {
         JobDescription jd1 = new JobDescription();
         jd1.setTitle("Sr. Software Engineer");
+        jd1.setVacancy(0);
 
-        JobDescription jd2 = new JobDescription();
-        jd2.setTitle("Sr. Software Engineer adsfkasldfklaj");
+        List<String> responsibilities = new ArrayList<String>();
+        responsibilities.add("Responsibility 1");
+        responsibilities.add("Responsibility 2");
+        jd1.setResponsibilities(responsibilities);
+
+        EducationRequirement educationRequirement = new EducationRequirement();
+        educationRequirement.setAcceptedMajors(new ArrayList<String>());
+        educationRequirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        Grade grade = new Grade();
+        grade.setGrade(4f);
+        grade.setMaxGrade(5f);
+        educationRequirement.setMinimumGrade(grade);
+        jd1.setMinimumEducation(educationRequirement);
+
+        jd1.setRequiredLanguages(new ArrayList<Language>());
+        jd1.setRequiredSkills(new ArrayList<Skill>());
+
+        WorkRequirement workRequirement = new WorkRequirement();
+        List<String> keywords = new ArrayList<String>();
+        keywords.add("keyword 1");
+        keywords.add("keyword 2");
+        keywords.add("keyword 3");
+        workRequirement.setKeywords(keywords);
+        workRequirement.setDuration(12);
+        jd1.setWorkRequirement(workRequirement);
+
+        List<Integer> weightage = new ArrayList<Integer>();
+        weightage.add(1);
+        weightage.add(1);
+        weightage.add(2);
+        weightage.add(1);
+        jd1.setWeightage(weightage);
 
         List<JobDescription> jdList = new ArrayList<JobDescription>();
         jdList.add(jd1);
-        jdList.add(jd2);
+        jdList.add(jd1);
         jdList.add(jd1);
         jdList.add(jd1);
 
@@ -126,7 +162,7 @@ public class JobDescriptionListController {
         int colIndex = 0;
         int rowIndex = 0;
         for (JobDescription jobDescription: displayedJDData) {
-            Pane jdItem = createJobDescriptionItemView(jobDescription);
+            Pane jdItem = createJobDescriptionItemView(jobDescription, rowIndex, colIndex);
             jdItem.setLayoutX(JOB_DESCRIPTION_X_SPACING +
                     colIndex * (JOB_DESCRIPTION_WIDTH + JOB_DESCRIPTION_X_SPACING));
             jdItem.setLayoutY(JOB_DESCRIPTION_Y_OFFSET + rowIndex * (JOB_DESCRIPTION_Y_SPACING + JOB_DESCRIPTION_HEIGHT));
@@ -141,7 +177,7 @@ public class JobDescriptionListController {
         }
     }
 
-    private Pane createJobDescriptionItemView(JobDescription jd) {
+    private Pane createJobDescriptionItemView(JobDescription jd, Integer rowIndex, Integer colIndex) {
         Pane jdItemPane = new Pane();
         jdItemPane.setPrefSize(JOB_DESCRIPTION_WIDTH, JOB_DESCRIPTION_HEIGHT);
         jdItemPane.setStyle("-fx-background-color: #6698c8");
@@ -179,7 +215,8 @@ public class JobDescriptionListController {
         editBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO: JD editBtn input form
+                JobDescription selectedJobDescription = getJobDescriptionFromPosition(rowIndex, colIndex);
+                editJobDescription(selectedJobDescription);
             }
         });
 
@@ -191,6 +228,30 @@ public class JobDescriptionListController {
 
         jdItemPane.getChildren().addAll(jobTitleLabel, jobVacancyLabel, viewBtn, editBtn, deleteBtn);
         return jdItemPane;
+    }
+
+    private JobDescription getJobDescriptionFromPosition(Integer row, Integer col) {
+        return displayedJDData.get(row * 3 + col);
+    }
+
+    private void editJobDescription(JobDescription jobDescription) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(CviaApp.class.getResource("/JobDescriptionDetail.fxml"));
+            ScrollPane scrollPane = loader.load();
+            JobDescriptionDetailController jdDetailController = loader.getController();
+            jdDetailController.generateForm(jobDescription, JDDetailMode.EDIT);
+
+            Stage jdDetailStage = new Stage();
+            Scene scene = new Scene(scrollPane);
+            jdDetailStage.setScene(scene);
+            jdDetailStage.sizeToScene();
+            jdDetailStage.setResizable(false);
+            jdDetailStage.show();
+            jdDetailController.setStage(jdDetailStage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showConfirmDeleteJDPopup(JobDescription jobDescription) {

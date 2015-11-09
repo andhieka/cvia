@@ -187,10 +187,16 @@ public class CVDetailController {
         hBoxButtonCV.getChildren().addAll(btnSave, btnCancel);
         rightPane.getChildren().addAll(hBoxButtonCV);
 
-        btnPrev = new ImageButton("/add.png", BUTTON_SIZE);
+        btnPrev = new ImageButton("/prev.png", BUTTON_SIZE);
         btnPrev.setLayoutX(10);
-        btnNext = new ImageButton("/add.png", BUTTON_SIZE);
+        btnNext = new ImageButton("/next.png", BUTTON_SIZE);
         btnNext.setLayoutX(40);
+
+        Tooltip next = new Tooltip("Next Page");
+        Tooltip.install(btnNext, next);
+
+        Tooltip prev = new Tooltip("Previous Page");
+        Tooltip.install(btnPrev, prev);
         btnPrev.setOnAction(event -> {
             prev();
         });

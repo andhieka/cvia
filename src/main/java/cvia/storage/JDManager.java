@@ -1,9 +1,6 @@
 package cvia.storage;
 
-import cvia.model.EducationInfo;
-import cvia.model.JobDescription;
-import cvia.model.Language;
-import cvia.model.Skill;
+import cvia.model.*;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
@@ -119,48 +116,67 @@ public class JDManager {
         }
     }
 
-//    public static void main(String[] args) {
-//        JDManager jdManager = new JDManager();
-//
-//        List<String> responsibilities = new ArrayList<String>();
-//        responsibilities.add("Responsibility 1");
-//        responsibilities.add("Responsibility 2");
-//        responsibilities.add("Responsibility 3");
-//
-//        List<Skill> requiredSkills = new ArrayList<Skill>();
-//        requiredSkills.add(new Skill("Javascript"));
-//        requiredSkills.add(new Skill("HTML"));
-//
-//        List<Language> languages = new ArrayList<Language>();
-//        languages.add(new Language("English"));
-//        languages.add(new Language("Chinese"));
-//
-//        Float minimumYear = (float) 2.0;
-//
-//        EducationInfo education = new EducationInfo();
-//        education.setMajor("CS");
-//        education.setStartDate(new Date());
-//        education.setEndDate(new Date());
-//        education.setEducationLevel("university");
-//
-//        JobDescription jobDescription = new JobDescription();
-//        jobDescription.setTitle("Software Engineer");
-//        jobDescription.setResponsibilities(responsibilities);
-//        jobDescription.setRequiredSkills(requiredSkills);
-//        jobDescription.setRequiredLanguages(languages);
-//        jobDescription.setMinimumYearsOfWorkExperience(minimumYear);
-//        jobDescription.setMinimumEducation(education);
-//
-//        Long id = jdManager.createJD(jobDescription);
-//        JobDescription jobDescription1 = jdManager.getJobDescriptionDetailById(id);
-//        System.out.println(jobDescription1.getTitle());
-//
-//        for (Skill skill: jobDescription1.getRequiredSkills()) {
-//            System.out.println(skill.getName());
-//        }
-//
-//        for (Language language: jobDescription1.getRequiredLanguages()) {
-//            System.out.println(language.getName());
-//        }
-//    }
+    public static void main(String[] args) {
+        JDManager jdManager = new JDManager();
+
+        List<String> responsibilities = new ArrayList<String>();
+        responsibilities.add("Responsibility 1");
+        responsibilities.add("Responsibility 2");
+        responsibilities.add("Responsibility 3");
+
+        List<Skill> requiredSkills = new ArrayList<Skill>();
+        requiredSkills.add(new Skill("Javascript"));
+        requiredSkills.add(new Skill("HTML"));
+
+        List<Language> languages = new ArrayList<Language>();
+        languages.add(new Language("English"));
+        languages.add(new Language("Chinese"));
+
+        Float minimumYear = (float) 2.0;
+
+        EducationInfo education = new EducationInfo();
+        education.setMajor("CS");
+        education.setStartDate(LocalDate.now());
+        education.setEndDate(LocalDate.now());
+        education.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
+
+        JobDescription jobDescription = new JobDescription();
+        jobDescription.setTitle("Software Engineer");
+        jobDescription.setResponsibilities(responsibilities);
+        jobDescription.setRequiredSkills(requiredSkills);
+        jobDescription.setRequiredLanguages(languages);
+
+        WorkRequirement workRequirement = new WorkRequirement();
+        List<String> keywords = new ArrayList<String>();
+        keywords.add("keyword 1");
+        keywords.add("keyword 2");
+        keywords.add("keyword 3");
+        workRequirement.setKeywords(keywords);
+        workRequirement.setDuration(12);
+        jobDescription.setWorkRequirement(workRequirement);
+
+        EducationRequirement educationRequirement = new EducationRequirement();
+        List<String> majors = new ArrayList<String>();
+        majors.add("major 1");
+        majors.add("major 2");
+        educationRequirement.setAcceptedMajors(majors);
+        educationRequirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        Grade grade = new Grade();
+        grade.setGrade(4f);
+        grade.setMaxGrade(5f);
+        educationRequirement.setMinimumGrade(grade);
+        jobDescription.setMinimumEducation(educationRequirement);
+
+        Long id = jdManager.createJD(jobDescription);
+        JobDescription jobDescription1 = jdManager.getJobDescriptionDetailById(id);
+        System.out.println(jobDescription1.getTitle());
+
+        for (Skill skill: jobDescription1.getRequiredSkills()) {
+            System.out.println(skill.getName());
+        }
+
+        for (Language language: jobDescription1.getRequiredLanguages()) {
+            System.out.println(language.getName());
+        }
+    }
 }

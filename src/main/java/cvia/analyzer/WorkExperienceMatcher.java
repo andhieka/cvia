@@ -62,15 +62,24 @@ public class WorkExperienceMatcher {
 
         WorkRequirement workRequirement = parsedJobDescription.getWorkRequirement();
 
-        int minimum = workRequirement.getDuration();
+        Integer minimum = Integer.valueOf(workRequirement.getDuration());
+
+        if (minimum == null) {
+            minimum = 0;
+        }
 
         int total = 0;
 
 
 
         for (WorkExperience we : listOfWorkExperience) {
-            total += we.getWorkDuration() * WORK_EXPERIENCE_SENIORITY; //for total work experience of any kind
-            int duration = we.getWorkDuration();
+
+            int duration = Integer.valueOf(we.getWorkDuration());
+
+
+
+            total += duration * WORK_EXPERIENCE_SENIORITY;
+
 
             if (isEquivalent(we, workRequirement) && !hasMatch) {
                 total += WORK_EXPERIENCE_BASE;

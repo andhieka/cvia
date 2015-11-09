@@ -2,6 +2,8 @@ package cvia.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * Created by andhieka on 10/10/15.
@@ -16,6 +18,7 @@ public class Skill implements Comparable<Skill> {
     @Column(name = "name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "proficiency_level")
     private SkillProficiency proficiencyLevel;
 

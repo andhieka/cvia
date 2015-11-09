@@ -1,6 +1,7 @@
 package cvia.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "jd")
 public class JobDescription {
-    // Must be used by the Analyzer to match agains CV
+    // Must be used by the Analyzer to match against CV
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,13 +18,19 @@ public class JobDescription {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "vacancy")
+    private Integer vacancy;
+
     @ElementCollection
     @CollectionTable(name = "jd_skill", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<Skill> requiredSkills;
 
-    @Embedded
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private EducationRequirement minimumEducation;
 
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private WorkRequirement workRequirement;
 
     @ElementCollection
@@ -34,6 +41,14 @@ public class JobDescription {
     @ElementCollection
     @CollectionTable(name = "jd_responsibility", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<String> responsibilities;
+
+    //index 0: Education
+    //index 1: Work Experience
+    //index 2: Skills
+    //index 3: Language
+    @ElementCollection
+    @CollectionTable(name = "jd_weightage", joinColumns = {@JoinColumn(name = "jd_id")})
+    private List<Integer> weightage;
 
     // Empty constructor for Hibernate
     public JobDescription() { }
@@ -52,6 +67,14 @@ public class JobDescription {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getVacancy() {
+        return vacancy;
+    }
+
+    public void setVacancy(Integer vacancy) {
+        this.vacancy = vacancy;
     }
 
     public List<Skill> getRequiredSkills() {
@@ -78,7 +101,6 @@ public class JobDescription {
         this.workRequirement = workRequirement;
     }
 
-
     public List<Language> getRequiredLanguages() {
         return requiredLanguages;
     }
@@ -94,4 +116,13 @@ public class JobDescription {
     public void setResponsibilities(List<String> responsibilities) {
         this.responsibilities = responsibilities;
     }
+
+    public List<Integer> getWeightage() {
+        return weightage;
+    }
+
+    public void setWeightage(List<Integer> weightage) {
+        this.weightage = weightage;
+    }
+
 }
