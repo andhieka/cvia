@@ -154,9 +154,8 @@ public class WorkExperienceMatcherTest {
         List<String> keywords = new ArrayList<String>();
 
         keywords.add("software");
-        keywords.add("software engineer");
-        keywords.add("software developer");
-        keywords.add("software engineer");
+
+
         keywords.add("programmer");
 
         softDev.setKeywords(keywords);
@@ -172,7 +171,6 @@ public class WorkExperienceMatcherTest {
         int score = matcher.getWorkExperienceScore(parsedCV, parsedJobDescription);
 
         assertEquals(493, score);
-
     }
 
     @Test

@@ -29,27 +29,27 @@
                   </Tab>
                 <Tab text="Education Information">
                      <content>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                        <ScrollPane fx:id="educationScrollPane" hbarPolicy="NEVER">
                            <content>
-                              <Pane fx:id="educationPane" prefHeight="500.0" prefWidth="500.0" />
+                              <Pane fx:id="educationPane" />
                            </content>
                         </ScrollPane>
                      </content>
                   </Tab>
                   <Tab text="Work Experiences">
                      <content>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                        <ScrollPane fx:id="workScrollPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
                            <content>
-                              <Pane fx:id="workPane" prefWidth="500.0" />
+                              <Pane fx:id="workPane" />
                            </content>
                         </ScrollPane>
                      </content>
                   </Tab>
                   <Tab text="Skills and Languages">
                      <content>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                        <ScrollPane fx:id="skillScrollPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
                            <content>
-                              <Pane fx:id="skillPane" prefWidth="500.0" />
+                              <Pane fx:id="skillPane" />
                            </content>
                         </ScrollPane>
                      </content>

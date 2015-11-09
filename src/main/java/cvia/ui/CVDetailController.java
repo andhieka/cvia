@@ -1,6 +1,9 @@
 package cvia.ui;
 
 import cvia.model.*;
+import cvia.model.Language.LanguageProficiency;
+import cvia.model.EducationInfo.EducationLevel;
+import cvia.model.Skill.SkillProficiency;
 import cvia.utilities.DateUtilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,7 +23,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +46,12 @@ public class CVDetailController {
     @FXML
     private ImageView pdfImageView;
     @FXML
+    private ScrollPane educationScrollPane;
+    @FXML
+    private ScrollPane workScrollPane;
+    @FXML
+    private ScrollPane skillScrollPane;
+    @FXML
     private Pane personalInfoPane;
     @FXML
     private Pane educationPane;
@@ -52,14 +60,23 @@ public class CVDetailController {
     @FXML
     private Pane skillPane;
 
+    private ImageButton btnPrev;
+    private ImageButton btnNext;
     private ImageButton btnSave;
     private ImageButton btnCancel;
+
+    PDDocument document;
+    private Integer pageNumber = 0;
+    private Integer numberOfPages;
 
     private CV cv;
     private Stage stage;
     private HashMap<TextInputControl, String> inputFieldToAttributeMap = new HashMap<TextInputControl, String>();
     private HashMap<String, Object> personalInfoMap = new HashMap<String, Object>();
     private HashMap<Integer, HashMap<String, Object>> educationInfoMap = new HashMap<Integer, HashMap<String, Object>>();
+    private List<HashMap<String,Object>> workExperienceMap = new ArrayList<HashMap<String, Object>>();
+    private List<HashMap<String, Object>> skillMap = new ArrayList<HashMap<String, Object>>();
+    private List<HashMap<String, Object>> languageMap = new ArrayList<HashMap<String, Object>>();
     private Integer educationIndex = 0;
     private Integer workIndex = 0;
     private DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
@@ -75,28 +92,90 @@ public class CVDetailController {
 
     @FXML
     private void initialize() {
+        try {
+            document = PDDocument.load("yamini.pdf");
+            numberOfPages = document.getNumberOfPages();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        CV cv = new CV();
+        cv.setId(1L);
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setName("user 2");
+        personalInfo.setContactNumber("+658123456");
+        personalInfo.setEmail("user1@testing.com");
+        cv.setPersonalInfo(personalInfo);
+
+        List<EducationInfo> educationList = new ArrayList<EducationInfo>();
+        EducationInfo educationInfo = new EducationInfo();
+        educationInfo.setInstitutionName("NUS");
+        educationInfo.setEducationLevel(EducationLevel.UNDERGRADUATE);
+        educationInfo.setMajor("CS");
+        educationInfo.setStartDate(LocalDate.now());
+        educationInfo.setEndDate(LocalDate.now());
+        for (int i = 0; i < 3; i++) {
+            educationList.add(educationInfo);
+        }
+        cv.setEducationInfoList(educationList);
+
+        List<WorkExperience> workList = new ArrayList<WorkExperience>();
+        WorkExperience workExperience = new WorkExperience();
+        workExperience.setCompany("Google");
+        workExperience.setPosition("Software Engineer");
+        workExperience.setDescription("Description");
+        workExperience.setStartDate(LocalDate.now());
+        workExperience.setEndDate(LocalDate.now());
+        for (int i = 0; i < 2; i++) {
+            workList.add(workExperience);
+        }
+        cv.setWorkExperienceList(workList);
+
+        List<Skill> skillList = new ArrayList<Skill>();
+        Skill skill = new Skill();
+        skill.setName("Coding");
+        skill.setProficiencyLevel(SkillProficiency.ADVANCED);
+        for (int i = 0; i < 3; i++) {
+            skillList.add(skill);
+        }
+        cv.setSkills(skillList);
+
+        List<Language> languageList = new ArrayList<Language>();
+        Language language = new Language();
+        language.setName("English");
+        language.setProficiencyLevel(LanguageProficiency.ADVANCED);
+        for (int i = 0; i < 3; i++) {
+            languageList.add(language);
+        }
+        cv.setLanguages(languageList);
+
+        setCV(cv);
+
         setPdfImage();
-        setUpButton();
+        setUpButtons();
         setUpForm();
     }
 
     private void setPdfImage() {
+        pdfImageView.setFitHeight(600);
+        pdfImageView.setFitWidth(500);
+        showImageAtPageNumber();
+    }
+
+    private void showImageAtPageNumber() {
         try {
-            PDDocument document = PDDocument.load("resume.pdf");
-            PDPage page1 = (PDPage) document.getDocumentCatalog().getAllPages().get(0);
-            BufferedImage bufferedImage = page1.convertToImage(BufferedImage.TYPE_INT_RGB, 60);
+            PDPage pdfPage = (PDPage) document.getDocumentCatalog().getAllPages().get(pageNumber);
+            BufferedImage bufferedImage = pdfPage.convertToImage(BufferedImage.TYPE_INT_RGB, 100);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            pdfImageView.setFitHeight(image.getHeight());
-            pdfImageView.setFitWidth(image.getWidth());
             pdfImageView.setImage(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void setUpButton() {
-        HBox hBox = new HBox();
-        hBox.setLayoutX(425);
+    private void setUpButtons() {
+        HBox hBoxButtonCV = new HBox();
+        hBoxButtonCV.setLayoutX(425);
         btnSave = new ImageButton("/add.png", BUTTON_SIZE);
         btnSave.setOnAction(event -> {
             saveCV();
@@ -105,12 +184,38 @@ public class CVDetailController {
         btnCancel.setOnAction(event -> {
             stage.close();
         });
-        hBox.getChildren().addAll(btnSave, btnCancel);
-        rightPane.getChildren().addAll(hBox);
+        hBoxButtonCV.getChildren().addAll(btnSave, btnCancel);
+        rightPane.getChildren().addAll(hBoxButtonCV);
+
+        btnPrev = new ImageButton("/add.png", BUTTON_SIZE);
+        btnPrev.setLayoutX(10);
+        btnNext = new ImageButton("/add.png", BUTTON_SIZE);
+        btnNext.setLayoutX(40);
+        btnPrev.setOnAction(event -> {
+            prev();
+        });
+        btnNext.setOnAction(event -> {
+            next();
+        });
+        rightPane.getChildren().addAll(btnPrev, btnNext);
+    }
+
+    private void prev() {
+        System.out.println("prev");
+        pageNumber = Math.max(0, pageNumber - 1);
+        showImageAtPageNumber();
+    }
+
+    private void next() {
+        System.out.println("next");
+        pageNumber = Math.min(pageNumber + 1, numberOfPages - 1);
+        showImageAtPageNumber();
     }
 
     private void saveCV() {
-
+        modifyCV();
+        LogicController.getInstance().editCV(cv);
+        //TODO: Refresh Table View
     }
 
     private void modifyCV() {
@@ -126,18 +231,53 @@ public class CVDetailController {
         for (HashMap<String, Object> educationMap: educationInfoMap.values()) {
             EducationInfo educationInfo = new EducationInfo();
             educationInfo.setInstitutionName(((TextInputControl) educationMap.get("institution_name")).getText());
-           // educationInfo.setEducationLevel(((TextInputControl) educationMap.get("education_level")).getText());
+            educationInfo.setEducationLevel(
+                    EducationLevel.valueOf(((TextInputControl) educationMap.get("education_level")).getText()));
             educationInfo.setMajor(((TextInputControl) educationMap.get("major")).getText());
-            LocalDate startDate = DateUtilities.dateFromString("01" +
+            LocalDate startDate = DateUtilities.dateFromString("01 " +
                     ((TextInputControl) educationMap.get("start_date")).getText(), inFormatter);
             educationInfo.setStartDate(startDate);
-            LocalDate endDate = DateUtilities.dateFromString("01" +
+            LocalDate endDate = DateUtilities.dateFromString("01 " +
                     ((TextInputControl) educationMap.get("end_date")).getText(), inFormatter);
             educationInfo.setEndDate(endDate);
             educationList.add(educationInfo);
         }
-
         cv.setEducationInfoList(educationList);
+
+        // Work Experience Section
+        List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
+        for (HashMap<String, Object> workExpMap: workExperienceMap) {
+            WorkExperience workExperience = new WorkExperience();
+            workExperience.setCompany(((TextInputControl) workExpMap.get("company")).getText());
+            workExperience.setPosition(((TextInputControl) workExpMap.get("position")).getText());
+            LocalDate startDate = DateUtilities.dateFromString("01 " +
+                    ((TextInputControl) workExpMap.get("start_date")).getText(), inFormatter);
+            workExperience.setStartDate(startDate);
+            LocalDate endDate = DateUtilities.dateFromString("01 " +
+                    ((TextInputControl) workExpMap.get("end_date")).getText(), inFormatter);
+            workExperience.setEndDate(endDate);
+            workExperience.setDescription(((TextInputControl) workExpMap.get("description")).getText());
+        }
+        cv.setWorkExperienceList(workExperienceList);
+
+        // Skill Section
+        List<Skill> skillList = new ArrayList<Skill>();
+        for (HashMap<String, Object> map: skillMap) {
+            Skill skill = new Skill();
+            skill.setName(((TextInputControl) map.get("name")).getText());
+            skill.setProficiencyLevel(SkillProficiency.valueOf(((TextInputControl) map.get("level")).getText()));
+            skillList.add(skill);
+        }
+        cv.setSkills(skillList);
+
+        // Language Section
+        List<Language> languageList = new ArrayList<Language>();
+        for (HashMap<String, Object> map: languageMap) {
+            Language language = new Language();
+            language.setName(((TextInputControl) map.get("name")).getText());
+            language.setProficiencyLevel(LanguageProficiency.valueOf(((TextInputControl) map.get("level")).getText()));
+        }
+        cv.setLanguages(languageList);
     }
 
     private void setUpForm() {
@@ -148,19 +288,20 @@ public class CVDetailController {
     }
 
     private void setUpPersonalInfoForm() {
-        VBox vBoxName = createVBoxWithTextField("Name", "");
+        PersonalInfo personalInfo = cv.getPersonalInfo();
+        VBox vBoxName = createVBoxWithTextField("Name", personalInfo.getName(), "");
         vBoxName.setLayoutX(20);
         vBoxName.setLayoutY(5);
         personalInfoMap.put("name", vBoxName.getChildren().get(1));
-        VBox vBoxContactNumber = createVBoxWithTextField("Contact Number", "");
+        VBox vBoxContactNumber = createVBoxWithTextField("Contact Number", personalInfo.getContactNumber(),"");
         vBoxContactNumber.setLayoutX(20);
         vBoxContactNumber.setLayoutY(65);
         personalInfoMap.put("contact_number", vBoxName.getChildren().get(1));
-        VBox vBoxEmail = createVBoxWithTextField("Email", "");
+        VBox vBoxEmail = createVBoxWithTextField("Email", personalInfo.getEmail(), "");
         vBoxEmail.setLayoutX(20);
         vBoxEmail.setLayoutY(125);
         personalInfoMap.put("email", vBoxName.getChildren().get(1));
-        VBox vBoxAddress = createVBoxWithTextArea("Address", "");
+        VBox vBoxAddress = createVBoxWithTextArea("Address", personalInfo.getAddress(), "");
         vBoxAddress.setLayoutX(20);
         vBoxAddress.setLayoutY(185);
         personalInfoMap.put("address", vBoxName.getChildren().get(1));
@@ -168,10 +309,16 @@ public class CVDetailController {
     }
 
     private void setUpEducationInfoForm() {
-        Pane educationItemPane = createEducationItemView(null);
-        educationPane.getChildren().addAll(educationItemPane);
+        for (EducationInfo educationInfo: cv.getEducationInfoList()) {
+            Pane educationItemPane = createEducationItemView(educationInfo);
+            educationItemPane.setLayoutY(educationIndex * 205);
+            educationPane.getChildren().add(educationItemPane);
+            educationIndex++;
+        }
 
         //TODO: addMoreEducationForm
+        educationPane.setPrefHeight(220 * cv.getEducationInfoList().size());
+        educationScrollPane.setPrefHeight(220 * cv.getEducationInfoList().size());
     }
 
     private Pane createEducationItemView(EducationInfo educationInfo) {
@@ -182,19 +329,23 @@ public class CVDetailController {
         label.setPrefHeight(30);
         label.setText("Education " + (educationIndex + 1));
         label.setStyle(HEADER_LIST_STYLE);
-        VBox vBoxInstitutionName = createVBoxWithTextField("Institution Name", "ed_institution_name");
+        VBox vBoxInstitutionName = createVBoxWithTextField("Institution Name", educationInfo.getInstitutionName(),
+                "ed_institution_name");
         vBoxInstitutionName.setLayoutX(25);
         vBoxInstitutionName.setLayoutY(40);
-        VBox vBoxEducationLevel = createVBoxWithTextField("Education Level", "ed_education_level");
+        VBox vBoxEducationLevel = createVBoxWithTextField("Education Level", educationInfo.getEducationLevel().toString(),
+                "ed_education_level");
         vBoxEducationLevel.setLayoutX(25);
         vBoxEducationLevel.setLayoutY(100);
-        VBox vBoxMajor = createVBoxWithTextField("Major", "ed_major");
+        VBox vBoxMajor = createVBoxWithTextField("Major", educationInfo.getMajor(), "ed_major");
         vBoxMajor.setLayoutX(250);
         vBoxMajor.setLayoutY(100);
-        VBox vBoxStartDate = createVBoxWithTextField("Start Date", "ed_start_date");
+        String startDateString = DateUtilities.getDateString(educationInfo.getStartDate(), outFormatter);
+        VBox vBoxStartDate = createVBoxWithTextField("Start Date", startDateString, "ed_start_date");
         vBoxStartDate.setLayoutX(25);
         vBoxStartDate.setLayoutY(160);
-        VBox vBoxEndDate = createVBoxWithTextField("End Date", "ed_end_date");
+        String endDateString = DateUtilities.getDateString(educationInfo.getEndDate(), outFormatter);
+        VBox vBoxEndDate = createVBoxWithTextField("End Date", endDateString, "ed_end_date");
         vBoxEndDate.setLayoutX(250);
         vBoxEndDate.setLayoutY(160);
 
@@ -205,21 +356,22 @@ public class CVDetailController {
         hmap.put("start_date", vBoxStartDate.getChildren().get(1));
         hmap.put("end_date", vBoxEndDate.getChildren().get(1));
         educationInfoMap.put(educationIndex, hmap);
-        educationIndex++;
 
         pane.getChildren().addAll(label, vBoxInstitutionName, vBoxEducationLevel, vBoxMajor, vBoxStartDate, vBoxEndDate);
         return pane;
     }
 
     private void setUpWorkExperienceForm() {
-        for (int i = 0; i < 3; i++) {
-            Pane workItemPane = createWorkExperienceItemView(null);
+        for (WorkExperience workExperience: cv.getWorkExperienceList()) {
+            Pane workItemPane = createWorkExperienceItemView(workExperience);
             workItemPane.setLayoutY(workIndex * 280);
             workPane.getChildren().add(workItemPane);
             workIndex++;
         }
 
         //TODO: addMoreExperienceForm
+        workPane.setPrefHeight(300 * cv.getWorkExperienceList().size());
+        workScrollPane.setPrefHeight(300 * cv.getWorkExperienceList().size());
     }
 
     private Pane createWorkExperienceItemView(WorkExperience workExperience) {
@@ -230,21 +382,31 @@ public class CVDetailController {
         label.setPrefHeight(30);
         label.setText("Experience " + (workIndex + 1));
         label.setStyle(HEADER_LIST_STYLE);
-        VBox vBoxCompany = createVBoxWithTextField("Company", "");
+        VBox vBoxCompany = createVBoxWithTextField("Company", workExperience.getCompany(), "");
         vBoxCompany.setLayoutX(25);
         vBoxCompany.setLayoutY(40);
-        VBox vBoxPosition = createVBoxWithTextField("Position", "");
+        VBox vBoxPosition = createVBoxWithTextField("Position", workExperience.getPosition(), "");
         vBoxPosition.setLayoutX(250);
         vBoxPosition.setLayoutY(40);
-        VBox vBoxStartDate = createVBoxWithTextField("Start Date", "");
+        String startDateString = DateUtilities.getDateString(workExperience.getStartDate(), outFormatter);
+        VBox vBoxStartDate = createVBoxWithTextField("Start Date", startDateString, "");
         vBoxStartDate.setLayoutX(25);
         vBoxStartDate.setLayoutY(100);
-        VBox vBoxEndDate = createVBoxWithTextField("End Date", "");
+        String endDateString = DateUtilities.getDateString(workExperience.getEndDate(), outFormatter);
+        VBox vBoxEndDate = createVBoxWithTextField("End Date", endDateString, "");
         vBoxEndDate.setLayoutX(250);
         vBoxEndDate.setLayoutY(100);
-        VBox vBoxDescription = createVBoxWithTextArea("Description", "");
+        VBox vBoxDescription = createVBoxWithTextArea("Description", workExperience.getDescription(), "");
         vBoxDescription.setLayoutX(25);
         vBoxDescription.setLayoutY(160);
+
+        HashMap<String, Object> hmap = new HashMap<String, Object>();
+        hmap.put("company", vBoxCompany.getChildren().get(1));
+        hmap.put("position", vBoxPosition.getChildren().get(1));
+        hmap.put("start_date", vBoxStartDate.getChildren().get(1));
+        hmap.put("end_date",vBoxEndDate.getChildren().get(1));
+        hmap.put("description", vBoxDescription.getChildren().get(1));
+        workExperienceMap.add(hmap);
 
         pane.getChildren().addAll(label, vBoxCompany, vBoxPosition, vBoxStartDate, vBoxEndDate, vBoxDescription);
         return pane;
@@ -272,8 +434,8 @@ public class CVDetailController {
         skillLevel.setLayoutY(40);
         skillLevel.setStyle(FIELD_LABEL_STYLE);
         pane.getChildren().addAll(skillHeader, skillName, skillLevel);
-        for (int i = 0; i < 5; i++) {
-            HBox hBoxSkill = createSkillItemView(null);
+        for (int i = 0; i < cv.getSkills().size(); i++) {
+            HBox hBoxSkill = createSkillItemView(cv.getSkills().get(i));
             hBoxSkill.setLayoutX(25);
             yCoor = 60 + i * 30.0;
             hBoxSkill.setLayoutY(yCoor);
@@ -301,41 +463,57 @@ public class CVDetailController {
         languageLevel.setStyle(FIELD_LABEL_STYLE);
         pane.getChildren().addAll(languageHeader, languageName, languageLevel);
         yCoor += 20.0;
-        for (int i = 0; i < 5; i++) {
-            HBox hBoxLanguage = createLanguageItemView(null);
+        for (int i = 0; i < cv.getLanguages().size(); i++) {
+            HBox hBoxLanguage = createLanguageItemView(cv.getLanguages().get(i));
             hBoxLanguage.setLayoutX(25);
             hBoxLanguage.setLayoutY(yCoor + i * 30.0);
             pane.getChildren().add(hBoxLanguage);
         }
 
         skillPane.getChildren().add(pane);
+
+        skillPane.setPrefHeight(40 * (cv.getSkills().size() + cv.getLanguages().size()));
+        skillScrollPane.setPrefHeight(40 * (cv.getSkills().size() + cv.getLanguages().size()));
     }
 
     private HBox createSkillItemView(Skill skill) {
         HBox hBoxSkill = new HBox();
-        TextField skillTextField = createTextField("");
-        TextField levelTextField = createTextField("");
+        TextField skillTextField = createTextField(skill.getName(), "");
+        TextField levelTextField = createTextField(skill.getProficiencyLevel().toString(), "");
         hBoxSkill.setSpacing(25);
         hBoxSkill.getChildren().addAll(skillTextField, levelTextField);
+
+        HashMap<String, Object> hmap = new HashMap<String, Object>();
+        hmap.put("name", skillTextField);
+        hmap.put("level", levelTextField);
+        skillMap.add(hmap);
+
         return hBoxSkill;
     }
 
     private HBox createLanguageItemView(Language language) {
         HBox hBoxSkill = new HBox();
-        TextField languageTextField = createTextField("");
-        TextField levelTextField = createTextField("");
+        TextField languageTextField = createTextField(language.getName(), "");
+        TextField levelTextField = createTextField(language.getProficiencyLevel().toString(), "");
         hBoxSkill.setSpacing(25);
         hBoxSkill.getChildren().addAll(languageTextField, levelTextField);
+
+        HashMap<String, Object> hmap = new HashMap<String, Object>();
+        hmap.put("name", languageTextField);
+        hmap.put("level", levelTextField);
+        languageMap.add(hmap);
+
         return hBoxSkill;
     }
 
-    private VBox createVBoxWithTextField(String labelName, String textChunk) {
+    private VBox createVBoxWithTextField(String labelName, String content, String textChunk) {
         VBox vBox = new VBox();
         Label label = new Label();
         label.setPrefSize(200, 15);
         label.setStyle(FIELD_LABEL_STYLE);
         label.setText(labelName);
         TextField textField = new TextField();
+        textField.setText(content);
         inputFieldToAttributeMap.put(textField, textChunk);
         textField.setPrefSize(200, 20);
         textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -353,8 +531,9 @@ public class CVDetailController {
         return vBox;
     }
 
-    private TextField createTextField(String textChunk) {
+    private TextField createTextField(String content, String textChunk) {
         TextField textField = new TextField();
+        textField.setText(content);
         inputFieldToAttributeMap.put(textField, textChunk);
         textField.setPrefSize(200, 20);
         textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -371,13 +550,14 @@ public class CVDetailController {
         return textField;
     }
 
-    private VBox createVBoxWithTextArea(String labelName, String textChunk) {
+    private VBox createVBoxWithTextArea(String labelName, String content, String textChunk) {
         VBox vBox = new VBox();
         Label label = new Label();
         label.setPrefSize(200, 15);
         label.setStyle(FIELD_LABEL_STYLE);
         label.setText(labelName);
         TextArea textArea = new TextArea();
+        textArea.setText(content);
         inputFieldToAttributeMap.put(textArea, textChunk);
         textArea.setPrefSize(425, 100);
         textArea.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -394,6 +574,4 @@ public class CVDetailController {
         vBox.getChildren().addAll(label, textArea);
         return vBox;
     }
-
-
 }
