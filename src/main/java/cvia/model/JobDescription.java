@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "jd")
 public class JobDescription {
-    // Must be used by the Analyzer to match agains CV
+    // Must be used by the Analyzer to match against CV
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

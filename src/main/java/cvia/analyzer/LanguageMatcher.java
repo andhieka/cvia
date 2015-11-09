@@ -25,6 +25,7 @@ public class LanguageMatcher {
     private List<Language> matchedLanguages;
     private List<Language> unmatchedLanguages;
     private List<Language> extraLanguages;
+
     private static LanguageMatcher instance;
 
     public static LanguageMatcher getInstance() {
@@ -47,6 +48,29 @@ public class LanguageMatcher {
         matchedLanguages = new LinkedList<Language>();
         unmatchedLanguages = new LinkedList<Language>();
         extraLanguages = new LinkedList<Language>();
+    }
+
+    public int getMaximumScore(CV myCV, JobDescription jobDescription) {
+        int numOfLang = myCV.getLanguages().size();
+        int numOfRequiredLang = jobDescription.getRequiredLanguages().size();
+
+        int total = 0;
+
+        total += numOfRequiredLang * LANGUAGE_MATCH_SCORE;
+
+        for (Language l : jobDescription.getRequiredLanguages()) {
+            if (l.getProficiencyLevel().equals(Language.LanguageProficiency.ADVANCED)) {
+                total += EXTRA_LEVEL_SCORE;
+            } else {
+                total += PROFICIENCY_BONUS;
+            }
+        }
+
+        if (numOfLang > numOfRequiredLang) {
+            total += EXTRA_LANGUAGE_SCORE * (numOfLang - numOfRequiredLang);
+        }
+
+        return total;
     }
 
     public List<Language> getMatchedLanguages() {
@@ -86,7 +110,7 @@ public class LanguageMatcher {
             Language currentLanguage = languages.get(languagePointer);
             Language currentRequiredLanguage = requiredLanguages.get(requiredLanguagePointer);
 
-            int compareScore = currentLanguage.compareTo(currentRequiredLanguage);
+            int compareScore = currentLanguage.getName().compareTo(currentRequiredLanguage.getName());
 
             if (compareScore == 0) {
                 this.matchedLanguages.add(currentLanguage);

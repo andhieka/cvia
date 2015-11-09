@@ -31,6 +31,22 @@ public class EducationInfoMatcher {
 
     }
 
+    public int getMaximumScore(JobDescription jobDescription) {
+        EducationRequirement minRequirement = jobDescription.getMinimumEducation();
+
+        Grade minimumGrade = minRequirement.getMinimumGrade();
+
+        Float maxRequiredGrade = minimumGrade.getMaxGrade();
+
+        if (minimumGrade == null) {
+            return EDUCATION_BASE;
+        } else {
+            int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() / maxRequiredGrade) * 100);
+            return EDUCATION_BASE + (100 - normalizedMinimumGrade);
+        }
+
+    }
+
     public int getEducationScore(CV parsedCV, JobDescription parsedJobDescription) {
 
         int total = 0;
@@ -63,16 +79,29 @@ public class EducationInfoMatcher {
         if (highestEducation == null) {
             return 0;
         } else {
+
             Grade currentGrade = highestEducation.getGrade();
             Grade minimumGrade = educationRequirement.getMinimumGrade();
 
+            Float myCurrentGrade = currentGrade.getGrade();
             Float maxGrade = currentGrade.getMaxGrade();
-            int normalizedGrade = (int) ((currentGrade.getGrade() / maxGrade) * 100);
+
+            int normalizedGrade = 0;
+
+            if (myCurrentGrade != null) {
+                normalizedGrade = (int) ((myCurrentGrade / maxGrade) * 100);
+            } else {
+                normalizedGrade = 0;
+            }
 
             Float maxRequiredGrade = minimumGrade.getMaxGrade();
-            int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() / maxRequiredGrade) * 100);
 
-            total += normalizedGrade - normalizedMinimumGrade;
+            if (maxRequiredGrade != null) {
+                int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() / maxRequiredGrade) * 100);
+                total += normalizedGrade - normalizedMinimumGrade;
+            } else {
+                total += normalizedGrade;
+            }
 
             return total;
         }
@@ -83,11 +112,17 @@ public class EducationInfoMatcher {
 
         List<String> acceptedMajors = educationRequirement.getAcceptedMajors();
 
+        if (acceptedMajors.isEmpty()) { //if the list of accepted majors is empty, any major is accepted
+            return true;
+        }
+
         for (String accepted : acceptedMajors) {
             if (major.toLowerCase().contains(accepted.toLowerCase())) {
                 return true;
             }
         }
+
+
 
         return false;
     }

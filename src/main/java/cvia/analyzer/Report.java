@@ -12,6 +12,7 @@ public class Report implements Comparable<Report>{
     private PersonalInfo biodata;
 
     private CV parsedCV;
+    private JobDescription jobDescription;
 
     public void setMatchedSkills(List<Skill> matchedSkills) {
         this.matchedSkills = matchedSkills;
@@ -42,7 +43,6 @@ public class Report implements Comparable<Report>{
 
     private int score;
 
-
     public PersonalInfo getBiodata() {
         return biodata;
     }
@@ -67,8 +67,6 @@ public class Report implements Comparable<Report>{
         return extraLanguages;
     }
 
-
-
     public void setParsedCV(CV parsedCV) {
         this.parsedCV = parsedCV;
     }
@@ -89,12 +87,12 @@ public class Report implements Comparable<Report>{
         this.skillScore = skillScore;
     }
 
-    public int getEduationScore() {
-        return eduationScore;
+    public int getEducationScore() {
+        return educationScore;
     }
 
-    public void setEduationScore(int eduationScore) {
-        this.eduationScore = eduationScore;
+    public void setEducationScore(int educationScore) {
+        this.educationScore = educationScore;
     }
 
     public int getWorkScore() {
@@ -107,7 +105,7 @@ public class Report implements Comparable<Report>{
 
     private int languageScore;
     private int skillScore;
-    private int eduationScore;
+    private int educationScore;
     private int workScore;
 
     public Report(PersonalInfo biodata) {
@@ -137,7 +135,8 @@ public class Report implements Comparable<Report>{
     }
 
     public int getScore() {
-        return this.score;
+        this.score = this.educationScore + this.languageScore + this.skillScore + this.workScore;
+        return this.score / 4;
     }
 
     public void setScore(int score) {
@@ -145,13 +144,7 @@ public class Report implements Comparable<Report>{
     }
 
     public int compareTo(Report other) {
-        if (this.getScore() < other.getScore()) {
-            return -1;
-        } else if (this.getScore() > other.getScore()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return Integer.valueOf(this.getScore()).compareTo(Integer.valueOf(other.getScore()));
     }
 
 

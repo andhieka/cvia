@@ -50,6 +50,17 @@ public class SkillMatcher {
         extraSkills = new LinkedList<Skill>();
     }
 
+    public int getMaximumScore(JobDescription parsedJobDescription) {
+        int total = 0;
+
+        List<Skill> required = parsedJobDescription.getRequiredSkills();
+        total += required.size() * SKILL_MATCH_SCORE;
+        total += 2 * EXTRA_LEVEL_SCORE;
+        total += EXTRA_CAP * EXTRA_SKILL_SCORE;
+
+        return total;
+    }
+
     public List<Skill> getMatchedSkills() {
         return this.matchedSkills;
     }
