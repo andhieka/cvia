@@ -135,14 +135,14 @@ public class Report implements Comparable<Report>{
     }
 
     public int getScore() {
-        int[] weightage = jobDescription.getWeightage();
+        List<Integer> weightage = jobDescription.getWeightage();
 
         int total = 0;
         for (int i : weightage) {
             total += i;
         }
 
-        this.score = this.educationScore * weightage[0] + this.workScore * weightage[1] + this.skillScore * weightage[2] + this.languageScore * weightage[3];
+        this.score = this.educationScore * weightage.get(0) + this.workScore * weightage.get(1) + this.skillScore * weightage.get(2) + this.languageScore * weightage.get(3);
 
         return this.score / total;
     }

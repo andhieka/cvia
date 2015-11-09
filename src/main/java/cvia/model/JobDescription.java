@@ -1,6 +1,7 @@
 package cvia.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class JobDescription {
     //index 1: Work Experience
     //index 2: Skills
     //index 3: Language
-    private int[] weightage;
+    private List<Integer> weightage;
 
     // Empty constructor for Hibernate
     public JobDescription() { }
@@ -113,11 +114,11 @@ public class JobDescription {
         this.responsibilities = responsibilities;
     }
 
-    public int[] getWeightage() {
+    public List<Integer> getWeightage() {
         return weightage;
     }
 
-    public void setWeightage(int[] weightage) {
+    public void setWeightage(ArrayList<Integer> weightage) {
         this.weightage = weightage;
     }
 
