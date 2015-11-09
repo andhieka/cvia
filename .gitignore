@@ -43,7 +43,7 @@ Temporary Items
 hs_err_pid*
 
 # Photoshop #
-.psd
+*.psd
 ### Gradle ###
 .gradle
 build/
