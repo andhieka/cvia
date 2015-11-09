@@ -1,5 +1,7 @@
 package cvia.reader_writer;
 
+import cvia.utilities.TextChunkUtilities;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public class TextChunkCombinator {
         this.textChunks = originalTextChunks;
         // combine chunks that do not have space AND on the same row
         combineChunksWithoutSpaceOnTheSameRow();
-        List<TextLine> textLines = combineChunksOnTheSameRow();
+        List<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
         return textLines;
     }
 
@@ -36,28 +38,5 @@ public class TextChunkCombinator {
         }
         this.textChunks = result;
     }
-
-    private List<TextLine> combineChunksOnTheSameRow() {
-        ArrayList<TextLine> result = new ArrayList<TextLine>();
-        ArrayList<TextChunk> currentLine = new ArrayList<TextChunk>();
-        TextChunk previousTextChunk = null;
-        for (TextChunk textChunk: textChunks) {
-            if (previousTextChunk == null) {
-                currentLine.add(textChunk);
-            } else if (previousTextChunk.sameLine(textChunk)) {
-                currentLine.add(textChunk);
-            } else {
-                result.add(new TextLine(currentLine));
-                currentLine.clear();
-                currentLine.add(textChunk);
-            }
-            previousTextChunk = textChunk;
-        }
-        if (!currentLine.isEmpty()) {
-            result.add(new TextLine(currentLine));
-        }
-        return result;
-    }
-
 
 }

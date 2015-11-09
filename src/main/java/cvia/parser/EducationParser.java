@@ -2,6 +2,8 @@ package cvia.parser;
 
 import cvia.model.CV;
 import cvia.reader_writer.TextChunk;
+import cvia.reader_writer.TextLine;
+import cvia.utilities.TextChunkUtilities;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,10 @@ public class EducationParser implements MiniParser {
 
     @Override
     public void parseAndSave() {
+        ArrayList<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
+        for (TextLine textLine: textLines) {
 
+        }
     }
 
     @Override
