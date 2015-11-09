@@ -1,6 +1,7 @@
 package cvia.parser;
 
 import cvia.parser.PDFCVParser.ParseMode;
+import cvia.utilities.StringUtilities;
 
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
 public class ParseModeTrigger {
     private static final String PERSONAL_INFO_TRIGGER_STRING = "(.*?)(particulars|personal)(.*)";
     private static final String EDUCATION_TRIGGER_STRING = "(.*?)(education|award)(.*)";
-    private static final String WORK_EXPERIENCE_TRIGGER_STRING = "(.*?)(work|experience|portfolio|project)(.*)";
+    private static final String WORK_EXPERIENCE_TRIGGER_STRING = "(.*?)(work|experience)(.*)";
     private static final String LANGUAGE_TRIGGER_STRING = "^(?!.*(program{1,2}ing)).*language(.*)";
     private static final String SKILL_TRIGGER_STRING = "(.*?)(skill|expertise|programming)(.*)";
     private static final String PUBLICATION_TRIGGER_STRING = "(.*?)(publication|journal|conference)(.*)";
@@ -26,6 +27,9 @@ public class ParseModeTrigger {
 
 
     ParseMode triggeredParseMode(String textLine) {
+        // long sentences can't trigger parse mode
+        if (StringUtilities.numberOfWords(textLine) > 5) return null;
+
         if (EDUCATION_TRIGGER_PATTERN.matcher(textLine).matches()) {
             return ParseMode.EDUCATION;
         }
@@ -46,4 +50,5 @@ public class ParseModeTrigger {
         }
         return null;
     }
+
 }

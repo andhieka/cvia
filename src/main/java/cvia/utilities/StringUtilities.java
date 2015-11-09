@@ -26,4 +26,8 @@ public class StringUtilities {
         return false;
     }
 
+    public static int numberOfWords(final String input) {
+        return input.split("\\s+").length;
+    }
+
 }
