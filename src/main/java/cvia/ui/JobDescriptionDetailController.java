@@ -157,21 +157,27 @@ public class JobDescriptionDetailController {
         List<String> educationOptions = new ArrayList<String>();
         educationOptions.add("");
         for (EducationLevel level: EducationLevel.values()) {
-            educationOptions.add(level.toString());
+            String currentLevel = level.toString();
+            currentLevel = currentLevel.substring(0,1).toUpperCase() + currentLevel.substring(1).toLowerCase();
+            educationOptions.add(currentLevel);
         }
         minimumEducationOption = FXCollections.observableList(educationOptions);
 
         List<String> skillOptions = new ArrayList<String>();
         skillOptions.add("");
         for (SkillProficiency level: SkillProficiency.values()) {
-            skillOptions.add(level.toString());
+            String currentLevel = level.toString();
+            currentLevel = currentLevel.substring(0,1).toUpperCase() + currentLevel.substring(1).toLowerCase();
+            skillOptions.add(currentLevel);
         }
         skillLevelOption = FXCollections.observableList(skillOptions);
 
         List<String> languageOption = new ArrayList<String>();
         languageOption.add("");
         for (LanguageProficiency level: LanguageProficiency.values()) {
-            languageOption.add(level.toString());
+            String currentLevel = level.toString();
+            currentLevel = currentLevel.substring(0,1).toUpperCase() + currentLevel.substring(1).toLowerCase();
+            languageOption.add(currentLevel);
         }
         languageLevelOption = FXCollections.observableList(languageOption);
     }
@@ -373,7 +379,9 @@ public class JobDescriptionDetailController {
 
         EducationRequirement educationRequirement = jobDescription.getMinimumEducation();
         if (educationRequirement.getMinimumEducation() != null) {
-            minimumEducationLevelComboBox.setValue(educationRequirement.getMinimumEducation().toString());
+            String minimumLevel = educationRequirement.getMinimumEducation().toString();
+            minimumLevel = minimumLevel.substring(0,1).toUpperCase() + minimumLevel.substring(1).toLowerCase();
+            minimumEducationLevelComboBox.setValue(minimumLevel);
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < jobDescription.getMinimumEducation().getAcceptedMajors().size(); i++) {
