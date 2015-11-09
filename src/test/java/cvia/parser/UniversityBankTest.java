@@ -25,8 +25,8 @@ public class UniversityBankTest {
 
     @Test
     public void testAcronymToName() throws Exception {
-        assertEquals("National University of Singapore", universityBank.fullNameOfAcronym("NUS"));
-        assertEquals("National University of Singapore", universityBank.fullNameOfAcronym("nus"));
-        assertEquals("California Institute of Technology", universityBank.fullNameOfAcronym("CalTech"));
+        assertEquals("National University of Singapore", universityBank.universityNamesWithAcronym("NUS").get(1));
+        assertEquals("National University of Singapore", universityBank.universityNamesWithAcronym("nus").get(1));
+        assertEquals("California Institute of Technology", universityBank.universityNamesWithAcronym("CalTech").get(0));
     }
 }

@@ -4,6 +4,7 @@ import cvia.model.CV;
 import cvia.model.EducationInfo.EducationLevel;
 import cvia.reader_writer.TextChunk;
 import cvia.reader_writer.TextLine;
+import cvia.utilities.StringUtilities;
 import cvia.utilities.TextChunkUtilities;
 
 import java.time.LocalDate;
@@ -59,6 +60,14 @@ public class EducationParser implements MiniParser {
     }
 
     private String findInstitution(String line) {
+        String normalizedSpacing = StringUtilities.removeRedundantSpaces(line);
+        UniversityBank universityBank = UniversityBank.getInstance();
+        for (String institutionName: universityBank.getUniversityNames()) {
+
+        }
+        for (String institutionAcronym: universityBank.getUniversityAcronyms()) {
+
+        }
         return "";
     }
 
