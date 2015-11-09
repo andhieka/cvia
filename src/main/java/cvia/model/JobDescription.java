@@ -17,6 +17,9 @@ public class JobDescription {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "vacancy")
+    private Integer vacancy;
+
     @ElementCollection
     @CollectionTable(name = "jd_skill", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<Skill> requiredSkills;
@@ -62,6 +65,14 @@ public class JobDescription {
         this.title = title;
     }
 
+    public Integer getVacancy() {
+        return vacancy;
+    }
+
+    public void setVacancy(Integer vacancy) {
+        this.vacancy = vacancy;
+    }
+
     public List<Skill> getRequiredSkills() {
         return requiredSkills;
     }
@@ -85,7 +96,6 @@ public class JobDescription {
     public void setWorkRequirement(WorkRequirement workRequirement) {
         this.workRequirement = workRequirement;
     }
-
 
     public List<Language> getRequiredLanguages() {
         return requiredLanguages;
