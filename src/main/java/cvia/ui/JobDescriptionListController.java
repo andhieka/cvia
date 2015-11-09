@@ -90,6 +90,13 @@ public class JobDescriptionListController {
         workRequirement.setDuration(12);
         jd1.setWorkRequirement(workRequirement);
 
+        List<Integer> weightage = new ArrayList<Integer>();
+        weightage.add(1);
+        weightage.add(1);
+        weightage.add(2);
+        weightage.add(1);
+        jd1.setWeightage(weightage);
+
         List<JobDescription> jdList = new ArrayList<JobDescription>();
         jdList.add(jd1);
         jdList.add(jd1);

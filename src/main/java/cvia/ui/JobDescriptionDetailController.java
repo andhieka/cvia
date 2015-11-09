@@ -80,6 +80,7 @@ public class JobDescriptionDetailController {
     private static final Double FIELD_WIDTH_GENERAL = 140.0;
     private static final Double FIELD_SPACING_IN_A_ROW = 10.0;
     private static final Double FIELD_SPACING = 5.0;
+    private static final Double OFFSET_BOT = 30.0;
     private static final Double ADD_ICON_SIZE = 15.0;
     private static final String ADD_ICON_PATH = "/add.png";
 
@@ -93,6 +94,7 @@ public class JobDescriptionDetailController {
     private Pane workPane = new Pane();
     private Pane skillPane = new Pane();
     private Pane languagePane = new Pane();
+    private Pane weightagePane = new Pane();
 
     private JDDetailMode mode;
     private JobDescription jobDescription;
@@ -108,6 +110,7 @@ public class JobDescriptionDetailController {
     private List<TextField> txtResponsibilityList = new ArrayList<TextField>();
     private List<Pair> txtSkillList = new ArrayList<Pair>();
     private List<Pair> txtLanguageList = new ArrayList<Pair>();
+    private List<TextField> txtWeightageList = new ArrayList<TextField>();
     private ImageButton btnAddResponsibility;
     private ImageButton btnAddSkill;
     private ImageButton btnAddLanguage;
@@ -123,6 +126,8 @@ public class JobDescriptionDetailController {
     private Double ySkill = HEADER_LABEL_OFFSET_TOP;
     private Double xLanguage = 0.0;
     private Double yLanguage = HEADER_LABEL_OFFSET_TOP;
+    private Double xWeightage = 0.0;
+    private Double yWeightage = HEADER_LABEL_OFFSET_TOP;
 
     private ObservableList<String> minimumEducationOption;
     private ObservableList<String> skillLevelOption;
@@ -149,6 +154,7 @@ public class JobDescriptionDetailController {
         setUpWorkSection();
         setUpSkillSection();
         setUpLanguageSection();
+        setUpWeightageSection();
         populateForm();
         fitToContent();
     }
@@ -221,7 +227,7 @@ public class JobDescriptionDetailController {
     }
 
     private void fitToContent() {
-        formPane.setPrefHeight(yGeneral + yEducation + yWork + ySkill + yLanguage);
+        formPane.setPrefHeight(yGeneral + yEducation + yWork + ySkill + yLanguage + yWeightage + OFFSET_BOT);
     }
 
     private void setUpGeneralSection() {
@@ -364,6 +370,29 @@ public class JobDescriptionDetailController {
         formPane.getChildren().add(languagePane);
     }
 
+    private void setUpWeightageSection() {
+        String[] fieldLabels = {"Education", "Work", "Skill", "Language"};
+        Label weightageHeaderLabel = createHeaderLabelAtPosition(HEADER_LABEL_OFFSET_LEFT, yWeightage, "Weightage");
+        yWeightage += (FIELD_HEIGHT + HEADER_LABEL_SPACING);
+        for (int i = 0; i < fieldLabels.length; i++) {
+            Label weightageFieldLabel = createFieldLabelAtPosition(FIELD_LABEL_OFFSET_LEFT, yWeightage, fieldLabels[i]);
+            weightageFieldLabel.setPrefWidth(150);
+            TextField textField = new TextField();
+            textField.setPrefWidth(30);
+            textField.setPrefHeight(FIELD_HEIGHT);
+            textField.setLayoutX(150 + FIELD_SPACING_IN_A_ROW);
+            textField.setLayoutY(yWeightage);
+            txtWeightageList.add(textField);
+            weightagePane.getChildren().addAll(weightageFieldLabel, textField);
+            yWeightage += (FIELD_HEIGHT + HEADER_LABEL_SPACING);
+        }
+
+        weightagePane.getChildren().addAll(weightageHeaderLabel);
+        weightagePane.setLayoutY(yGeneral + yEducation + yWork + ySkill + yLanguage);
+
+        formPane.getChildren().add(weightagePane);
+    }
+
     private void populateForm() {
         if (mode == JDDetailMode.ADD || jobDescription == null) {
             return;
@@ -421,6 +450,10 @@ public class JobDescriptionDetailController {
             txtLanguageList.get(i).getTextField().setText(languageList.get(i).getName());
             txtLanguageList.get(i).getComboBox().setValue(languageList.get(i).getProficiencyLevel().toString());
             addLanguage();
+        }
+
+        for (int i = 0; i < txtWeightageList.size(); i++) {
+            txtWeightageList.get(i).setText(jobDescription.getWeightage().get(i) + "");
         }
     }
 
@@ -520,6 +553,16 @@ public class JobDescriptionDetailController {
             }
         }
         jd.setRequiredLanguages(languageList);
+
+        List<Integer> weightage = new ArrayList<Integer>();
+        for (int i = 0; i < txtWeightageList.size(); i++) {
+            if (txtWeightageList.get(i).getText().isEmpty()) {
+                weightage.add(1);
+            } else {
+                weightage.add(Math.max(0, Integer.parseInt(txtWeightageList.get(0).getText())));
+            }
+        }
+        jd.setWeightage(weightage);
     }
 
     private void addResponsibility() {
@@ -535,6 +578,7 @@ public class JobDescriptionDetailController {
         workPane.setLayoutY(workPane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         skillPane.setLayoutY(skillPane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         languagePane.setLayoutY(languagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
+        weightagePane.setLayoutY(weightagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         fitToContent();
     }
 
@@ -554,6 +598,7 @@ public class JobDescriptionDetailController {
 
         skillPane.getChildren().addAll(txtSkillName, comboBoxSkillLevel);
         languagePane.setLayoutY(languagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
+        weightagePane.setLayoutY(weightagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         fitToContent();
     }
 
@@ -572,6 +617,7 @@ public class JobDescriptionDetailController {
         txtLanguageList.add(pair);
 
         languagePane.getChildren().addAll(txtLanguage, comboBoxLanguageLevel);
+        weightagePane.setLayoutY(weightagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         fitToContent();
     }
 
