@@ -47,7 +47,11 @@ public class WorkExperience {
     }
 
     public int getWorkDuration() {
-        return (endDate.getYear()  - startDate.getYear()) * 12 + endDate.getMonthValue() - startDate.getMonthValue() + 1;
+        try {
+            return (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonthValue() - startDate.getMonthValue() + 1;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public void setStartDate(LocalDate startDate) {
