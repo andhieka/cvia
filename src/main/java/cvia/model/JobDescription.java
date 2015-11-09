@@ -25,9 +25,12 @@ public class JobDescription {
     @CollectionTable(name = "jd_skill", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<Skill> requiredSkills;
 
-    @Embedded
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private EducationRequirement minimumEducation;
 
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private WorkRequirement workRequirement;
 
     @ElementCollection
@@ -39,12 +42,12 @@ public class JobDescription {
     @CollectionTable(name = "jd_responsibility", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<String> responsibilities;
 
-
-
     //index 0: Education
     //index 1: Work Experience
     //index 2: Skills
     //index 3: Language
+    @ElementCollection
+    @CollectionTable(name = "jd_weightage", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<Integer> weightage;
 
     // Empty constructor for Hibernate
@@ -118,7 +121,7 @@ public class JobDescription {
         return weightage;
     }
 
-    public void setWeightage(ArrayList<Integer> weightage) {
+    public void setWeightage(List<Integer> weightage) {
         this.weightage = weightage;
     }
 

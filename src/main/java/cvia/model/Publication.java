@@ -2,10 +2,7 @@ package cvia.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.LocalDate;
-import java.util.Date;
 /**
  * Created by andhieka on 10/10/15.
  */
@@ -17,7 +14,6 @@ public class Publication {
     private String author;
     @Column(name = "publisher")
     private String publisher;
-    @Temporal(TemporalType.DATE)
     @Column(name = "publication_date")
     private LocalDate publicationDate;
     @Column(name = "conference")
