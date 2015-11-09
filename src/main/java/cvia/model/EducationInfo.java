@@ -11,7 +11,7 @@ import java.util.Date;
 public class EducationInfo implements Comparable<EducationInfo> {
 
 
-
+    
     public enum EducationLevel {
         PRIMARY, SECONDARY, HIGHSCHOOL, DIPLOMA, UNDERGRADUATE, GRADUATE, PHD
     }
