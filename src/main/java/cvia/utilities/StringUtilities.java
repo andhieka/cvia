@@ -1,9 +1,13 @@
 package cvia.utilities;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by andhieka on 8/11/15.
  */
 public class StringUtilities {
+    // Match 1 single non-ASCII pattern
+    private static final Pattern BULLET_POINT_PATTERN = Pattern.compile("[^\\x00-\\x7F](.*?)");
 
     // Case Insensitive String contains method
     // Modified from http://stackoverflow.com/questions/86780/is-the-contains-method-in-java-lang-string-case-sensitive
@@ -32,6 +36,10 @@ public class StringUtilities {
 
     public static String removeRedundantSpaces(String input) {
         return input.replaceAll("\\s+", " ");
+    }
+
+    public static boolean beginsWithBullet(String line) {
+        return BULLET_POINT_PATTERN.matcher(line).matches();
     }
 
 }
