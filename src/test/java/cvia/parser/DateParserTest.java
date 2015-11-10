@@ -57,4 +57,13 @@ public class DateParserTest {
         assertNull(dateRange.getStartDate());
         assertNull(dateRange.getEndDate());
     }
+
+    @Test
+    public void testNoYear() throws Exception {
+        DateRange dateRange = parser.parse("Accenture Pte Ltd., Software Engineering Intern May – Jul 2015");
+        assertEquals(5, dateRange.getStartDate().getMonthValue());
+        assertEquals(7, dateRange.getEndDate().getMonthValue());
+        assertEquals(2015, dateRange.getStartDate().getYear());
+        assertEquals(2015, dateRange.getEndDate().getYear());
+    }
 }

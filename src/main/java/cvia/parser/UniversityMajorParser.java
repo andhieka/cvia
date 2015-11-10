@@ -24,7 +24,7 @@ public class UniversityMajorParser {
     }
 
     public List<String> universityMajorsInLine(String textLine) {
-
+        return null;
     }
 
     // Private methods

@@ -124,6 +124,7 @@ public class DateRangeParser {
     private boolean isRangeMarker(String token) {
         switch (token.toLowerCase()) {
             case "-":
+            case "–":
             case "to":
             case "until":
                 return true;
