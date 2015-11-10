@@ -2,8 +2,11 @@ package cvia.parser;
 
 import cvia.model.CV;
 import cvia.reader_writer.TextChunk;
+import cvia.reader_writer.TextLine;
+import cvia.utilities.TextChunkUtilities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by andhieka on 9/11/15.
@@ -25,6 +28,11 @@ public class WorkExperienceParser implements MiniParser {
     @Override
     public void parseAndSave() {
         assert(cv != null);
+
+        List<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
+        for (TextLine textLine:textLines) {
+            System.out.println(textLine.getText());
+        }
     }
 
     @Override
