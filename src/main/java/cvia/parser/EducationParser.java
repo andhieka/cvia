@@ -9,6 +9,8 @@ import cvia.utilities.TextChunkUtilities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * Created by andhieka on 9/11/15.
@@ -20,6 +22,7 @@ public class EducationParser implements MiniParser {
     private EducationLevel educationLevel;
     private String institutionName;
     private LocalDate startDate, endDate;
+    private HashMap<String, Pattern> cachedPatterns = new HashMap<>();
 
 
     @Override
@@ -63,12 +66,16 @@ public class EducationParser implements MiniParser {
         String normalizedSpacing = StringUtilities.removeRedundantSpaces(line);
         UniversityBank universityBank = UniversityBank.getInstance();
         for (String institutionName: universityBank.getUniversityNames()) {
-
+            if (matchesWholeWord(normalizedSpacing, institutionName)) {
+                return institutionName;
+            }
         }
         for (String institutionAcronym: universityBank.getUniversityAcronyms()) {
-
+            if (matchesWholeWord(normalizedSpacing, institutionAcronym)) {
+                return institutionAcronym;
+            }
         }
-        return "";
+        return null;
     }
 
     private LocalDate findStartDate(String line) {
@@ -77,5 +84,13 @@ public class EducationParser implements MiniParser {
 
     private LocalDate findEndDate(String line) {
         return null;
+    }
+
+    private boolean matchesWholeWord(String line, String keyword) {
+        if (!cachedPatterns.containsKey(keyword.toLowerCase())) {
+            cachedPatterns.put(keyword, Pattern.compile(String.format("\\b%s\\b", keyword), Pattern.CASE_INSENSITIVE));
+        }
+        Pattern pattern = cachedPatterns.get(keyword.toLowerCase());
+        return pattern.matcher(line).matches();
     }
 }
