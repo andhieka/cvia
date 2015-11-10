@@ -2,28 +2,30 @@ package cvia.storage;
 
 import cvia.model.*;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Michael Limantara on 11/2/2015.
  */
 public class CVManager {
     private SessionFactory factory;
+    private Logger logger;
 
     public CVManager () {
         setUpConnection();
+        logger = Logger.getLogger("CVManager");
     }
 
-    public Long createCV(CV cv) {
+    public Long save(CV cv) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Long cvId = null;
@@ -36,13 +38,39 @@ public class CVManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Error addCV:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error save CV: %s", e.getMessage()));
         } finally {
             session.close();
         }
 
         return cvId;
+    }
+
+    public List<CV> listCV() {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        List<CV> cvList = null;
+
+        try {
+            transaction = session.beginTransaction();
+            cvList = session.createQuery("from CV").list();
+            for (CV cv: cvList) {
+                Hibernate.initialize(cv.getEducationInfoList());
+                Hibernate.initialize(cv.getWorkExperienceList());
+                Hibernate.initialize(cv.getPublications());
+                Hibernate.initialize(cv.getLanguages());
+                Hibernate.initialize(cv.getSkills());
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.log(Level.SEVERE, String.format("Error list CV: %s", e.getMessage()));
+        } finally {
+            session.close();
+        }
+
+        return cvList;
     }
 
     public CV getCVContentById(Long id) {
@@ -97,7 +125,7 @@ public class CVManager {
         return cv.getRawSource();
     }
 
-    public void updateCV(Long id, CV newCV) {
+    public void update(Long id, CV newCV) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -106,24 +134,23 @@ public class CVManager {
             CV cv = session.get(CV.class, id);
             cv.setPersonalInfo(newCV.getPersonalInfo());
             cv.setEducationInfoList(newCV.getEducationInfoList());
+            cv.setWorkExperienceList(newCV.getWorkExperienceList());
+            cv.setSkills(newCV.getSkills());
             cv.setLanguages(newCV.getLanguages());
             cv.setPublications(newCV.getPublications());
-            cv.setSkills(newCV.getSkills());
-            cv.setWorkExperienceList(newCV.getWorkExperienceList());
             session.update(cv);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Error updateCV:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error update CV: %s", e.getMessage()));
         } finally {
             session.close();
         }
     }
 
-    public void deleteCV(Long id) {
+    public void delete(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -136,8 +163,7 @@ public class CVManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Error deleteCV:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, String.format("Error delete CV: %s", e.getMessage()));
         } finally {
             session.close();
         }
@@ -215,7 +241,7 @@ public class CVManager {
         cv1.setWorkExperienceList(workExperienceList);
         cv1.setRawSource(rawSource);
 
-        Long id = cvManager.createCV(cv1);
+        Long id = cvManager.save(cv1);
         CV cv2 = cvManager.getCVContentById(id);
         System.out.println(cv2.getPersonalInfo().toString());
 
@@ -231,7 +257,7 @@ public class CVManager {
         System.out.println(rawSource.getRawContent().length == rawContentInDb.length);
 
         cv1.getPersonalInfo().setName("user2");
-        cvManager.updateCV(id, cv1);
+        cvManager.update(id, cv1);
 
         CV cv3 = cvManager.getCVContentById(id);
         System.out.println(cv3.getPersonalInfo().toString());

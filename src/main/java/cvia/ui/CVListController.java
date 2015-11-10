@@ -14,8 +14,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -45,7 +47,7 @@ public class CVListController {
     @FXML
     private TextField searchTextField;
 
-    private ImageButton btnAddCv;
+    private Button btnAddCv;
 
     @FXML
     private TableView<CV> cvTable;
@@ -60,61 +62,57 @@ public class CVListController {
     @FXML
     private TableColumn columnAction;
 
+    private LogicController logicController;
     private ObservableList<CV> displayedCVData;
     private List<CV> allCVData;
 
-    public void setCVData(List<CV> allCVData) {
-        this.allCVData = allCVData;
-    }
-
     @FXML
     private void initialize() {
-        PersonalInfo user1 = new PersonalInfo();
-        user1.setName("user 2");
-        user1.setContactNumber("+658123456");
-        user1.setEmail("user1@testing.com");
-        CV cv1 = new CV();
-        cv1.setId(1L);
-        cv1.setPersonalInfo(user1);
-
-        PersonalInfo user2 = new PersonalInfo();
-        user2.setName("user 1");
-        user2.setContactNumber("+658123456");
-        user2.setEmail("user2@testing.com");
-        CV cv2 = new CV();
-        cv2.setId(2L);
-        cv2.setPersonalInfo(user2);
-
-        List<CV> sampleData = new ArrayList<CV>();
-        sampleData.add(cv1);
-        sampleData.add(cv2);
-
+        logicController = LogicController.getInstance();
         setUpBtnAddCv();
         setUpSearchBox();
         setUpCVTable();
-        setCVData(sampleData);
-        populateCVTable(sampleData);
+        loadInitialData();
+    }
+
+    private void loadInitialData() {
+        allCVData = logicController.loadAllCVData();
+        populateCVTable(allCVData);
     }
 
     private void setUpBtnAddCv() {
-        btnAddCv = new ImageButton("/add.png", SIZE_ADD_CV_BUTTON);
-        btnAddCv.setLayoutX(30);
-        btnAddCv.setLayoutY(40);
-        btnAddCv.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Import new CV");
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-                List<File> filesSelected = fileChooser.showOpenMultipleDialog(btnAddCv.getScene().getWindow());
-                // TODO: Process uploaded CVs (files)
-                try {
-                    Desktop.getDesktop().open(filesSelected.get(0));
-                } catch (IOException e) {
-                    e.printStackTrace();
+        btnAddCv = new Button();
+        btnAddCv.setLayoutX(50);
+        btnAddCv.setLayoutY(42);
+        ImageView imageView = new ImageView("/add.png");
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        btnAddCv.setGraphic(imageView);
+        btnAddCv.setText("Insert New CV/Resume");
+        btnAddCv.setStyle("-fx-background-color: gold; -fx-font-size: 14");
+
+        btnAddCv.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Import new CV");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+            List<File> filesSelected = fileChooser.showOpenMultipleDialog(btnAddCv.getScene().getWindow());
+
+            if (filesSelected != null) {
+                // Process uploaded CVs (files)
+                for (File cvFile : filesSelected) {
+                    try {
+                        CV cv = logicController.addCV(cvFile);
+                        allCVData.add(cv);
+                    } catch (IOException e) {
+                        //TODO: Trigger alert box
+                    }
                 }
+
+                // Refresh table view
+                populateCVTable(allCVData);
             }
         });
+
         pane.getChildren().add(btnAddCv);
     }
 
@@ -219,6 +217,7 @@ public class CVListController {
                                 public void handle(ActionEvent event) {
                                     CV selectedCV = (CV) getTableView().getItems().get(getIndex());
                                     editCV(selectedCV);
+                                    populateCVTable(allCVData);
                                 }
                             });
 
@@ -270,6 +269,7 @@ public class CVListController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             deleteCV(selectedCV);
+            populateCVTable(allCVData);
         }
     }
 

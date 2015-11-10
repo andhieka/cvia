@@ -65,7 +65,7 @@ public class JobDescriptionDetailController {
 
     private static final Double FORM_TITLE_OFFSET_TOP = 10.0;
     private static final Double FORM_TITLE_HEIGHT = 30.0;
-    private static final Double BTN_SAVE_WIDTH = 50.0;
+    private static final Double BTN_SAVE_WIDTH = 100.0;
     private static final Double BTN_SAVE_HEIGHT = 30.0;
     private static final String BTN_SAVE_STYLE = "-fx-font-size: 13px; -fx-font-weight: bold";
     private static final Double FIELD_HEIGHT = 25.0;
@@ -139,7 +139,7 @@ public class JobDescriptionDetailController {
 
     @FXML
     private void initialize() {
-        btnSave = new Button("Save");
+        btnSave = new Button();
     }
 
     public void generateForm(JobDescription jobDescription, JDDetailMode mode) {
@@ -148,13 +148,13 @@ public class JobDescriptionDetailController {
         
         setUpOptions();
         setFormTitle();
-        setSaveButton();
         setUpGeneralSection();
         setUpEducationSection();
         setUpWorkSection();
         setUpSkillSection();
         setUpLanguageSection();
         setUpWeightageSection();
+        setSaveButton();
         populateForm();
         fitToContent();
     }
@@ -203,16 +203,16 @@ public class JobDescriptionDetailController {
     }
 
     private void setSaveButton() {
+        btnSave.setText("Save");
         btnSave.setStyle("-fx-background-color: lightgreen;-fx-font-size: 14");
         btnSave.prefWidth(BTN_SAVE_WIDTH);
         btnSave.prefHeight(BTN_SAVE_HEIGHT);
-        btnSave.setLayoutX(FIELD_OFFSET_LEFT + 250);
-        btnSave.setLayoutY(FORM_TITLE_OFFSET_TOP);
+        btnSave.setLayoutX(150);
+        btnSave.setLayoutY(yGeneral + yEducation + yWork + ySkill + yLanguage + yWeightage + OFFSET_BOT);
         
         btnSave.setOnAction(event -> {
             saveJobDescription();
             jdDetailStage.close();
-            System.out.println("closing..");
         });
         
         formPane.getChildren().add(btnSave);
@@ -220,14 +220,20 @@ public class JobDescriptionDetailController {
 
     private void saveJobDescription() {
         if (mode == JDDetailMode.ADD) {
+            try {
+                constructJDFromForm();
+            } catch (InvalidJDException e) {
+                System.out.println(e.getMessage());
+            }
             LogicController.getInstance().addJD(jobDescription);
         } else if (mode == JDDetailMode.EDIT) {
-            LogicController.getInstance().editJD(jobDescription);
+            LogicController.getInstance().editJD(jobDescription.getId(), jobDescription);
         }
     }
 
     private void fitToContent() {
-        formPane.setPrefHeight(yGeneral + yEducation + yWork + ySkill + yLanguage + yWeightage + OFFSET_BOT);
+        formPane.setPrefHeight(yGeneral + yEducation + yWork + ySkill + yLanguage +
+                yWeightage + BTN_SAVE_HEIGHT + 2 * OFFSET_BOT);
     }
 
     private void setUpGeneralSection() {
@@ -464,7 +470,7 @@ public class JobDescriptionDetailController {
 
         JobDescription jd = jobDescription;
         if (mode == JDDetailMode.ADD) {
-            jd = new JobDescription();
+            jobDescription = new JobDescription();
         }
 
         jd.setTitle(txtTitle.getText());
@@ -579,6 +585,7 @@ public class JobDescriptionDetailController {
         skillPane.setLayoutY(skillPane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         languagePane.setLayoutY(languagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         weightagePane.setLayoutY(weightagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
+        btnSave.setLayoutY(btnSave.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         fitToContent();
     }
 
@@ -599,6 +606,7 @@ public class JobDescriptionDetailController {
         skillPane.getChildren().addAll(txtSkillName, comboBoxSkillLevel);
         languagePane.setLayoutY(languagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         weightagePane.setLayoutY(weightagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
+        btnSave.setLayoutY(btnSave.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         fitToContent();
     }
 
@@ -618,6 +626,7 @@ public class JobDescriptionDetailController {
 
         languagePane.getChildren().addAll(txtLanguage, comboBoxLanguageLevel);
         weightagePane.setLayoutY(weightagePane.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
+        btnSave.setLayoutY(btnSave.getLayoutY() + FIELD_HEIGHT + FIELD_SPACING);
         fitToContent();
     }
 

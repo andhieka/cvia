@@ -12,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -19,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * Created by Michael Limantara on 11/5/2015.
@@ -50,9 +51,12 @@ public class JobDescriptionListController {
     @FXML
     private TextField searchTextField;
 
+    private LogicController logicController;
+
     private List<JobDescription> allJDData;
     private List<JobDescription> displayedJDData;
     private List<Pane> jobItemPanes = new ArrayList<Pane>();
+    private Button btnAddJD;
 
     public void setJDData(List<JobDescription> jdData) {
         this.allJDData = jdData;
@@ -103,10 +107,30 @@ public class JobDescriptionListController {
         jdList.add(jd1);
         jdList.add(jd1);
 
+        logicController = LogicController.getInstance();
         setJDData(jdList);
         setDisplayedJDData(allJDData);
+        setUpButton();
         setUpSearchBox();
         setUpJobDescriptionView();
+    }
+
+    private void setUpButton() {
+        btnAddJD = new Button();
+        btnAddJD.setLayoutX(50);
+        btnAddJD.setLayoutY(42);
+        ImageView imageView = new ImageView("/add.png");
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        btnAddJD.setGraphic(imageView);
+        btnAddJD.setText("Create New Job");
+        btnAddJD.setStyle("-fx-background-color: gold; -fx-font-size: 14");
+
+        btnAddJD.setOnAction(event -> {
+            addJobDescription();
+        });
+
+        pane.getChildren().add(btnAddJD);
     }
 
     private void setUpSearchBox() {
@@ -234,13 +258,21 @@ public class JobDescriptionListController {
         return displayedJDData.get(row * 3 + col);
     }
 
+    private void addJobDescription() {
+        showJobDescriptionDetailForm(null, JDDetailMode.ADD);
+    }
+
     private void editJobDescription(JobDescription jobDescription) {
+        showJobDescriptionDetailForm(jobDescription, JDDetailMode.EDIT);
+    }
+
+    private void showJobDescriptionDetailForm(JobDescription jobDescription, JDDetailMode mode) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(CviaApp.class.getResource("/JobDescriptionDetail.fxml"));
             ScrollPane scrollPane = loader.load();
             JobDescriptionDetailController jdDetailController = loader.getController();
-            jdDetailController.generateForm(jobDescription, JDDetailMode.EDIT);
+            jdDetailController.generateForm(jobDescription, mode);
 
             Stage jdDetailStage = new Stage();
             Scene scene = new Scene(scrollPane);
@@ -266,9 +298,8 @@ public class JobDescriptionListController {
     }
 
     private void deleteJD(JobDescription jobDescription) {
-        LogicController.getInstance().deleteJD(jobDescription);
+        LogicController.getInstance().deleteJD(jobDescription.getId());
         allJDData.remove(jobDescription);
         refreshData(allJDData);
-        //TODO: Animate delete?
     }
 }
