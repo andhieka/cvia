@@ -5,13 +5,21 @@ import cvia.utilities.DateUtilities;
 import cvia.utilities.Pair;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 
-import java.time.LocalDate;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +39,8 @@ public class CVDetailController2 {
     private static final Double FIELD_OFFSET_LEFT = 15.0;
     private static final Double FIELD_SPACING = 5.0;
     private static final Double FIELD_SPACING_IN_A_ROW = 25.0;
+    private static final String NEXT_ICON_PATH = "/next.png";
+    private static final String PREV_ICON_PATH = "/prev.png";
     private static final String ADD_ICON_PATH = "/add.png";
     private static final Double ADD_ICON_SIZE = 15.0;
     private static final Double BTN_SIZE = 25.0;
@@ -85,6 +95,8 @@ public class CVDetailController2 {
     private ImageButton btnSkillAdd;
     private ImageButton btnLanguageAdd;
     private Button btnSave;
+    private ImageButton btnPrev;
+    private ImageButton btnNext;
 
     private List<HashMap<String, TextField>> txtEducationList = new ArrayList<HashMap<String, TextField>>();
     private List<ComboBox> comboBoxEducationLevelList = new ArrayList<ComboBox>();
@@ -106,6 +118,10 @@ public class CVDetailController2 {
     private Stage stage;
     private CVListController controller;
 
+    private int pageNumber = 0;
+    private int numberOfPages = 0;
+    private PDDocument pdfDocument;
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -117,7 +133,7 @@ public class CVDetailController2 {
     @FXML
     private void initialize() {
         setUpOptions();
-        setUpButton();
+        setUpButtons();
         setUpPersonalForm();
         setUpEducationForm();
         setUpWorkForm();
@@ -154,12 +170,11 @@ public class CVDetailController2 {
         languageLevelOption = FXCollections.observableList(languageOption);
     }
 
-    private void setUpButton() {
+    private void setUpButtons() {
         btnSave = new Button("Save");
         btnSave.setPrefHeight(25.0);
         btnSave.setLayoutX(450.0);
         btnSave.setLayoutY(5.0);
-        rightPane.getChildren().add(btnSave);
 
         btnSave.setOnAction(event -> {
             constructCVFromForm();
@@ -167,6 +182,26 @@ public class CVDetailController2 {
             controller.refreshData(cv);
             stage.close();
         });
+
+        btnPrev = new ImageButton(PREV_ICON_PATH, BTN_SIZE);
+        btnPrev.setLayoutX(10);
+        Tooltip prev = new Tooltip("Previous Page");
+        Tooltip.install(btnPrev, prev);
+        btnNext = new ImageButton(NEXT_ICON_PATH, BTN_SIZE);
+        btnNext.setLayoutX(40);
+        Tooltip next = new Tooltip("Next Page");
+        Tooltip.install(btnNext, next);
+
+        btnPrev.setOnAction(event -> {
+            pageNumber = Math.max(0, pageNumber - 1);
+            showImageAtPageNumber();
+        });
+        btnNext.setOnAction(event -> {
+            pageNumber = Math.min(pageNumber + 1, numberOfPages - 1);
+            showImageAtPageNumber();
+        });
+
+        rightPane.getChildren().addAll(btnSave, btnPrev, btnNext);
     }
 
     private void setUpPersonalForm() {
@@ -398,6 +433,8 @@ public class CVDetailController2 {
     public void populateForm(CV cv) {
         this.cv = cv;
 
+        setPdfView();
+
         //Personal Info
         if (cv.getPersonalInfo() != null) {
             PersonalInfo personalInfo = cv.getPersonalInfo();
@@ -501,6 +538,34 @@ public class CVDetailController2 {
                 }
                 addLanguage();
             }
+        }
+    }
+
+    private void setPdfView() {
+        pdfImageView.setFitWidth(500);
+        pdfImageView.setFitHeight(600);
+        pdfImageView.setCache(true);
+
+        // byte[] cvRawContent = cv.getRawSource().getRawContent();
+
+        try {
+            // ByteArrayInputStream inStream = new ByteArrayInputStream(cvRawContent);
+            pdfDocument = PDDocument.load(new File(cv.getRawSource().getFilename()));
+            numberOfPages = pdfDocument.getNumberOfPages();
+            showImageAtPageNumber();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showImageAtPageNumber() {
+        try {
+            PDPage pdfPage = (PDPage) pdfDocument.getDocumentCatalog().getAllPages().get(pageNumber);
+            BufferedImage bufferedImage = pdfPage.convertToImage(BufferedImage.TYPE_INT_RGB, 100);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            pdfImageView.setImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

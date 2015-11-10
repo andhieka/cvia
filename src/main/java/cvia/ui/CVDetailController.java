@@ -85,7 +85,7 @@ public class CVDetailController {
 
     public void setCV(CV cv) {
         this.cv = cv;
-//        setPdfImage();
+        setPdfImage();
         setUpButtons();
         setUpForm();
     }

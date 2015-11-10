@@ -9,14 +9,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.commons.io.IOUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CviaApp extends Application {
-    private static final String APPLICATION_NAME = "CVIA";
+    private static final String APPLICATION_NAME = "CVestigator";
 
     private Stage primaryStage;
     private Pane rootPane;
@@ -35,7 +39,11 @@ public class CviaApp extends Application {
 
         initializeMainLayout();
 
-        seedCV();
+        try {
+            seedCV();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeMainLayout() {
@@ -59,10 +67,10 @@ public class CviaApp extends Application {
     }
 
     // For testing
-    private void seedCV() {
+    private void seedCV() throws IOException {
         CV seedCV = new CV();
         PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.setName("Michael");
+        personalInfo.setName("Michael Limantara");
         personalInfo.setContactNumber("83677234");
         personalInfo.setEmail("mike.bdg@gmail.com");
         personalInfo.setAddress("");
@@ -99,6 +107,11 @@ public class CviaApp extends Application {
         languageList.add(new Language("English"));
         languageList.add(new Language("Indonesian"));
         seedCV.setLanguages(languageList);
+        RawSource rawSource = new RawSource();
+        File file = new File("Resume Michael Limantara.pdf");
+        rawSource.setFilename(file.getName());
+        rawSource.setRawContent(IOUtils.toByteArray(new FileReader(file)));
+        seedCV.setRawSource(rawSource);
 
         logicController.saveCV(seedCV);
     }
