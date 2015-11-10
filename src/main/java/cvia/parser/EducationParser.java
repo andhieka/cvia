@@ -1,6 +1,7 @@
 package cvia.parser;
 
 import cvia.model.CV;
+import cvia.model.EducationInfo;
 import cvia.model.EducationInfo.EducationLevel;
 import cvia.reader_writer.TextChunk;
 import cvia.reader_writer.TextLine;
@@ -22,8 +23,9 @@ public class EducationParser implements MiniParser {
     private String major;
     private EducationLevel educationLevel;
     private String institutionName;
-    private LocalDate startDate, endDate;
+    private DateRange dateRange;
     private HashMap<String, Pattern> cachedPatterns = new HashMap<>();
+    private ArrayList<EducationInfo> educationInfos;
 
     // smaller parsers
     private DateRangeParser dateRangeParser = new DateRangeParser();
@@ -46,17 +48,53 @@ public class EducationParser implements MiniParser {
         ArrayList<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
         for (TextLine textLine: textLines) {
             String line = textLine.getText();
-            String major = findMajor(line);
-            EducationLevel level = findLevel(line);
-            String institution = findInstitution(line);
-            DateRange dateRange = findDateRange(line);
+            if (!StringUtilities.beginsWithBullet(line)) {
+                saveEducationInfo();
+            }
+            if (major == null) {
+                major = findMajor(line);
+            }
+            if (educationLevel == null) {
+                educationLevel = findLevel(line);
+            }
+            if (institutionName == null) {
+                institutionName = findInstitution(line);
+            }
+            if (dateRange == null) {
+                dateRange = findDateRange(line);
+            }
         }
+        saveEducationInfo();
+
+        cv.setEducationInfoList(educationInfos);
+    }
+
+    private void saveEducationInfo() {
+        if (major != null || educationLevel != null ||
+                institutionName != null || dateRange != null) {
+            EducationInfo educationInfo = new EducationInfo();
+            educationInfo.setMajor(major == null ? "" : major);
+            educationInfo.setEducationLevel(educationLevel);
+            educationInfo.setStartDate(dateRange.getStartDate());
+            educationInfo.setEndDate(dateRange.getEndDate());
+            educationInfo.setInstitutionName(institutionName == null ? "" : institutionName);
+            educationInfos.add(educationInfo);
+        }
+        major = null;
+        educationLevel = null;
+        institutionName = null;
+        dateRange = null;
     }
 
     @Override
     public void reset() {
         cv = null;
         textChunks.clear();
+        educationInfos = new ArrayList<>();
+        major = null;
+        educationLevel = null;
+        institutionName = null;
+        dateRange = null;
     }
 
     public String findMajor(String line) {
