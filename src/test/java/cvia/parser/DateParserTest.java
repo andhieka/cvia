@@ -44,4 +44,10 @@ public class DateParserTest {
         assertEquals(LocalDate.now().withDayOfMonth(1), dateRange.getEndDate());
     }
 
+    @Test
+    public void testWithNoiseWords() throws Exception {
+        DateRange dateRange = parser.parse("National University of Singapore Jul 2014 - Present Bachelor of Science (Honours)");
+        assertEquals(LocalDate.of(2014, 7, 1), dateRange.getStartDate());
+        assertEquals(LocalDate.now().withDayOfMonth(1), dateRange.getEndDate());
+    }
 }

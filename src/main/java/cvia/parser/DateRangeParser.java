@@ -33,10 +33,12 @@ public class DateRangeParser {
     }
 
     public boolean isDateToken(String token) {
-        return isMonth(token) || isYear(token);
+        return isMonth(token) || isYear(token) || isRangeMarker(token) || isPresent(token);
     }
 
-    public DateRange parse(String sentence) {
+    public DateRange parse(String line) {
+        String sentence = getRelevantPart(line);
+
         String[] tokens = sentence.split("\\s+");
         DateDescriptor startDateDescriptor = new DateDescriptor();
         DateDescriptor endDateDescriptor = new DateDescriptor();
@@ -57,6 +59,26 @@ public class DateRangeParser {
         LocalDate startDate = startDateDescriptor.toLocalDate();
         LocalDate endDate = endDateDescriptor.toLocalDate();
         return new DateRange(startDate, endDate);
+    }
+
+    private String getRelevantPart(String line) {
+        String[] tokens = line.split("\\s");
+        int startIdx = -1, endIdx = -1;
+        for (int i = 0; i < tokens.length; i++) {
+            if (isDateToken(tokens[i])) {
+                if (startIdx == -1) {
+                    startIdx = i;
+                    endIdx = i;
+                } else {
+                    endIdx = i;
+                }
+            }
+        }
+        StringBuilder timeDescription = new StringBuilder();
+        for (int i = startIdx; i <= endIdx; i++) {
+            timeDescription.append(tokens[i]).append(' ');
+        }
+        return timeDescription.toString();
     }
 
     private boolean isPresent(String token) {
