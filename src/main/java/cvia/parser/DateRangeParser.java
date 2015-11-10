@@ -21,9 +21,10 @@ public class DateRangeParser {
 
     private class DateDescriptor {
         public int month;
-        public int year;
+        public int year = -1;
 
         public LocalDate toLocalDate() {
+            if (year == -1) return null;
             try {
                 return LocalDate.of(year, Math.max(1, Math.min(12, month)), 1);
             } catch (DateTimeException e) {
@@ -74,6 +75,7 @@ public class DateRangeParser {
                 }
             }
         }
+        if (startIdx == -1) return "";
         StringBuilder timeDescription = new StringBuilder();
         for (int i = startIdx; i <= endIdx; i++) {
             timeDescription.append(tokens[i]).append(' ');

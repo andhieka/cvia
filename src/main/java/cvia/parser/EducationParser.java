@@ -89,10 +89,11 @@ public class EducationParser implements MiniParser {
     }
 
     private boolean matchesWholeWord(String line, String keyword) {
-        if (!cachedPatterns.containsKey(keyword.toLowerCase())) {
+        keyword = keyword.toLowerCase();
+        if (!cachedPatterns.containsKey(keyword)) {
             cachedPatterns.put(keyword, Pattern.compile(String.format("\\b%s\\b", keyword), Pattern.CASE_INSENSITIVE));
         }
-        Pattern pattern = cachedPatterns.get(keyword.toLowerCase());
+        Pattern pattern = cachedPatterns.get(keyword);
         return pattern.matcher(line).matches();
     }
 }
