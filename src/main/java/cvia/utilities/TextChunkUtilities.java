@@ -31,4 +31,12 @@ public class TextChunkUtilities {
         }
         return result;
     }
+
+    public static String stringFromTextLines(List<TextLine> textLines) {
+        StringBuilder builder = new StringBuilder();
+        for (TextLine textLine: textLines) {
+            builder.append(textLine.getText()).append('\n');
+        }
+        return builder.toString();
+    }
 }

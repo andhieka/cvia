@@ -57,7 +57,7 @@ public class SkillParser implements MiniParser {
                 combinedTextChunks = combinedTextChunks.mergedWith(textChunk);
             }
         }
-        String inputText = combinedTextChunks.getText();
+        String inputText = (combinedTextChunks == null) ? "" : combinedTextChunks.getText();
         List<Skill> skills = findSkills(inputText);
         cv.setSkills(skills);
     }

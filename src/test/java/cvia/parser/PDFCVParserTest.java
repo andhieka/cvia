@@ -36,6 +36,7 @@ public class PDFCVParserTest {
         File file = new File("resume.pdf");
         PDFReadResult readResult = reader.readPDFFromFile(file);
         CV cv = parser.parse(readResult);
+        assertEquals("desmond lim", cv.getPersonalInfo().getName().toLowerCase());
     }
 
     @Test
@@ -43,6 +44,7 @@ public class PDFCVParserTest {
         File file = new File("yamini.pdf");
         PDFReadResult readResult = reader.readPDFFromFile(file);
         CV cv = parser.parse(readResult);
+        assertEquals("yamini bhaskar", cv.getPersonalInfo().getName().toLowerCase());
     }
 
     @Test
@@ -50,6 +52,7 @@ public class PDFCVParserTest {
         File file = new File("Resume Michael Limantara.pdf");
         PDFReadResult readResult = reader.readPDFFromFile(file);
         CV cv = parser.parse(readResult);
+        assertEquals("michael limantara", cv.getPersonalInfo().getName().toLowerCase());
     }
 
     @Test
@@ -57,5 +60,6 @@ public class PDFCVParserTest {
         File file = new File("desmond2.pdf");
         PDFReadResult readResult = reader.readPDFFromFile(file);
         CV cv = parser.parse(readResult);
+        assertEquals("desmond lim", cv.getPersonalInfo().getName().toLowerCase());
     }
 }

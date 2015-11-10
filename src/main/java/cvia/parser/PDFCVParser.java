@@ -57,7 +57,7 @@ public class PDFCVParser {
     private void reset() {
         this.rawCV = null;
         this.parsedCV = null;
-        this.parseMode = ParseMode.UNKNOWN;
+        this.parseMode = ParseMode.PERSONAL_INFO;
         miniParsers.values().forEach(MiniParser::reset);
     }
 
