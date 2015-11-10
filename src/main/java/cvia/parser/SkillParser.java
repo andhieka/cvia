@@ -102,6 +102,7 @@ public class SkillParser implements MiniParser {
             String keyword = keywords.get(i);
             if (StringUtilities.containsIgnoreCase(input, keyword)) {
                 Skill skill = new Skill(keyword);
+                skill.setProficiencyLevel(Skill.SkillProficiency.INTERMEDIATE);
                 skills.add(skill);
             }
         }

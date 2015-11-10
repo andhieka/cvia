@@ -73,6 +73,7 @@ public class LanguageParser implements MiniParser {
         for (String keyword: languageKeywords) {
             if (StringUtilities.containsIgnoreCase(input, keyword)) {
                 Language language = new Language(keyword);
+                language.setProficiencyLevel(Language.LanguageProficiency.ADVANCED);
                 languages.add(language);
             }
         }
