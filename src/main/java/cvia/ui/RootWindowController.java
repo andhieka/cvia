@@ -166,15 +166,7 @@ public class RootWindowController {
     }
 
     private void showSearchLayout() {
-        Pane searchPane;
-        try {
-            searchPane = FXMLLoader.load(getClass().getResource("/pdfbox.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(searchPane));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //TODO: Remove in sidebar?
     }
 
     private void clearAllLayout() {
