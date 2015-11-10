@@ -24,7 +24,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +55,8 @@ public class CVListController {
     @FXML
     private TableColumn<CV, String> columnName;
     @FXML
+    private TableColumn<CV, String> columnContactNumber;
+    @FXML
     private TableColumn<CV, String> columnEmail;
     @FXML
     private TableColumn<CV, String> columnCurrentTitle;
@@ -66,7 +67,17 @@ public class CVListController {
     private ObservableList<CV> displayedCVData;
     private List<CV> allCVData;
 
-    public void refreshData() {
+    public void refreshData(CV newCv) {
+        CV oldCv = null;
+        for (CV cv: allCVData) {
+            if (cv.getId() == newCv.getId()) {
+                oldCv = cv;
+            }
+        }
+
+        allCVData.remove(oldCv);
+        allCVData.add(newCv);
+
         populateCVTable(allCVData);
     }
 
@@ -80,14 +91,7 @@ public class CVListController {
     }
 
     private void loadInitialData() {
-        allCVData = logicController.loadAllCVData();
-        CV cv = new CV();
-        PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.setName("test");
-        personalInfo.setEmail("asdf");
-        personalInfo.setContactNumber("asdf");
-        cv.setPersonalInfo(personalInfo);
-        allCVData.add(cv);
+        allCVData = logicController.listCV();
         populateCVTable(allCVData);
     }
 
@@ -170,6 +174,7 @@ public class CVListController {
 
     private void setUpCVTable() {
         cvTable.setFixedCellSize(25);
+        columnNo.setSortable(false);
         columnNo.setCellFactory(new Callback<TableColumn, TableCell>() {
             @Override
             public TableCell call(TableColumn param) {
@@ -181,7 +186,7 @@ public class CVListController {
                         if (empty) {
                             setText("");
                         } else {
-                            setText(getTableRow().getIndex() +  1 + "");
+                            setText(getTableRow().getIndex() + 1 + "");
                         }
                     }
                 };
@@ -190,8 +195,11 @@ public class CVListController {
         columnNo.setStyle("-fx-alignment: CENTER");
         columnName.setCellValueFactory(cellData ->
                 new ReadOnlyStringWrapper(cellData.getValue().getPersonalInfo().getName()));
+        columnContactNumber.setCellValueFactory(cellData ->
+                new ReadOnlyStringWrapper(cellData.getValue().getPersonalInfo().getContactNumber()));
         columnEmail.setCellValueFactory(cellData ->
                 new ReadOnlyStringWrapper(cellData.getValue().getPersonalInfo().getEmail()));
+
 //        columnCurrentTitle.setCellValueFactory(cellData ->
 //                new ReadOnlyStringWrapper(cellData.getValue().getPersonalInfo().getContactNumber()));
         columnAction.setSortable(false);
@@ -255,8 +263,8 @@ public class CVListController {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(CviaApp.class.getResource("/CVDetail.fxml"));
             SplitPane splitPane = loader.load();
-            CVDetailController cvDetailController = loader.getController();
-            cvDetailController.setCV(cv);
+            CVDetailController2 cvDetailController = loader.getController();
+            cvDetailController.populateForm(cv);
             cvDetailController.setController(this);
 
             Scene cvDetailScene = new Scene(splitPane);

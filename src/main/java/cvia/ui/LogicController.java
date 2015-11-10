@@ -52,7 +52,7 @@ public class LogicController {
         return addedCV;
     }
 
-    public List<CV> loadAllCVData() {
+    public List<CV> listCV() {
         return cvManager.listCV();
     }
 
@@ -70,6 +70,10 @@ public class LogicController {
         return jobDescription;
     }
 
+    public List<JobDescription> listJobDescription() {
+        return jdManager.listJD();
+    }
+
     public void editJD(Long id, JobDescription jobDescription) {
         jdManager.update(id, jobDescription);
     }
@@ -79,9 +83,13 @@ public class LogicController {
     }
 
     public void saveCV(CV cv) {
-        cvManager.save(cv);
-        Long cvId = cv.getId();
-        cv.setId(cvId);
+        Long id = cvManager.save(cv);
+        cv.setId(id);
+    }
+
+    public void saveJD(JobDescription jd) {
+        Long id = jdManager.save(jd);
+        jd.setId(id);
     }
 
     private CV parseCVFromPdf(File file) throws IOException {

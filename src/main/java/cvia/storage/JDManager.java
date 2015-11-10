@@ -19,7 +19,7 @@ public class JDManager {
 
     public JDManager() {
         setUpConnection();
-        logger = Logger.getLogger("CVManager");
+        logger = Logger.getLogger("JDManager");
     }
 
     public Long save(JobDescription jobDescription) {
@@ -68,6 +68,34 @@ public class JDManager {
         return jobDescription;
     }
 
+    public List<JobDescription> listJD() {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        List<JobDescription> jdList = null;
+
+        try {
+            transaction = session.beginTransaction();
+            jdList = session.createQuery("from JobDescription").list();
+            for (JobDescription jd: jdList) {
+                Hibernate.initialize(jd.getRequiredSkills());
+                Hibernate.initialize(jd.getRequiredLanguages());
+                Hibernate.initialize(jd.getMinimumEducation());
+                Hibernate.initialize(jd.getWorkRequirement());
+                Hibernate.initialize(jd.getResponsibilities());
+                Hibernate.initialize(jd.getWeightage());
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.log(Level.SEVERE, String.format("Error list JD: %s", e.getMessage()));
+        } finally {
+            session.close();
+        }
+
+        return jdList;
+    }
+
     public void update(Long id, JobDescription newJobDescription) {
         Session session = factory.openSession();
         Transaction transaction = null;
@@ -85,7 +113,7 @@ public class JDManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            logger.log(Level.SEVERE, String.format("Error save CV: %s", e.getMessage()));
+            logger.log(Level.SEVERE, String.format("Error save JD: %s", e.getMessage()));
         } finally {
             session.close();
         }
@@ -104,7 +132,7 @@ public class JDManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            logger.log(Level.SEVERE, String.format("Error save CV: %s", e.getMessage()));
+            logger.log(Level.SEVERE, String.format("Error save JD: %s", e.getMessage()));
         } finally {
             session.close();
         }

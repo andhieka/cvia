@@ -85,7 +85,7 @@ public class CVDetailController {
 
     public void setCV(CV cv) {
         this.cv = cv;
-        setPdfImage();
+//        setPdfImage();
         setUpButtons();
         setUpForm();
     }
@@ -136,12 +136,12 @@ public class CVDetailController {
 
     @FXML
     private void initialize() {
-        try {
-            document = PDDocument.load("Resume Michael Limantara.pdf");
-            numberOfPages = document.getNumberOfPages();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            document = PDDocument.load("resume.pdf");
+//            numberOfPages = document.getNumberOfPages();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 //        CV cv = new CV();
 //        cv.setId(1L);
@@ -259,16 +259,25 @@ public class CVDetailController {
     private void saveCV() {
         modifyCV();
         LogicController.getInstance().editCV(cv.getId(), cv);
-        cvListController.refreshData();
+        cvListController.refreshData(cv);
     }
 
     private void modifyCV() {
         // Personal Info Section
-        PersonalInfo personalInfo = cv.getPersonalInfo();
-        personalInfo.setName(((TextInputControl) personalInfoMap.get("name")).getText());
-        personalInfo.setContactNumber(((TextInputControl) personalInfoMap.get("contact_number")).getText());
-        personalInfo.setEmail(((TextInputControl) personalInfoMap.get("email")).getText());
-        personalInfo.setAddress(((TextInputControl) personalInfoMap.get("address")).getText());
+        PersonalInfo personalInfo = new PersonalInfo();
+        if (!(((TextInputControl) personalInfoMap.get("name")).getText().isEmpty())) {
+            personalInfo.setName(((TextInputControl) personalInfoMap.get("name")).getText());
+        }
+        if (!((TextInputControl) personalInfoMap.get("contact_number")).getText().isEmpty()) {
+            personalInfo.setContactNumber(((TextInputControl) personalInfoMap.get("contact_number")).getText());
+        }
+        if (!((TextInputControl) personalInfoMap.get("email")).getText().isEmpty()) {
+            personalInfo.setEmail(((TextInputControl) personalInfoMap.get("email")).getText());
+        }
+        if (!((TextInputControl) personalInfoMap.get("address")).getText().isEmpty()) {
+            personalInfo.setAddress(((TextInputControl) personalInfoMap.get("address")).getText());
+        }
+        cv.setPersonalInfo(personalInfo);
 
         // Education Info Section
         List<EducationInfo> educationList = new ArrayList<EducationInfo>();
@@ -328,26 +337,37 @@ public class CVDetailController {
         setUpPersonalInfoForm();
         setUpEducationInfoForm();
         setUpWorkExperienceForm();
-        setUpSkillForm();setPdfImage();
+        setUpSkillForm();
+//        setPdfImage();
         setUpButtons();
-        setUpForm();
     }
 
     private void setUpPersonalInfoForm() {
         PersonalInfo personalInfo = cv.getPersonalInfo();
-        VBox vBoxName = createVBoxWithTextField("Name", personalInfo.getName(), "");
+        String name = "";
+        String contactNumber = "";
+        String email = "";
+        String address = "";
+        if (personalInfo != null) {
+            name = personalInfo.getName();
+            contactNumber = personalInfo.getContactNumber();
+            email = personalInfo.getEmail();
+            address = personalInfo.getAddress();
+        }
+
+        VBox vBoxName = createVBoxWithTextField("Name", name, "");
         vBoxName.setLayoutX(20);
         vBoxName.setLayoutY(5);
         personalInfoMap.put("name", vBoxName.getChildren().get(1));
-        VBox vBoxContactNumber = createVBoxWithTextField("Contact Number", personalInfo.getContactNumber(),"");
+        VBox vBoxContactNumber = createVBoxWithTextField("Contact Number", contactNumber,"");
         vBoxContactNumber.setLayoutX(20);
         vBoxContactNumber.setLayoutY(65);
         personalInfoMap.put("contact_number", vBoxContactNumber.getChildren().get(1));
-        VBox vBoxEmail = createVBoxWithTextField("Email", personalInfo.getEmail(), "");
+        VBox vBoxEmail = createVBoxWithTextField("Email", email, "");
         vBoxEmail.setLayoutX(20);
         vBoxEmail.setLayoutY(125);
         personalInfoMap.put("email", vBoxEmail.getChildren().get(1));
-        VBox vBoxAddress = createVBoxWithTextArea("Address", personalInfo.getAddress(), "");
+        VBox vBoxAddress = createVBoxWithTextArea("Address", address, "");
         vBoxAddress.setLayoutX(20);
         vBoxAddress.setLayoutY(185);
         personalInfoMap.put("address", vBoxAddress.getChildren().get(1));
@@ -355,6 +375,9 @@ public class CVDetailController {
     }
 
     private void setUpEducationInfoForm() {
+        if (cv.getEducationInfoList() != null) {
+
+        }
         for (EducationInfo educationInfo: cv.getEducationInfoList()) {
             Pane educationItemPane = createEducationItemView(educationInfo);
             educationItemPane.setLayoutY(educationIndex * 205);

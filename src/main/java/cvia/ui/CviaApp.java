@@ -35,6 +35,33 @@ public class CviaApp extends Application {
 
         initializeMainLayout();
 
+        seedCV();
+        seedJD();
+
+    }
+
+    private void initializeMainLayout() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(CviaApp.class.getResource("/RootWindow.fxml"));
+
+            rootPane = loader.load();
+            rootWindowController = loader.getController();
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(rootPane);
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.sizeToScene();
+            primaryStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // For testing
+    private void seedCV() {
         CV seedCV = new CV();
         PersonalInfo personalInfo = new PersonalInfo();
         personalInfo.setName("Michael");
@@ -78,23 +105,47 @@ public class CviaApp extends Application {
         logicController.saveCV(seedCV);
     }
 
-    private void initializeMainLayout() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(CviaApp.class.getResource("/RootWindow.fxml"));
+    private void seedJD() {
+        JobDescription jd1 = new JobDescription();
+        jd1.setTitle("Sr. Software Engineer");
+        jd1.setVacancy(0);
 
-            rootPane = loader.load();
-            rootWindowController = loader.getController();
+        List<String> responsibilities = new ArrayList<String>();
+        responsibilities.add("Responsibility 1");
+        responsibilities.add("Responsibility 2");
+        jd1.setResponsibilities(responsibilities);
 
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootPane);
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
-            primaryStage.sizeToScene();
-            primaryStage.show();
+        EducationRequirement educationRequirement = new EducationRequirement();
+        educationRequirement.setAcceptedMajors(new ArrayList<String>());
+        educationRequirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        Grade grade = new Grade();
+        grade.setGrade(4f);
+        grade.setMaxGrade(5f);
+        educationRequirement.setMinimumGrade(grade);
+        jd1.setMinimumEducation(educationRequirement);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        jd1.setRequiredLanguages(new ArrayList<Language>());
+        jd1.setRequiredSkills(new ArrayList<Skill>());
+
+        WorkRequirement workRequirement = new WorkRequirement();
+        List<String> keywords = new ArrayList<String>();
+        keywords.add("keyword 1");
+        keywords.add("keyword 2");
+        keywords.add("keyword 3");
+        workRequirement.setKeywords(keywords);
+        workRequirement.setDuration(12);
+        jd1.setWorkRequirement(workRequirement);
+
+        List<Integer> weightage = new ArrayList<Integer>();
+        weightage.add(1);
+        weightage.add(1);
+        weightage.add(2);
+        weightage.add(1);
+        jd1.setWeightage(weightage);
+
+        logicController.saveJD(jd1);
+        logicController.saveJD(jd1);
+        logicController.saveJD(jd1);
+        logicController.saveJD(jd1);
     }
 }

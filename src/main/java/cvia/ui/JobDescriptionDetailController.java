@@ -4,6 +4,7 @@ import cvia.model.*;
 import cvia.model.EducationInfo.EducationLevel;
 import cvia.model.Skill.SkillProficiency;
 import cvia.model.Language.LanguageProficiency;
+import cvia.utilities.Pair;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by Michael Limantara on 11/9/2015.
  */
 public class JobDescriptionDetailController {
-    enum JDDetailMode {
+    public enum JDDetailMode {
         ADD, EDIT
     }
 
@@ -34,32 +35,6 @@ public class JobDescriptionDetailController {
         }
         public InvalidJDException() {
 
-        }
-    }
-
-    class Pair {
-        private TextField textField;
-        private ComboBox comboBox;
-
-        public Pair(TextField textField, ComboBox comboBox) {
-            this.textField = textField;
-            this.comboBox = comboBox;
-        }
-
-        public TextField getTextField() {
-            return textField;
-        }
-
-        public void setTextField(TextField textField) {
-            this.textField = textField;
-        }
-
-        public ComboBox getComboBox() {
-            return comboBox;
-        }
-
-        public void setComboBox(ComboBox comboBox) {
-            this.comboBox = comboBox;
         }
     }
 
@@ -422,7 +397,8 @@ public class JobDescriptionDetailController {
         }
 
         EducationRequirement educationRequirement = jobDescription.getMinimumEducation();
-        if (educationRequirement.getMinimumEducation() != null) {
+        if (educationRequirement != null &&
+                educationRequirement.getMinimumEducation() != null) {
             String minimumLevel = educationRequirement.getMinimumEducation().toString();
             minimumLevel = minimumLevel.substring(0,1).toUpperCase() + minimumLevel.substring(1).toLowerCase();
             minimumEducationLevelComboBox.setValue(minimumLevel);
