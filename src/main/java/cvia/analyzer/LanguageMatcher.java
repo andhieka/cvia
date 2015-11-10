@@ -77,11 +77,9 @@ public class LanguageMatcher {
         return this.matchedLanguages;
     }
 
-
     public List<Language> getUnmatchedLanguages() {
         return this.unmatchedLanguages;
     }
-
 
     public List<Language> getExtraLanguages() {
         return this.extraLanguages;
