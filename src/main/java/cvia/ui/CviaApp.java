@@ -36,8 +36,6 @@ public class CviaApp extends Application {
         initializeMainLayout();
 
         seedCV();
-        seedJD();
-
     }
 
     private void initializeMainLayout() {
