@@ -15,16 +15,24 @@ import java.util.logging.Logger;
 /**
  * Created by andhieka on 10/11/15.
  */
-public class UniversityMajorParser {
+public class UniversityMajorBank {
     private static final String UNIVERSITY_MAJORS_FILENAME = "university_majors.json";
     private ArrayList<String> keywords = new ArrayList<>();
+    private static UniversityMajorBank instance = null;
 
-    public UniversityMajorParser() {
+    private UniversityMajorBank() {
         loadKeywords();
     }
 
-    public List<String> universityMajorsInLine(String textLine) {
-        return null;
+    public static UniversityMajorBank getInstance() {
+        if (instance == null) {
+            instance = new UniversityMajorBank();
+        }
+        return instance;
+    }
+
+    public List<String> getUniversityMajors() {
+        return keywords;
     }
 
     // Private methods

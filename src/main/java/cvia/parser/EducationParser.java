@@ -10,6 +10,7 @@ import cvia.utilities.TextChunkUtilities;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -58,16 +59,22 @@ public class EducationParser implements MiniParser {
         textChunks.clear();
     }
 
-    private String findMajor(String line) {
-
+    public String findMajor(String line) {
+        UniversityMajorBank majorBank = UniversityMajorBank.getInstance();
+        List<String> universityMajors = majorBank.getUniversityMajors();
+        for (String majorName: universityMajors) {
+            if (matchesWholeWord(line, majorName)) {
+                return majorName;
+            }
+        }
         return "";
     }
 
-    private EducationLevel findLevel(String line) {
+    public EducationLevel findLevel(String line) {
         return educationLevelParser.parse(line);
     }
 
-    private String findInstitution(String line) {
+    public String findInstitution(String line) {
         String normalizedSpacing = StringUtilities.removeRedundantSpaces(line);
         UniversityBank universityBank = UniversityBank.getInstance();
         for (String institutionName: universityBank.getUniversityNames()) {
@@ -91,7 +98,7 @@ public class EducationParser implements MiniParser {
     private boolean matchesWholeWord(String line, String keyword) {
         keyword = keyword.toLowerCase();
         if (!cachedPatterns.containsKey(keyword)) {
-            cachedPatterns.put(keyword, Pattern.compile(String.format("\\b%s\\b", keyword), Pattern.CASE_INSENSITIVE));
+            cachedPatterns.put(keyword, Pattern.compile(String.format("(.*?)\\b%s\\b(.*)", keyword), Pattern.CASE_INSENSITIVE));
         }
         Pattern pattern = cachedPatterns.get(keyword);
         return pattern.matcher(line).matches();
