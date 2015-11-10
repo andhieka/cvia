@@ -39,6 +39,7 @@ public class Matcher {
         for (CV cv : parsedCVs) {
             PersonalInfo biodata = cv.getPersonalInfo();
             Report report = new Report(biodata);
+            report.setJobDescription(parsedJobDescription);
             report.setParsedCV(cv);
             match(cv, report);
             reports.add(report);

@@ -14,6 +14,14 @@ public class Report implements Comparable<Report>{
     private CV parsedCV;
     private JobDescription jobDescription;
 
+    public JobDescription getJobDescription() {
+        return jobDescription;
+    }
+
+    public void setJobDescription(JobDescription jobDescription) {
+        this.jobDescription = jobDescription;
+    }
+
     public void setMatchedSkills(List<Skill> matchedSkills) {
         this.matchedSkills = matchedSkills;
     }

@@ -85,6 +85,7 @@ public class JobDescriptionDetailController {
     private static final String ADD_ICON_PATH = "/add.png";
 
     private Stage jdDetailStage;
+    private JobDescriptionListController jdListController;
 
     @FXML
     private AnchorPane formPane;
@@ -135,6 +136,10 @@ public class JobDescriptionDetailController {
 
     public void setStage(Stage stage) {
         this.jdDetailStage = stage;
+    }
+
+    public void setJdListController(JobDescriptionListController jdListController) {
+        this.jdListController = jdListController;
     }
 
     @FXML
@@ -219,15 +224,19 @@ public class JobDescriptionDetailController {
     }
 
     private void saveJobDescription() {
+        try {
+            constructJDFromForm();
+        } catch (InvalidJDException e) {
+            System.out.println(e.getMessage());
+        }
+
         if (mode == JDDetailMode.ADD) {
-            try {
-                constructJDFromForm();
-            } catch (InvalidJDException e) {
-                System.out.println(e.getMessage());
-            }
-            LogicController.getInstance().addJD(jobDescription);
+            JobDescription addedJd = LogicController.getInstance().addJD(jobDescription);
+            jdListController.addJD(addedJd);
+            jdListController.refresh();
         } else if (mode == JDDetailMode.EDIT) {
             LogicController.getInstance().editJD(jobDescription.getId(), jobDescription);
+            jdListController.refresh();
         }
     }
 
@@ -468,16 +477,15 @@ public class JobDescriptionDetailController {
             throw new InvalidJDException("Job description must have a title");
         }
 
-        JobDescription jd = jobDescription;
         if (mode == JDDetailMode.ADD) {
             jobDescription = new JobDescription();
         }
 
-        jd.setTitle(txtTitle.getText());
+        jobDescription.setTitle(txtTitle.getText());
         if (txtVacancy.getText().isEmpty()) {
-            jd.setVacancy(0);
+            jobDescription.setVacancy(0);
         } else {
-            jd.setVacancy(Integer.parseInt(txtVacancy.getText()));
+            jobDescription.setVacancy(Integer.parseInt(txtVacancy.getText()));
         }
 
         List<String> responsibilities = new ArrayList<String>();
@@ -486,12 +494,13 @@ public class JobDescriptionDetailController {
                 responsibilities.add(txtResponsibility.getText());
             }
         }
-        jd.setResponsibilities(responsibilities);
+        jobDescription.setResponsibilities(responsibilities);
 
         EducationRequirement educationRequirement = new EducationRequirement();
-        if (!minimumEducationLevelComboBox.getValue().toString().isEmpty()) {
+        if (minimumEducationLevelComboBox.getValue() != null &&
+                !minimumEducationLevelComboBox.getValue().toString().isEmpty()) {
             educationRequirement.setMinimumEducation(EducationLevel.valueOf(
-                    minimumEducationLevelComboBox.getValue().toString()));
+                    minimumEducationLevelComboBox.getValue().toString().toUpperCase()));
         }
         if (!txtMajor.getText().isEmpty()) {
             List<String> majors = splitAndExtractParts(txtMajor.getText());
@@ -500,13 +509,15 @@ public class JobDescriptionDetailController {
             educationRequirement.setAcceptedMajors(new ArrayList<String>());
         }
         if (!txtGrade.getText().isEmpty()) {
-            String[] gradeString = txtGrade.getText().split("/", 1);
+            String[] gradeString = txtGrade.getText().split("/");
+            System.out.println(gradeString[0]);
+            System.out.println(gradeString[1]);
             Grade grade = new Grade();
             grade.setGrade(Float.parseFloat(gradeString[0].trim()));
             grade.setMaxGrade(Float.parseFloat(gradeString[1].trim()));
             educationRequirement.setMinimumGrade(grade);
         }
-        jd.setMinimumEducation(educationRequirement);
+        jobDescription.setMinimumEducation(educationRequirement);
 
         WorkRequirement workRequirement = new WorkRequirement();
         workRequirement.setDuration(0);
@@ -520,7 +531,7 @@ public class JobDescriptionDetailController {
         } else {
             workRequirement.setKeywords(new ArrayList<String>());
         }
-        jd.setWorkRequirement(workRequirement);
+        jobDescription.setWorkRequirement(workRequirement);
 
         List<Skill> skillList = new ArrayList<Skill>();
         for (Pair pair: txtSkillList) {
@@ -533,13 +544,14 @@ public class JobDescriptionDetailController {
                 if (comboBoxSkillLevel.getValue().toString().isEmpty()) {
                     skill.setProficiencyLevel(SkillProficiency.INTERMEDIATE);
                 } else {
-                    skill.setProficiencyLevel(SkillProficiency.valueOf(comboBoxSkillLevel.getValue().toString()));
+                    skill.setProficiencyLevel(SkillProficiency.valueOf(
+                            comboBoxSkillLevel.getValue().toString().toUpperCase()));
                 }
 
                 skillList.add(skill);
             }
         }
-        jd.setRequiredSkills(skillList);
+        jobDescription.setRequiredSkills(skillList);
 
         List<Language> languageList = new ArrayList<Language>();
         for (Pair pair: txtLanguageList) {
@@ -552,13 +564,14 @@ public class JobDescriptionDetailController {
                 if (comboBoxLanguageLevel.getValue().toString().isEmpty()) {
                     language.setProficiencyLevel(LanguageProficiency.ADVANCED);
                 } else {
-                    language.setProficiencyLevel(LanguageProficiency.valueOf(comboBoxLanguageLevel.getValue().toString()));
+                    language.setProficiencyLevel(LanguageProficiency.valueOf(
+                            comboBoxLanguageLevel.getValue().toString().toUpperCase()));
                 }
 
                 languageList.add(language);
             }
         }
-        jd.setRequiredLanguages(languageList);
+        jobDescription.setRequiredLanguages(languageList);
 
         List<Integer> weightage = new ArrayList<Integer>();
         for (int i = 0; i < txtWeightageList.size(); i++) {
@@ -568,7 +581,7 @@ public class JobDescriptionDetailController {
                 weightage.add(Math.max(0, Integer.parseInt(txtWeightageList.get(0).getText())));
             }
         }
-        jd.setWeightage(weightage);
+        jobDescription.setWeightage(weightage);
     }
 
     private void addResponsibility() {

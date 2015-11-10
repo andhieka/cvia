@@ -1,5 +1,6 @@
 package cvia.ui;
 
+import cvia.analyzer.Report;
 import cvia.model.*;
 import cvia.ui.JobDescriptionDetailController.JDDetailMode;
 import javafx.beans.value.ChangeListener;
@@ -60,6 +61,21 @@ public class JobDescriptionListController {
 
     public void setJDData(List<JobDescription> jdData) {
         this.allJDData = jdData;
+    }
+
+    public void addJD(JobDescription jd) {
+        allJDData.add(jd);
+    }
+
+    public void refresh() {
+        refreshData(allJDData);
+    }
+
+    private void refreshData(List<JobDescription> jobList) {
+        pane.getChildren().removeAll(jobItemPanes);
+        jobItemPanes.clear();
+        setDisplayedJDData(jobList);
+        setUpJobDescriptionView();
     }
 
     @FXML
@@ -175,13 +191,6 @@ public class JobDescriptionListController {
         displayedJDData = jobList;
     }
 
-    private void refreshData(List<JobDescription> jobList) {
-        pane.getChildren().removeAll(jobItemPanes);
-        jobItemPanes.clear();
-        setDisplayedJDData(jobList);
-        setUpJobDescriptionView();
-    }
-
     private void setUpJobDescriptionView() {
         int colIndex = 0;
         int rowIndex = 0;
@@ -215,24 +224,36 @@ public class JobDescriptionListController {
         jobTitleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-wrap-text: true;" +
                 "-fx-alignment: center; -fx-text-alignment: center; -fx-content-display: center");
 
-        Label jobVacancyLabel = new Label("Vacancies: 2");
+        Label jobVacancyLabel = new Label("Vacancies: " + jd.getVacancy());
         jobVacancyLabel.setPrefSize(JOB_VACANCY_WIDTH, JOB_VACANCY_HEIGHT);
         jobVacancyLabel.setLayoutY(JOB_VACANCY_Y_OFFSET);
         jobVacancyLabel.setAlignment(Pos.CENTER);
 
         //TODO: Style button
-        Button viewBtn = new Button();
+        Button viewBtn = new Button("View");
         viewBtn.setPrefSize(JOB_ACTION_BUTTON_WIDTH, JOB_ACTION_BUTTON_HEIGHT);
         viewBtn.setLayoutX(JOB_ACTION_BUTTON_SPACING);
         viewBtn.setLayoutY(JOB_ACTION_BUTTON_Y_OFFSET);
-        viewBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //TODO: JD viewBtn link to populated search
+        viewBtn.setOnAction(event ->  {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(CviaApp.class.getResource("/Report.fxml"));
+                Pane pane = loader.load();
+                ReportController reportController = loader.getController();
+//                reportController.populateData(reportList);
+
+                Scene scene = new Scene(pane);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.sizeToScene();
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
-        Button editBtn = new Button();
+        Button editBtn = new Button("Edit");
         editBtn.setPrefSize(JOB_ACTION_BUTTON_WIDTH, JOB_ACTION_BUTTON_HEIGHT);
         editBtn.setLayoutX(2 * JOB_ACTION_BUTTON_SPACING + JOB_ACTION_BUTTON_WIDTH);
         editBtn.setLayoutY(JOB_ACTION_BUTTON_Y_OFFSET);
@@ -244,7 +265,7 @@ public class JobDescriptionListController {
             }
         });
 
-        Button deleteBtn = new Button();
+        Button deleteBtn = new Button("Delete");
         deleteBtn.setPrefSize(JOB_ACTION_BUTTON_WIDTH, JOB_ACTION_BUTTON_HEIGHT);
         deleteBtn.setLayoutX(3 * JOB_ACTION_BUTTON_SPACING + 2 * JOB_ACTION_BUTTON_WIDTH);
         deleteBtn.setLayoutY(JOB_ACTION_BUTTON_Y_OFFSET);
@@ -281,6 +302,7 @@ public class JobDescriptionListController {
             jdDetailStage.setResizable(false);
             jdDetailStage.show();
             jdDetailController.setStage(jdDetailStage);
+            jdDetailController.setJdListController(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
