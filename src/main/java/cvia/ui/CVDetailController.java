@@ -62,12 +62,13 @@ public class CVDetailController {
 
     private ImageButton btnPrev;
     private ImageButton btnNext;
-    private ImageButton btnSave;
+    private Button btnSave;
     private ImageButton btnCancel;
 
     PDDocument document;
     private Integer pageNumber = 0;
     private Integer numberOfPages;
+    private CVListController cvListController;
 
     private CV cv;
     private Stage stage;
@@ -84,76 +85,113 @@ public class CVDetailController {
 
     public void setCV(CV cv) {
         this.cv = cv;
+        setPdfImage();
+        setUpButtons();
+        setUpForm();
+    }
+
+    public void setController(CVListController cvListController) {
+        this.cvListController = cvListController;
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+//    public void populate() {
+//        PersonalInfo personalInfo = cv.getPersonalInfo();
+//        ((TextInputControl)personalInfoMap.get("name")).setText(personalInfo.getName());
+//        ((TextInputControl)personalInfoMap.get("contact_number")).setText(personalInfo.getContactNumber());
+//        ((TextInputControl)personalInfoMap.get("email")).setText(personalInfo.getEmail());
+//        ((TextInputControl)personalInfoMap.get("address")).setText(personalInfo.getAddress());
+//
+//        List<EducationInfo> educationInfoList = cv.getEducationInfoList();
+//        for (int i = 0; i < educationInfoList.size(); i++) {
+//            ((TextInputControl) educationInfoMap.get(i).get("institution_name")).
+//                    setText(educationInfoList.get(i).getInstitutionName());
+//            ((TextInputControl) educationInfoMap.get(i).get("education_level")).
+//                    setText(educationInfoList.get(i).getInstitutionName());
+//            ((TextInputControl) educationInfoMap.get(i).get("major")).
+//                    setText(educationInfoList.get(i).getInstitutionName());
+//            ((TextInputControl) educationInfoMap.get(i).get("start_date")).
+//                    setText(educationInfoList.get(i).getInstitutionName());
+//            ((TextInputControl) educationInfoMap.get(i).get("end_date")).
+//                    setText(educationInfoList.get(i).getInstitutionName());
+//        }
+//
+//        List<WorkExperience> workExperienceList = cv.getWorkExperienceList();
+//        for (int i = 0; i < workExperienceList.size(); i++) {
+//            ((TextInputControl) workExperienceMap.get(i).get("company")).
+//                    setText(workExperienceList.get(i).getCompany());
+//            ((TextInputControl) workExperienceMap.get(i).get("position")).
+//                    setText(workExperienceList.get(i).getPosition());
+//            ((TextInputControl) workExperienceMap.get(i).get("start_date")).
+//                    setText(workExperienceList.get(i).getStartDate());
+//            ((TextInputControl) workExperienceMap.get(i).get("end_date")).
+//                    setText(workExperienceList.get(i).getInstitutionName());
+//            ((TextInputControl) workExperienceMap.get(i).get("description")).
+//                    setText(workExperienceList.get(i).getInstitutionName());
+//        }
+//    }
+
     @FXML
     private void initialize() {
         try {
-            document = PDDocument.load("yamini.pdf");
+            document = PDDocument.load("Resume Michael Limantara.pdf");
             numberOfPages = document.getNumberOfPages();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        CV cv = new CV();
-        cv.setId(1L);
-        PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.setName("user 2");
-        personalInfo.setContactNumber("+658123456");
-        personalInfo.setEmail("user1@testing.com");
-        cv.setPersonalInfo(personalInfo);
-
-        List<EducationInfo> educationList = new ArrayList<EducationInfo>();
-        EducationInfo educationInfo = new EducationInfo();
-        educationInfo.setInstitutionName("NUS");
-        educationInfo.setEducationLevel(EducationLevel.UNDERGRADUATE);
-        educationInfo.setMajor("CS");
-        educationInfo.setStartDate(LocalDate.now());
-        educationInfo.setEndDate(LocalDate.now());
-        for (int i = 0; i < 3; i++) {
-            educationList.add(educationInfo);
-        }
-        cv.setEducationInfoList(educationList);
-
-        List<WorkExperience> workList = new ArrayList<WorkExperience>();
-        WorkExperience workExperience = new WorkExperience();
-        workExperience.setCompany("Google");
-        workExperience.setPosition("Software Engineer");
-        workExperience.setDescription("Description");
-        workExperience.setStartDate(LocalDate.now());
-        workExperience.setEndDate(LocalDate.now());
-        for (int i = 0; i < 2; i++) {
-            workList.add(workExperience);
-        }
-        cv.setWorkExperienceList(workList);
-
-        List<Skill> skillList = new ArrayList<Skill>();
-        Skill skill = new Skill();
-        skill.setName("Coding");
-        skill.setProficiencyLevel(SkillProficiency.ADVANCED);
-        for (int i = 0; i < 3; i++) {
-            skillList.add(skill);
-        }
-        cv.setSkills(skillList);
-
-        List<Language> languageList = new ArrayList<Language>();
-        Language language = new Language();
-        language.setName("English");
-        language.setProficiencyLevel(LanguageProficiency.ADVANCED);
-        for (int i = 0; i < 3; i++) {
-            languageList.add(language);
-        }
-        cv.setLanguages(languageList);
-
-        setCV(cv);
-
-        setPdfImage();
-        setUpButtons();
-        setUpForm();
+//        CV cv = new CV();
+//        cv.setId(1L);
+//        PersonalInfo personalInfo = new PersonalInfo();
+//        personalInfo.setName("user 2");
+//        personalInfo.setContactNumber("+658123456");
+//        personalInfo.setEmail("user1@testing.com");
+//        cv.setPersonalInfo(personalInfo);
+//
+//        List<EducationInfo> educationList = new ArrayList<EducationInfo>();
+//        EducationInfo educationInfo = new EducationInfo();
+//        educationInfo.setInstitutionName("NUS");
+//        educationInfo.setEducationLevel(EducationLevel.UNDERGRADUATE);
+//        educationInfo.setMajor("CS");
+//        educationInfo.setStartDate(LocalDate.now());
+//        educationInfo.setEndDate(LocalDate.now());
+//        for (int i = 0; i < 3; i++) {
+//            educationList.add(educationInfo);
+//        }
+//        cv.setEducationInfoList(educationList);
+//
+//        List<WorkExperience> workList = new ArrayList<WorkExperience>();
+//        WorkExperience workExperience = new WorkExperience();
+//        workExperience.setCompany("Google");
+//        workExperience.setPosition("Software Engineer");
+//        workExperience.setDescription("Description");
+//        workExperience.setStartDate(LocalDate.now());
+//        workExperience.setEndDate(LocalDate.now());
+//        for (int i = 0; i < 2; i++) {
+//            workList.add(workExperience);
+//        }
+//        cv.setWorkExperienceList(workList);
+//
+//        List<Skill> skillList = new ArrayList<Skill>();
+//        Skill skill = new Skill();
+//        skill.setName("Coding");
+//        skill.setProficiencyLevel(SkillProficiency.ADVANCED);
+//        for (int i = 0; i < 3; i++) {
+//            skillList.add(skill);
+//        }
+//        cv.setSkills(skillList);
+//
+//        List<Language> languageList = new ArrayList<Language>();
+//        Language language = new Language();
+//        language.setName("English");
+//        language.setProficiencyLevel(LanguageProficiency.ADVANCED);
+//        for (int i = 0; i < 3; i++) {
+//            languageList.add(language);
+//        }
+//        cv.setLanguages(languageList);
     }
 
     private void setPdfImage() {
@@ -176,7 +214,7 @@ public class CVDetailController {
     private void setUpButtons() {
         HBox hBoxButtonCV = new HBox();
         hBoxButtonCV.setLayoutX(425);
-        btnSave = new ImageButton("/add.png", BUTTON_SIZE);
+        btnSave = new Button("Save");
         btnSave.setOnAction(event -> {
             saveCV();
         });
@@ -184,7 +222,7 @@ public class CVDetailController {
         btnCancel.setOnAction(event -> {
             stage.close();
         });
-        hBoxButtonCV.getChildren().addAll(btnSave, btnCancel);
+        hBoxButtonCV.getChildren().addAll(btnSave);
         rightPane.getChildren().addAll(hBoxButtonCV);
 
         btnPrev = new ImageButton("/prev.png", BUTTON_SIZE);
@@ -221,7 +259,7 @@ public class CVDetailController {
     private void saveCV() {
         modifyCV();
         LogicController.getInstance().editCV(cv.getId(), cv);
-        //TODO: Refresh Table View
+        cvListController.refreshData();
     }
 
     private void modifyCV() {
@@ -290,7 +328,9 @@ public class CVDetailController {
         setUpPersonalInfoForm();
         setUpEducationInfoForm();
         setUpWorkExperienceForm();
-        setUpSkillForm();
+        setUpSkillForm();setPdfImage();
+        setUpButtons();
+        setUpForm();
     }
 
     private void setUpPersonalInfoForm() {
@@ -302,15 +342,15 @@ public class CVDetailController {
         VBox vBoxContactNumber = createVBoxWithTextField("Contact Number", personalInfo.getContactNumber(),"");
         vBoxContactNumber.setLayoutX(20);
         vBoxContactNumber.setLayoutY(65);
-        personalInfoMap.put("contact_number", vBoxName.getChildren().get(1));
+        personalInfoMap.put("contact_number", vBoxContactNumber.getChildren().get(1));
         VBox vBoxEmail = createVBoxWithTextField("Email", personalInfo.getEmail(), "");
         vBoxEmail.setLayoutX(20);
         vBoxEmail.setLayoutY(125);
-        personalInfoMap.put("email", vBoxName.getChildren().get(1));
+        personalInfoMap.put("email", vBoxEmail.getChildren().get(1));
         VBox vBoxAddress = createVBoxWithTextArea("Address", personalInfo.getAddress(), "");
         vBoxAddress.setLayoutX(20);
         vBoxAddress.setLayoutY(185);
-        personalInfoMap.put("address", vBoxName.getChildren().get(1));
+        personalInfoMap.put("address", vBoxAddress.getChildren().get(1));
         personalInfoPane.getChildren().addAll(vBoxName, vBoxContactNumber, vBoxEmail, vBoxAddress);
     }
 

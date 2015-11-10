@@ -66,6 +66,10 @@ public class CVListController {
     private ObservableList<CV> displayedCVData;
     private List<CV> allCVData;
 
+    public void refreshData() {
+        populateCVTable(allCVData);
+    }
+
     @FXML
     private void initialize() {
         logicController = LogicController.getInstance();
@@ -253,6 +257,7 @@ public class CVListController {
             SplitPane splitPane = loader.load();
             CVDetailController cvDetailController = loader.getController();
             cvDetailController.setCV(cv);
+            cvDetailController.setController(this);
 
             Scene cvDetailScene = new Scene(splitPane);
             Stage cvDetailStage = new Stage();

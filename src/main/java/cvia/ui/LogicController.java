@@ -78,6 +78,12 @@ public class LogicController {
         jdManager.delete(id);
     }
 
+    public void saveCV(CV cv) {
+        cvManager.save(cv);
+        Long cvId = cv.getId();
+        cv.setId(cvId);
+    }
+
     private CV parseCVFromPdf(File file) throws IOException {
         // Read the PDF file
         PDFReadResult readResult = reader.readPDFFromFile(file);

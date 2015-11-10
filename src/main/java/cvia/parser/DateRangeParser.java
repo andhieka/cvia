@@ -57,14 +57,17 @@ public class DateRangeParser {
                 targetDateDescriptor = endDateDescriptor;
             }
         }
-        if (startDateDescriptor.year == -1) {
-            if (endDateDescriptor.year == -1) {
-                startDateDescriptor.year = LocalDate.now().getYear();
-                endDateDescriptor.year = LocalDate.now().getYear();
-            } else {
-                startDateDescriptor.year = endDateDescriptor.year;
+        if (startDateDescriptor.month != 0 && endDateDescriptor.month != 0) {
+            if (startDateDescriptor.year == -1) {
+                if (endDateDescriptor.year == -1) {
+                    startDateDescriptor.year = LocalDate.now().getYear();
+                    endDateDescriptor.year = LocalDate.now().getYear();
+                } else {
+                    startDateDescriptor.year = endDateDescriptor.year;
+                }
             }
         }
+
         LocalDate startDate = startDateDescriptor.toLocalDate();
         LocalDate endDate = endDateDescriptor.toLocalDate();
         return new DateRange(startDate, endDate);
