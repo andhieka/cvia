@@ -1,9 +1,14 @@
 package cvia.parser;
 
 import cvia.model.CV;
+import cvia.model.PersonalInfo;
 import cvia.reader_writer.TextChunk;
+import cvia.reader_writer.TextLine;
+import cvia.utilities.StringUtilities;
+import cvia.utilities.TextChunkUtilities;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,10 +43,32 @@ public class PersonalInfoParser implements MiniParser {
     @Override
     public void parseAndSave() {
         assert(this.cv != null);
+
+        PersonalInfo personalInfo = new PersonalInfo();
+        List<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
+        String cvContent = TextChunkUtilities.stringFromTextLines(textLines);
+
+        String name = parseName(textLines);
+        String email = parseEmail(cvContent);
+        String contactNumber = parseContactNumber(cvContent);
+        String address = parseAddress(cvContent);
+        personalInfo.setName(name);
+        personalInfo.setEmail(email);
+        personalInfo.setContactNumber(contactNumber);
+        personalInfo.setAddress(address);
+
+        cv.setPersonalInfo(personalInfo);
     }
 
-    String parseName() {
-        return null;
+    String parseName(List<TextLine> textLines) {
+        for (TextLine textLine: textLines) {
+            String text = textLine.getText();
+            text = text.trim();
+            if (text.isEmpty()) continue;
+            if (text.matches("(.*?)(page[\\s0-9]*)(.*)")) continue;
+            return StringUtilities.removeRedundantSpaces(text);
+        }
+        return "";
     }
 
     // Find the contact number in the CV, and returns null if not found

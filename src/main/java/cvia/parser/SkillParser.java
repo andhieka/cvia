@@ -57,7 +57,7 @@ public class SkillParser implements MiniParser {
                 combinedTextChunks = combinedTextChunks.mergedWith(textChunk);
             }
         }
-        String inputText = combinedTextChunks.getText();
+        String inputText = (combinedTextChunks == null) ? "" : combinedTextChunks.getText();
         List<Skill> skills = findSkills(inputText);
         cv.setSkills(skills);
     }
@@ -102,6 +102,7 @@ public class SkillParser implements MiniParser {
             String keyword = keywords.get(i);
             if (StringUtilities.containsIgnoreCase(input, keyword)) {
                 Skill skill = new Skill(keyword);
+                skill.setProficiencyLevel(Skill.SkillProficiency.INTERMEDIATE);
                 skills.add(skill);
             }
         }
