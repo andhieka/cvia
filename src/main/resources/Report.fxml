@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cvia.ui.ReportController">
+   <children>
+      <TableView fx:id="tableScore" prefHeight="600.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="columnName" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="columnEducationScore" prefWidth="100.0" text="Education Score" />
+            <TableColumn fx:id="columnWorkScore" prefWidth="100.0" text="Work Score" />
+            <TableColumn fx:id="columnSkillScore" prefWidth="100.0" text="Skill Score" />
+            <TableColumn fx:id="columnLanguageScore" prefWidth="100.0" text="Language Score" />
+            <TableColumn fx:id="columnTotalScore" prefWidth="100.0" text="Total Score" />
+            <TableColumn fx:id="columnView" prefWidth="25.0" />
+        </columns>
+      </TableView>
+   </children>
+</Pane>
