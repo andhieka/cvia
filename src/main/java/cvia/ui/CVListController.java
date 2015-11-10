@@ -77,6 +77,13 @@ public class CVListController {
 
     private void loadInitialData() {
         allCVData = logicController.loadAllCVData();
+        CV cv = new CV();
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setName("test");
+        personalInfo.setEmail("asdf");
+        personalInfo.setContactNumber("asdf");
+        cv.setPersonalInfo(personalInfo);
+        allCVData.add(cv);
         populateCVTable(allCVData);
     }
 
@@ -197,7 +204,6 @@ public class CVListController {
                             setText(null);
                         } else {
                             final HBox hbox = new HBox();
-
 
                             final ImageButton editBtn = new ImageButton("/edit.png", SIZE_EDIT_CV_BUTTON);
                             final ImageButton deleteBtn = new ImageButton("/delete.png", SIZE_DELETE_CV_BUTTON);

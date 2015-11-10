@@ -9,6 +9,8 @@ import cvia.utilities.TextChunkUtilities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * Created by andhieka on 9/11/15.
@@ -20,7 +22,11 @@ public class EducationParser implements MiniParser {
     private EducationLevel educationLevel;
     private String institutionName;
     private LocalDate startDate, endDate;
+    private HashMap<String, Pattern> cachedPatterns = new HashMap<>();
 
+    // smaller parsers
+    private DateRangeParser dateRangeParser = new DateRangeParser();
+    private EducationLevelParser educationLevelParser = new EducationLevelParser();
 
     @Override
     public void setCV(CV cv) {
@@ -34,14 +40,15 @@ public class EducationParser implements MiniParser {
 
     @Override
     public void parseAndSave() {
+        assert(cv != null);
+
         ArrayList<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
         for (TextLine textLine: textLines) {
             String line = textLine.getText();
             String major = findMajor(line);
             EducationLevel level = findLevel(line);
             String institution = findInstitution(line);
-            LocalDate startDate = findStartDate(line);
-            LocalDate endDate = findEndDate(line);
+            DateRange dateRange = findDateRange(line);
         }
     }
 
@@ -52,30 +59,41 @@ public class EducationParser implements MiniParser {
     }
 
     private String findMajor(String line) {
+
         return "";
     }
 
     private EducationLevel findLevel(String line) {
-        return null;
+        return educationLevelParser.parse(line);
     }
 
     private String findInstitution(String line) {
         String normalizedSpacing = StringUtilities.removeRedundantSpaces(line);
         UniversityBank universityBank = UniversityBank.getInstance();
         for (String institutionName: universityBank.getUniversityNames()) {
-
+            if (matchesWholeWord(normalizedSpacing, institutionName)) {
+                return institutionName;
+            }
         }
         for (String institutionAcronym: universityBank.getUniversityAcronyms()) {
-
+            if (matchesWholeWord(normalizedSpacing, institutionAcronym)) {
+                return institutionAcronym;
+            }
         }
-        return "";
-    }
-
-    private LocalDate findStartDate(String line) {
         return null;
     }
 
-    private LocalDate findEndDate(String line) {
-        return null;
+    private DateRange findDateRange(String line) {
+        DateRange dateRange = dateRangeParser.parse(line);
+        return dateRange;
+    }
+
+    private boolean matchesWholeWord(String line, String keyword) {
+        keyword = keyword.toLowerCase();
+        if (!cachedPatterns.containsKey(keyword)) {
+            cachedPatterns.put(keyword, Pattern.compile(String.format("\\b%s\\b", keyword), Pattern.CASE_INSENSITIVE));
+        }
+        Pattern pattern = cachedPatterns.get(keyword);
+        return pattern.matcher(line).matches();
     }
 }
