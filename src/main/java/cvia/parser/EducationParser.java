@@ -84,23 +84,7 @@ public class EducationParser implements MiniParser {
     }
 
     private DateRange findDateRange(String line) {
-        String[] tokens = line.split("\\s");
-        int startIdx = -1, endIdx = -1;
-        for (int i = 0; i < tokens.length; i++) {
-            if (dateRangeParser.isDateToken(tokens[i])) {
-                if (startIdx == -1) {
-                    startIdx = i;
-                    endIdx = i;
-                } else {
-                    endIdx = i;
-                }
-            }
-        }
-        StringBuilder timeDescription = new StringBuilder();
-        for (int i = startIdx; i < endIdx; i++) {
-            timeDescription.append(tokens[i]).append(' ');
-        }
-        DateRange dateRange = dateRangeParser.parse(timeDescription.toString());
+        DateRange dateRange = dateRangeParser.parse(line);
         return dateRange;
     }
 
