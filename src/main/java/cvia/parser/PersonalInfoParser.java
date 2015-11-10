@@ -20,6 +20,7 @@ public class PersonalInfoParser implements MiniParser {
     private String PATTERN_EMAIL_ADDRESS = "(.*?)([_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+" +
             "(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,}))(.*)";
     private String PATTERN_ADDRESS = "(.*?)(\\d+[A-Za-z ]+ #[\\d-]* [A-Za-z ]+(\\d{6}(\\D|$))?)";
+    private Pattern PATTERN_PAGE = Pattern.compile("(.*?)(page[\\s0-9]*)(.*)", Pattern.CASE_INSENSITIVE);
 
     private CV cv;
     private ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
@@ -65,7 +66,7 @@ public class PersonalInfoParser implements MiniParser {
             String text = textLine.getText();
             text = text.trim();
             if (text.isEmpty()) continue;
-            if (text.matches("(.*?)(page[\\s0-9]*)(.*)")) continue;
+            if (PATTERN_PAGE.matcher(text).matches()) continue;
             return StringUtilities.removeRedundantSpaces(text);
         }
         return "";
