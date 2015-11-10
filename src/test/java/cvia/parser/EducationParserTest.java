@@ -29,4 +29,10 @@ public class EducationParserTest {
         String major = parser.findMajor("National University of Singapore Bachelor of Computing (Computer Science), Honours");
         assertEquals("Computer Science", major);
     }
+
+    @Test
+    public void testParseUniversity() throws Exception {
+        String university = parser.findInstitution("National University of Singapore Bachelor of Computing (Computer Science), Honours");
+        assertEquals("National University of Singapore", university);
+    }
 }
