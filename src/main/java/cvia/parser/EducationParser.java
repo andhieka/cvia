@@ -24,6 +24,9 @@ public class EducationParser implements MiniParser {
     private LocalDate startDate, endDate;
     private HashMap<String, Pattern> cachedPatterns = new HashMap<>();
 
+    // smaller parsers
+    private DateRangeParser dateRangeParser = new DateRangeParser();
+    private EducationLevelParser educationLevelParser = new EducationLevelParser();
 
     @Override
     public void setCV(CV cv) {
@@ -37,14 +40,15 @@ public class EducationParser implements MiniParser {
 
     @Override
     public void parseAndSave() {
+        assert(cv != null);
+
         ArrayList<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
         for (TextLine textLine: textLines) {
             String line = textLine.getText();
             String major = findMajor(line);
             EducationLevel level = findLevel(line);
             String institution = findInstitution(line);
-            LocalDate startDate = findStartDate(line);
-            LocalDate endDate = findEndDate(line);
+            DateRange dateRange = findDateRange(line);
         }
     }
 
@@ -55,11 +59,12 @@ public class EducationParser implements MiniParser {
     }
 
     private String findMajor(String line) {
+
         return "";
     }
 
     private EducationLevel findLevel(String line) {
-        return null;
+        return educationLevelParser.parse(line);
     }
 
     private String findInstitution(String line) {
@@ -78,12 +83,25 @@ public class EducationParser implements MiniParser {
         return null;
     }
 
-    private LocalDate findStartDate(String line) {
-        return null;
-    }
-
-    private LocalDate findEndDate(String line) {
-        return null;
+    private DateRange findDateRange(String line) {
+        String[] tokens = line.split("\\s");
+        int startIdx = -1, endIdx = -1;
+        for (int i = 0; i < tokens.length; i++) {
+            if (dateRangeParser.isDateToken(tokens[i])) {
+                if (startIdx == -1) {
+                    startIdx = i;
+                    endIdx = i;
+                } else {
+                    endIdx = i;
+                }
+            }
+        }
+        StringBuilder timeDescription = new StringBuilder();
+        for (int i = startIdx; i < endIdx; i++) {
+            timeDescription.append(tokens[i]).append(' ');
+        }
+        DateRange dateRange = dateRangeParser.parse(timeDescription.toString());
+        return dateRange;
     }
 
     private boolean matchesWholeWord(String line, String keyword) {
