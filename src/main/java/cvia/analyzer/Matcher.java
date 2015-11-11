@@ -55,15 +55,15 @@ public class Matcher {
 
     private void matchWorkExperience(CV cv, Report report) {
         int workScore = workExperienceMatcher.getWorkExperienceScore(cv, parsedJobDescription);
-        int maxWorkScore = workExperienceMatcher.getWorkExperienceScore(cv, parsedJobDescription);
+        int maxWorkScore = workExperienceMatcher.getMaximumScore(cv);
 
-        int normalized = (workScore / maxWorkScore) * 100;
-        report.setWorkScore(normalized);
+        double normalized = ((double) workScore / (double) maxWorkScore) * 100;
+        report.setWorkScore((int)normalized);
     }
 
     private void matchEducation(CV cv, Report report) {
         int educationScore = educationInfoMatcher.getEducationScore(cv, parsedJobDescription);
-        int maxEducationScore = educationInfoMatcher.getEducationScore(cv, parsedJobDescription);
+        int maxEducationScore = educationInfoMatcher.getMaximumScore(parsedJobDescription);
 
         int normalized = (educationScore / maxEducationScore) * 100;
         report.setEducationScore(normalized);
@@ -71,7 +71,7 @@ public class Matcher {
 
     private void matchSkill(CV cv, Report report) {
         int skillScore = skillMatcher.getSkillScore(cv, parsedJobDescription);
-        int maxSkillScore = skillMatcher.getSkillScore(cv, parsedJobDescription);
+        int maxSkillScore = skillMatcher.getMaximumScore(parsedJobDescription);
 
         int normalized = (skillScore / maxSkillScore) * 100;
 

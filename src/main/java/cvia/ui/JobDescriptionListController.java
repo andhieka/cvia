@@ -196,22 +196,10 @@ public class JobDescriptionListController {
         viewBtn.setLayoutX(JOB_ACTION_BUTTON_SPACING);
         viewBtn.setLayoutY(JOB_ACTION_BUTTON_Y_OFFSET);
         viewBtn.setOnAction(event ->  {
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(CviaApp.class.getResource("/Report.fxml"));
-                Pane pane = loader.load();
-                ReportController reportController = loader.getController();
-//                reportController.populateData(reportList);
-
-                Scene scene = new Scene(pane);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.setResizable(false);
-                stage.sizeToScene();
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            List<CV> cvList = getAllCV();
+            JobDescription selectedJobDescription = getJobDescriptionFromPosition(rowIndex, colIndex);
+            List<Report> reportList = logicController.processMatchingAndGenerateReport(cvList, selectedJobDescription);
+            showReportLayout(reportList);
         });
 
         Button editBtn = new Button("Edit");
@@ -235,6 +223,30 @@ public class JobDescriptionListController {
         jdItemPane.getChildren().addAll(jobTitleLabel, jobVacancyLabel, viewBtn, editBtn, deleteBtn);
         return jdItemPane;
     }
+
+    private List<CV> getAllCV() {
+        return logicController.listCV();
+    }
+
+    private void showReportLayout(List<Report> reportList) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(CviaApp.class.getResource("/Report.fxml"));
+            Pane pane = loader.load();
+            ReportController reportController = loader.getController();
+            reportController.populateData(reportList);
+
+            Scene scene = new Scene(pane);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.sizeToScene();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private JobDescription getJobDescriptionFromPosition(Integer row, Integer col) {
         return displayedJDData.get(row * 3 + col);

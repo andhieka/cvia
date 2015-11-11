@@ -1,6 +1,7 @@
 package cvia.ui;
 
 import cvia.analyzer.Report;
+import cvia.model.JobDescription;
 import cvia.model.PersonalInfo;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,9 +39,11 @@ public class ReportController {
     TableColumn columnView;
 
     private List<Report> reportList;
+    private JobDescription jobDescription;
 
     public void populateData(List<Report> reportList) {
         this.reportList = reportList;
+        Collections.sort(reportList);
         tableScore.setItems(FXCollections.observableList(reportList));
     }
 
@@ -89,5 +93,4 @@ public class ReportController {
             }
         });
     }
-
 }
