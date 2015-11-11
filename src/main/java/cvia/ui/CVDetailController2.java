@@ -628,7 +628,8 @@ public class CVDetailController2 {
                 grade.setMaxGrade(Float.parseFloat(gradeString[1]));
                 educationInfo.setGrade(grade);
             }
-            if (!comboBoxEducationLevel.getValue().toString().isEmpty()) {
+            if (comboBoxEducationLevel.getValue() != null &&
+                    !comboBoxEducationLevel.getValue().toString().isEmpty()) {
                 educationInfo.setEducationLevel(EducationInfo.EducationLevel
                         .valueOf(comboBoxEducationLevel.getValue().toString().toUpperCase()));
             }
@@ -688,7 +689,8 @@ public class CVDetailController2 {
             if (!txtSkillName.getText().isEmpty()) {
                 skill.setName(txtSkillName.getText());
             }
-            if (!comboBoxSkillLevel.getValue().toString().isEmpty()) {
+            if (comboBoxSkillLevel.getValue() != null &&
+                    !comboBoxSkillLevel.getValue().toString().isEmpty()) {
                 skill.setProficiencyLevel(Skill.SkillProficiency.valueOf(comboBoxSkillLevel.getValue().toString().toUpperCase()));
             }
             skillList.add(skill);
@@ -709,7 +711,8 @@ public class CVDetailController2 {
             if (!txtLanguageName.getText().isEmpty()) {
                 language.setName(txtLanguageName.getText());
             }
-            if (!comboBoxLanguageLevel.getValue().toString().isEmpty()) {
+            if (comboBoxLanguageLevel.getValue() != null &&
+                    !comboBoxLanguageLevel.getValue().toString().isEmpty()) {
                 language.setProficiencyLevel(Language.LanguageProficiency.valueOf(comboBoxLanguageLevel.getValue().toString().toUpperCase()));
             }
             languageList.add(language);
