@@ -36,11 +36,10 @@ public class EducationInfoMatcher {
 
         Grade minimumGrade = minRequirement.getMinimumGrade();
 
-        Float maxRequiredGrade = minimumGrade.getMaxGrade();
-
         if (minimumGrade == null) {
             return EDUCATION_BASE;
         } else {
+            Float maxRequiredGrade = minimumGrade.getMaxGrade();
             int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() / maxRequiredGrade) * 100);
             return EDUCATION_BASE + (100 - normalizedMinimumGrade);
         }
@@ -76,19 +75,31 @@ public class EducationInfoMatcher {
 
         }
 
-        if (highestEducation == null) {
+        if (highestEducation == null) { //does not meet the minimum education requirement
             return 0;
-        } else {
+        } else { //meets the requirement
 
-            Grade currentGrade = highestEducation.getGrade();
-            Grade minimumGrade = educationRequirement.getMinimumGrade();
+            total = getGradeScore(total, educationRequirement, highestEducation);
 
-            Float myCurrentGrade = currentGrade.getGrade();
-            Float maxGrade = currentGrade.getMaxGrade();
+            return total;
+        }
+
+    }
+
+    private int getGradeScore(int total, EducationRequirement educationRequirement, EducationInfo highestEducation) {
+        Grade currentGrade = highestEducation.getGrade();
+        Grade minimumGrade = educationRequirement.getMinimumGrade();
+
+        if (minimumGrade != null) { //got minimum requirement on grade
+
+
+
 
             int normalizedGrade = 0;
 
-            if (myCurrentGrade != null) {
+            if (currentGrade != null) {
+                Float myCurrentGrade = currentGrade.getGrade();
+                Float maxGrade = currentGrade.getMaxGrade();
                 normalizedGrade = (int) ((myCurrentGrade / maxGrade) * 100);
             } else {
                 normalizedGrade = 0;
@@ -103,9 +114,15 @@ public class EducationInfoMatcher {
                 total += normalizedGrade;
             }
 
-            return total;
-        }
+        } else if (currentGrade != null) {
+            Float myCurrentGrade = currentGrade.getGrade();
+            Float maxGrade = currentGrade.getMaxGrade();
 
+            int normalizedGrade = (int) ((myCurrentGrade / maxGrade) * 100);
+
+            total += normalizedGrade;
+        }
+        return total;
     }
 
     private boolean hasMatch(String major, EducationRequirement educationRequirement) {
