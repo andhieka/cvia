@@ -554,7 +554,7 @@ public class JobDescriptionDetailController {
             if (txtWeightageList.get(i).getText().isEmpty()) {
                 weightage.add(1);
             } else {
-                weightage.add(Math.max(0, Integer.parseInt(txtWeightageList.get(0).getText())));
+                weightage.add(Math.max(0, Integer.parseInt(txtWeightageList.get(i).getText())));
             }
         }
         jobDescription.setWeightage(weightage);
