@@ -14,6 +14,17 @@ public class Report implements Comparable<Report>{
     private CV parsedCV;
     private JobDescription jobDescription;
 
+    private List<Skill> matchedSkills;
+    private List<Skill> unmatchedSkills;
+    private List<Skill> extraSkills;
+
+
+    private List<Language> matchedLanguages;
+    private List<Language> unmatchedLanguages;
+    private List<Language> extraLanguages;
+
+    private int score;
+
     public JobDescription getJobDescription() {
         return jobDescription;
     }
@@ -34,22 +45,9 @@ public class Report implements Comparable<Report>{
         this.extraSkills = extraSkills;
     }
 
-    private List<Skill> matchedSkills;
-    private List<Skill> unmatchedSkills;
-    private List<Skill> extraSkills;
-
-
-    private List<Language> matchedLanguages;
-    private List<Language> unmatchedLanguages;
-    private List<Language> extraLanguages;
-
-
-
     public List<Skill> getMatchedSkills() {
         return matchedSkills;
     }
-
-    private int score;
 
     public PersonalInfo getBiodata() {
         return biodata;
@@ -160,12 +158,15 @@ public class Report implements Comparable<Report>{
     }
 
     public int compareTo(Report other) {
-        return Integer.valueOf(this.getScore()).compareTo(Integer.valueOf(other.getScore()));
+        return -1 * (Integer.valueOf(this.getScore()).compareTo(Integer.valueOf(other.getScore())));
     }
 
-
-
-
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (!(obj instanceof Report)) { return false; }
+        if (obj == this) { return true; }
+        Report report = (Report) obj;
+        return this.compareTo(report) == 0;
+    }
 }
