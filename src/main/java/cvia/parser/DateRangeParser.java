@@ -42,7 +42,8 @@ public class DateRangeParser {
 
     public DateRange parse(String line) {
         String sentence = getRelevantPart(line);
-        String[] tokens = split(sentence); //sentence.split("\\s+");
+        String[] tokens = split(sentence);
+        if (tokens.length == 0) return null;
 
         DateDescriptor startDateDescriptor = new DateDescriptor();
         DateDescriptor endDateDescriptor = new DateDescriptor();

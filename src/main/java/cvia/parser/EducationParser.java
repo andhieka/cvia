@@ -101,10 +101,10 @@ public class EducationParser implements MiniParser {
     public String findMajor(String line) {
         UniversityMajorBank majorBank = UniversityMajorBank.getInstance();
         List<String> universityMajors = majorBank.getUniversityMajors();
-        String result = "";
+        String result = null;
         for (String majorName: universityMajors) {
             if (matchesWholeWord(line, majorName)) {
-                if (result.length() < majorName.length()) {
+                if (result == null || result.length() < majorName.length()) {
                     result = majorName;
                 }
             }
@@ -119,28 +119,27 @@ public class EducationParser implements MiniParser {
     public String findInstitution(String line) {
         String normalizedSpacing = StringUtilities.removeRedundantSpaces(line);
         UniversityBank universityBank = UniversityBank.getInstance();
-        String result = "";
+        String result = null;
         for (String institutionName: universityBank.getUniversityNames()) {
             if (matchesWholeWord(normalizedSpacing, institutionName)) {
-                if (institutionName.length() > result.length()) {
+                if (result == null || institutionName.length() > result.length()) {
                     result = institutionName;
                 }
             }
         }
-        if (!result.equals("")) return result;
+        if (result != null) return result;
         for (String institutionAcronym: universityBank.getUniversityAcronyms()) {
             if (matchesWholeWord(normalizedSpacing, institutionAcronym)) {
-                if (institutionAcronym.length() > result.length()) {
+                if (result == null || institutionAcronym.length() > result.length()) {
                     result = institutionAcronym;
                 }
             }
         }
-        return result.equals("") ? null : result;
+        return result;
     }
 
     private DateRange findDateRange(String line) {
-        DateRange dateRange = dateRangeParser.parse(line);
-        return dateRange;
+        return dateRangeParser.parse(line);
     }
 
     private boolean matchesWholeWord(String line, String keyword) {
