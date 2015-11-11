@@ -4,6 +4,7 @@ package cvia.parser;
 import cvia.model.CV;
 import cvia.model.Skill;
 import cvia.reader_writer.TextChunk;
+import cvia.resources.SkillBank;
 import cvia.utilities.StringUtilities;
 import org.json.JSONArray;
 import org.json.JSONTokener;
@@ -29,7 +30,7 @@ public class SkillParser implements MiniParser {
 
     private static String SKILL_KEYWORDS_FILENAME = "skills.json";
 
-    private ArrayList<String> keywords = new ArrayList<String>();
+    private List<String> keywords = new ArrayList<String>();
     private ArrayList<Pattern> patterns = new ArrayList<Pattern>();
 
     public SkillParser() {
@@ -71,18 +72,8 @@ public class SkillParser implements MiniParser {
     // private methods
 
     private void loadKeywords() {
-        try {
-            InputStream inputStream = new FileInputStream(SKILL_KEYWORDS_FILENAME);
-            JSONTokener tokener = new JSONTokener(inputStream);
-            JSONArray array = new JSONArray(tokener);
-            for (int i = 0; i < array.length(); i++) {
-                String keyword = array.getString(i);
-                keywords.add(keyword);
-            }
-        } catch (FileNotFoundException e) {
-            Logger logger = Logger.getGlobal();
-            logger.log(Level.SEVERE, String.format("Cannot find keyword list (%s)", SKILL_KEYWORDS_FILENAME), e);
-        }
+        SkillBank skillBank = SkillBank.getInstance();
+        keywords = skillBank.getSkillKeywords();
     }
 
     public List<String> findSkillKeywords(String input) {

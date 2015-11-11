@@ -1,5 +1,6 @@
 package cvia.parser;
 
+import cvia.resources.UniversityBank;
 import org.junit.Test;
 import java.util.List;
 

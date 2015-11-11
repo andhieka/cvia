@@ -1,4 +1,4 @@
-package cvia.parser;
+package cvia.resources;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

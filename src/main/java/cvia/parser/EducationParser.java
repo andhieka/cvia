@@ -5,10 +5,11 @@ import cvia.model.EducationInfo;
 import cvia.model.EducationInfo.EducationLevel;
 import cvia.reader_writer.TextChunk;
 import cvia.reader_writer.TextLine;
+import cvia.resources.UniversityBank;
+import cvia.resources.UniversityMajorBank;
 import cvia.utilities.StringUtilities;
 import cvia.utilities.TextChunkUtilities;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
