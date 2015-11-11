@@ -1,10 +1,10 @@
 package cvia.parser;
 
 import cvia.model.CV;
+import cvia.model.RawSource;
 import cvia.reader_writer.PDFReadResult;
 import cvia.reader_writer.TextChunk;
 import cvia.reader_writer.TextLine;
-import cvia.parser.MiniParser;
 
 import java.util.HashMap;
 
@@ -39,6 +39,7 @@ public class PDFCVParser {
         runParseLoop();
         miniParsers.values().forEach(MiniParser::parseAndSave);
         attachFullTextToCV();
+        attachRawSourceToCV();
         return parsedCV;
     }
 
@@ -85,5 +86,11 @@ public class PDFCVParser {
             fullTextBuilder.append(textLine.getText()).append('\n');
         }
         parsedCV.setFullText(fullTextBuilder.toString());
+    }
+
+    private void attachRawSourceToCV() {
+        RawSource rawSource = new RawSource();
+        rawSource.setFilename(rawCV.getFile().getAbsolutePath());
+        parsedCV.setRawSource(rawSource);
     }
 }
