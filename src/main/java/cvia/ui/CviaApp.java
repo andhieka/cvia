@@ -37,8 +37,11 @@ public class CviaApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(APPLICATION_NAME);
 
+        loadSeedData();
         initializeMainLayout();
+    }
 
+    private void loadSeedData() {
         try {
             seedCV();
         } catch (IOException e) {

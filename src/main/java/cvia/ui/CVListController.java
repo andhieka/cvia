@@ -67,18 +67,8 @@ public class CVListController {
     private ObservableList<CV> displayedCVData;
     private List<CV> allCVData;
 
-    public void refreshData(CV newCv) {
-        CV oldCv = null;
-        for (CV cv: allCVData) {
-            if (cv.getId() == newCv.getId()) {
-                oldCv = cv;
-            }
-        }
-
-        allCVData.remove(oldCv);
-        allCVData.add(newCv);
-
-        populateCVTable(allCVData);
+    public void refreshData() {
+        loadInitialData();
     }
 
     @FXML
@@ -87,10 +77,9 @@ public class CVListController {
         setUpBtnAddCv();
         setUpSearchBox();
         setUpCVTable();
-        loadInitialData();
     }
 
-    private void loadInitialData() {
+    public void loadInitialData() {
         allCVData = logicController.listCV();
         populateCVTable(allCVData);
     }

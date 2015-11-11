@@ -1,19 +1,13 @@
 package cvia.ui;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -34,10 +28,10 @@ public class RootWindowController {
     @FXML
     private Button searchMenu;
 
-    private enum MENU_POSITION {
+    private enum MenuPosition {
         CV, JOB
     }
-    private MENU_POSITION selectedPosition;
+    private MenuPosition selectedPosition;
 
     private Pane cvPane;
     private ScrollPane jdPane;
@@ -46,13 +40,15 @@ public class RootWindowController {
     private void initialize() {
         setUpHoverEffectOnMenu();
         setOnActionMenuHandler();
+        showManageCVLayout();
+
     }
 
     private void setUpHoverEffectOnMenu() {
         manageCVMenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (selectedPosition != MENU_POSITION.CV) {
+                if (selectedPosition != MenuPosition.CV) {
                     manageCVMenu.setStyle(MENU_HOVER_STYLE);
                 }
             }
@@ -60,7 +56,7 @@ public class RootWindowController {
         manageCVMenu.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (selectedPosition != MENU_POSITION.CV) {
+                if (selectedPosition != MenuPosition.CV) {
                     manageCVMenu.setStyle(MENU_NORMAL_STYLE);
                 }
             }
@@ -69,7 +65,7 @@ public class RootWindowController {
         manageJobMenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (selectedPosition != MENU_POSITION.JOB) {
+                if (selectedPosition != MenuPosition.JOB) {
                     manageJobMenu.setStyle(MENU_HOVER_STYLE);
                 }
             }
@@ -77,7 +73,7 @@ public class RootWindowController {
         manageJobMenu.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (selectedPosition != MENU_POSITION.JOB) {
+                if (selectedPosition != MenuPosition.JOB) {
                     manageJobMenu.setStyle(MENU_NORMAL_STYLE);
                 }
             }
@@ -99,14 +95,14 @@ public class RootWindowController {
 
     private void setOnActionMenuHandler() {
         manageCVMenu.setOnAction(event -> {
-            selectedPosition = MENU_POSITION.CV;
+            selectedPosition = MenuPosition.CV;
             giveEffectOnSelectedMenu();
             // Open up ManageCV pane on the right
             showManageCVLayout();
         });
 
         manageJobMenu.setOnAction(event -> {
-            selectedPosition = MENU_POSITION.JOB;
+            selectedPosition = MenuPosition.JOB;
             giveEffectOnSelectedMenu();
             // Open up ManageJob pane on the right
             showManageJobLayout();
@@ -118,7 +114,7 @@ public class RootWindowController {
     }
 
     private void giveEffectOnSelectedMenu() {
-        if (selectedPosition == MENU_POSITION.CV) {
+        if (selectedPosition == MenuPosition.CV) {
             manageCVMenu.setStyle(MENU_SELECTED_STYLE);
             manageJobMenu.setStyle(MENU_NORMAL_STYLE);
         } else {
@@ -136,6 +132,7 @@ public class RootWindowController {
 
             cvPane = loader.load();
             CVListController cvListController = loader.getController();
+            cvListController.loadInitialData();
 
             cvPane.setLayoutX(200);
             cvPane.setLayoutY(0);

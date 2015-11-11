@@ -179,7 +179,7 @@ public class CVDetailController2 {
         btnSave.setOnAction(event -> {
             constructCVFromForm();
             LogicController.getInstance().editCV(cv.getId(), cv);
-            controller.refreshData(cv);
+            controller.refreshData();
             stage.close();
         });
 
@@ -582,7 +582,7 @@ public class CVDetailController2 {
             personalInfo.setEmail(txtEmail.getText());
         }
         if (!txtAddress.getText().isEmpty()) {
-            personalInfo.setContactNumber(txtAddress.getText());
+            personalInfo.setAddress(txtAddress.getText());
         }
         cv.setPersonalInfo(personalInfo);
 

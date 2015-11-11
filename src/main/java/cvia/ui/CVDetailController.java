@@ -259,7 +259,7 @@ public class CVDetailController {
     private void saveCV() {
         modifyCV();
         LogicController.getInstance().editCV(cv.getId(), cv);
-        cvListController.refreshData(cv);
+        cvListController.refreshData();
     }
 
     private void modifyCV() {

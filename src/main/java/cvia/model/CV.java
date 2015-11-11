@@ -1,6 +1,7 @@
 package cvia.model;
 
 import cvia.model.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
@@ -43,6 +44,7 @@ public class CV {
     private RawSource rawSource;
 
     @Column(name = "full_text")
+    @Type(type = "text")
     private String fullText;
 
     // Empty Constructor for Hibernate
