@@ -1,9 +1,8 @@
 package cvia.parser;
 
-import com.mdimension.jchronic.Chronic;
-
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -18,6 +17,10 @@ public class DateRangeParser {
 
     private static final Pattern PATTERN_NOW = Pattern.compile("\\b(present|now|current)\\b", Pattern.CASE_INSENSITIVE);
 
+
+    private enum CharType {
+        ALPHABET, DIGIT, OTHERS
+    }
 
     private class DateDescriptor {
         public int month;
@@ -39,13 +42,15 @@ public class DateRangeParser {
 
     public DateRange parse(String line) {
         String sentence = getRelevantPart(line);
+        String[] tokens = split(sentence); //sentence.split("\\s+");
 
-        String[] tokens = sentence.split("\\s+");
         DateDescriptor startDateDescriptor = new DateDescriptor();
         DateDescriptor endDateDescriptor = new DateDescriptor();
         DateDescriptor targetDateDescriptor = startDateDescriptor;
         for (int i = 0; i < tokens.length; i++) {
-            if (isMonth(tokens[i])) {
+            if (tokens[i].trim().isEmpty()) {
+                // do nothing
+            } else if (isMonth(tokens[i])) {
                 targetDateDescriptor.month = readMonth(tokens[i]);
             } else if (isYear(tokens[i])) {
                 targetDateDescriptor.year = readYear(tokens[i]);
@@ -74,7 +79,7 @@ public class DateRangeParser {
     }
 
     private String getRelevantPart(String line) {
-        String[] tokens = line.split("\\s");
+        String[] tokens = split(line);
         int startIdx = -1, endIdx = -1;
         for (int i = 0; i < tokens.length; i++) {
             if (isDateToken(tokens[i])) {
@@ -133,6 +138,42 @@ public class DateRangeParser {
                 return true;
             default:
                 return false;
+        }
+    }
+
+    private String[] split(String input) {
+        if (input.isEmpty()) return new String[0];
+
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder currentToken = new StringBuilder();
+        CharType prevCharType = getCharType(input.charAt(0));
+        currentToken.append(input.charAt(0));
+
+        for (int i = 1; i < input.length(); i++) {
+            char c = input.charAt(i);
+            CharType charType = getCharType(c);
+            if (charType != prevCharType) {
+                result.add(currentToken.toString().trim());
+                currentToken.setLength(0);
+            }
+            currentToken.append(c);
+            prevCharType = charType;
+        }
+
+        if (currentToken.length() > 0) {
+            result.add(currentToken.toString().trim());
+        }
+
+        return result.toArray(new String[result.size()]);
+    }
+
+    private CharType getCharType(char x) {
+        if (Character.isDigit(x)) {
+            return CharType.DIGIT;
+        } else if (Character.isAlphabetic(x)) {
+            return CharType.ALPHABET;
+        } else {
+            return CharType.OTHERS;
         }
     }
 }

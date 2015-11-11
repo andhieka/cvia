@@ -66,4 +66,11 @@ public class DateParserTest {
         assertEquals(2015, dateRange.getStartDate().getYear());
         assertEquals(2015, dateRange.getEndDate().getYear());
     }
+
+    @Test
+    public void testJumbledSpace() throws Exception {
+        DateRange dateRange = parser.parse("Jan2014-Nov2014");
+        assertEquals(LocalDate.of(2014, 1, 1), dateRange.getStartDate());
+        assertEquals(LocalDate.of(2014, 11, 1), dateRange.getEndDate());
+    }
 }
