@@ -77,6 +77,10 @@ public class Report implements Comparable<Report>{
         this.parsedCV = parsedCV;
     }
 
+    public CV getParsedCV() {
+        return parsedCV;
+    }
+
     public int getLanguageScore() {
         return languageScore;
     }

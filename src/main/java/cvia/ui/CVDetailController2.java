@@ -179,7 +179,9 @@ public class CVDetailController2 {
         btnSave.setOnAction(event -> {
             constructCVFromForm();
             LogicController.getInstance().editCV(cv.getId(), cv);
-            controller.refreshData();
+            if (controller != null) {
+                controller.refreshData();
+            }
             stage.close();
         });
 

@@ -199,6 +199,16 @@ public class JobDescriptionListController {
             List<CV> cvList = getAllCV();
             JobDescription selectedJobDescription = getJobDescriptionFromPosition(rowIndex, colIndex);
             List<Report> reportList = logicController.processMatchingAndGenerateReport(cvList, selectedJobDescription);
+//            List<Report> reportList = new ArrayList<Report>();
+//            Report report = new Report(cvList.get(0).getPersonalInfo());
+//            report.setEducationScore(100);
+//            report.setLanguageScore(100);
+//            report.setSkillScore(100);
+//            report.setWorkScore(100);
+//            report.setScore(100);
+//            report.setJobDescription(selectedJobDescription);
+//            report.setParsedCV(cvList.get(0));
+//            reportList.add(report);
             showReportLayout(reportList);
         });
 
