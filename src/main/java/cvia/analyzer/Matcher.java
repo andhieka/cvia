@@ -65,7 +65,7 @@ public class Matcher {
         int educationScore = educationInfoMatcher.getEducationScore(cv, parsedJobDescription);
         int maxEducationScore = educationInfoMatcher.getMaximumScore(parsedJobDescription);
 
-        int normalized = (educationScore / maxEducationScore) * 100;
+        int normalized = (educationScore * 100 / maxEducationScore);
         report.setEducationScore(normalized);
     }
 
@@ -73,7 +73,7 @@ public class Matcher {
         int skillScore = skillMatcher.getSkillScore(cv, parsedJobDescription);
         int maxSkillScore = skillMatcher.getMaximumScore(parsedJobDescription);
 
-        int normalized = (skillScore / maxSkillScore) * 100;
+        int normalized = (skillScore * 100 / maxSkillScore) ;
 
         List<Skill> matchedSkills = skillMatcher.getMatchedSkills();
         List<Skill> unmatchedSkills = skillMatcher.getUnmatchedSkills();
@@ -89,7 +89,12 @@ public class Matcher {
     private void matchLanguage(CV cv, Report report) {
         int languageScore = languageMatcher.getLanguageScore(cv, parsedJobDescription);
         int maxLanguageScore = languageMatcher.getMaximumScore(cv, parsedJobDescription);
-        int normalized = (languageScore / maxLanguageScore) * 100;
+
+        int normalized = 0;
+
+        if (maxLanguageScore != 0) {
+            normalized = (languageScore * 100/ maxLanguageScore);
+        }
 
         List<Language> matchedLanguage = languageMatcher.getMatchedLanguages();
         List<Language> unmatchedLanguage = languageMatcher.getUnmatchedLanguages();
