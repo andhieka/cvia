@@ -4,7 +4,7 @@ import cvia.model.*;
 import cvia.model.EducationInfo.EducationLevel;
 import cvia.model.Skill.SkillProficiency;
 import cvia.model.Language.LanguageProficiency;
-import cvia.utilities.Pair;
+import cvia.utilities.UIPair;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -84,8 +84,8 @@ public class JobDescriptionDetailController {
     private TextField txtYearsOfExp;
     private TextField txtKeyword;
     private List<TextField> txtResponsibilityList = new ArrayList<TextField>();
-    private List<Pair> txtSkillList = new ArrayList<Pair>();
-    private List<Pair> txtLanguageList = new ArrayList<Pair>();
+    private List<UIPair> txtSkillList = new ArrayList<UIPair>();
+    private List<UIPair> txtLanguageList = new ArrayList<UIPair>();
     private List<TextField> txtWeightageList = new ArrayList<TextField>();
     private ImageButton btnAddResponsibility;
     private ImageButton btnAddSkill;
@@ -510,7 +510,7 @@ public class JobDescriptionDetailController {
         jobDescription.setWorkRequirement(workRequirement);
 
         List<Skill> skillList = new ArrayList<Skill>();
-        for (Pair pair: txtSkillList) {
+        for (UIPair pair: txtSkillList) {
             TextField txtSkillName = pair.getTextField();
             ComboBox comboBoxSkillLevel = pair.getComboBox();
             if (!txtSkillName.getText().isEmpty()) {
@@ -530,7 +530,7 @@ public class JobDescriptionDetailController {
         jobDescription.setRequiredSkills(skillList);
 
         List<Language> languageList = new ArrayList<Language>();
-        for (Pair pair: txtLanguageList) {
+        for (UIPair pair: txtLanguageList) {
             TextField txtLanguage = pair.getTextField();
             ComboBox comboBoxLanguageLevel = pair.getComboBox();
             if (!txtLanguage.getText().isEmpty()) {
@@ -589,7 +589,7 @@ public class JobDescriptionDetailController {
         comboBoxSkillLevel.setPrefWidth(145);
         ySkill += (FIELD_HEIGHT + FIELD_LABEL_SPACING);
 
-        Pair pair = new Pair(txtSkillName, comboBoxSkillLevel);
+        UIPair pair = new UIPair(txtSkillName, comboBoxSkillLevel);
         txtSkillList.add(pair);
 
         skillPane.getChildren().addAll(txtSkillName, comboBoxSkillLevel);
@@ -610,7 +610,7 @@ public class JobDescriptionDetailController {
         comboBoxLanguageLevel.setPrefWidth(145);
         yLanguage += (FIELD_HEIGHT + FIELD_LABEL_SPACING);
 
-        Pair pair = new Pair(txtLanguage, comboBoxLanguageLevel);
+        UIPair pair = new UIPair(txtLanguage, comboBoxLanguageLevel);
         txtLanguageList.add(pair);
 
         languagePane.getChildren().addAll(txtLanguage, comboBoxLanguageLevel);

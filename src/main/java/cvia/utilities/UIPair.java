@@ -6,11 +6,11 @@ import javafx.scene.control.TextField;
 /**
  * Created by Michael Limantara on 11/11/2015.
  */
-public class Pair {
+public class UIPair {
     private TextField textField;
     private ComboBox comboBox;
 
-    public Pair(TextField textField, ComboBox comboBox) {
+    public UIPair(TextField textField, ComboBox comboBox) {
         this.textField = textField;
         this.comboBox = comboBox;
     }

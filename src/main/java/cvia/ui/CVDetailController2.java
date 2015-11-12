@@ -2,7 +2,7 @@ package cvia.ui;
 
 import cvia.model.*;
 import cvia.utilities.DateUtilities;
-import cvia.utilities.Pair;
+import cvia.utilities.UIPair;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -16,10 +16,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,8 +102,8 @@ public class CVDetailController2 {
     private List<HashMap<String, TextField>> txtWorkList = new ArrayList<HashMap<String, TextField>>();
     private List<TextArea> textAreaWorkList = new ArrayList<TextArea>();
 
-    private List<Pair> txtSkillList = new ArrayList<Pair>();
-    private List<Pair> txtLanguageList = new ArrayList<Pair>();
+    private List<UIPair> txtSkillList = new ArrayList<UIPair>();
+    private List<UIPair> txtLanguageList = new ArrayList<UIPair>();
 
     private Double yEducation = OFFSET_TOP + BTN_SIZE + BTN_OFFSET_BOTTOM;
     private Double yWork = OFFSET_TOP + BTN_SIZE + BTN_OFFSET_BOTTOM;
@@ -399,7 +397,7 @@ public class CVDetailController2 {
         comboBoxSkillLevel.setPrefWidth(200);
         ySkill += (FIELD_HEIGHT + LABEL_FIELD_SPACING);
 
-        Pair pair = new Pair(txtSkillName, comboBoxSkillLevel);
+        UIPair pair = new UIPair(txtSkillName, comboBoxSkillLevel);
         txtSkillList.add(pair);
 
         skillSection.getChildren().addAll(txtSkillName, comboBoxSkillLevel);
@@ -419,7 +417,7 @@ public class CVDetailController2 {
         comboBoxLanguageLevel.setPrefWidth(200);
         yLanguage += (FIELD_HEIGHT + LABEL_FIELD_SPACING);
 
-        Pair pair = new Pair(txtLanguage, comboBoxLanguageLevel);
+        UIPair pair = new UIPair(txtLanguage, comboBoxLanguageLevel);
         txtLanguageList.add(pair);
 
         languageSection.getChildren().addAll(txtLanguage, comboBoxLanguageLevel);
