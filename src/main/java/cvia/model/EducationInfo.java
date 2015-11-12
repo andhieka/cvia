@@ -88,7 +88,9 @@ public class EducationInfo implements Comparable<EducationInfo> {
     }
 
     public int getEducationLevelScore() {
-        if (this.educationLevel.equals(EducationLevel.PRIMARY)) {
+        if (this.educationLevel == null) {
+            return -1;
+        } else if (this.educationLevel.equals(EducationLevel.PRIMARY)) {
             return 0;
         } else if (this.educationLevel.equals(EducationLevel.SECONDARY)) {
             return 1;
