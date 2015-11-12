@@ -34,13 +34,17 @@ public class EducationInfoMatcher {
     public int getMaximumScore(JobDescription jobDescription) {
         EducationRequirement minRequirement = jobDescription.getMinimumEducation();
 
-        Grade minimumGrade = minRequirement.getMinimumGrade();
-
-        if (minimumGrade == null) {
+        if (minRequirement == null) {
             return EDUCATION_BASE;
         } else {
+            Grade minimumGrade = minRequirement.getMinimumGrade();
+
+            if (minimumGrade == null) {
+                return EDUCATION_BASE;
+            }
+
             Float maxRequiredGrade = minimumGrade.getMaxGrade();
-            int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() / maxRequiredGrade) * 100);
+            int normalizedMinimumGrade = (int) ((minimumGrade.getGrade() * 100 / maxRequiredGrade));
             return EDUCATION_BASE + (100 - normalizedMinimumGrade);
         }
 
@@ -58,8 +62,13 @@ public class EducationInfoMatcher {
         EducationRequirement educationRequirement = parsedJobDescription.getMinimumEducation();
 
 
-        int requirement = educationRequirement.getEducationLevelScore();
+        try {
+            int requirement = educationRequirement.getEducationLevelScore();
+        } catch (Exception e) {
+            return 0;
+        }
 
+        int requirement = educationRequirement.getEducationLevelScore();
         EducationInfo highestEducation = null;
 
         for (EducationInfo currentEducation : educationInfoList) {
@@ -91,9 +100,6 @@ public class EducationInfoMatcher {
         Grade minimumGrade = educationRequirement.getMinimumGrade();
 
         if (minimumGrade != null) { //got minimum requirement on grade
-
-
-
 
             int normalizedGrade = 0;
 

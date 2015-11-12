@@ -57,23 +57,65 @@ public class Matcher {
         int workScore = workExperienceMatcher.getWorkExperienceScore(cv, parsedJobDescription);
         int maxWorkScore = workExperienceMatcher.getMaximumScore(cv);
 
-        double normalized = ((double) workScore / (double) maxWorkScore) * 100;
-        report.setWorkScore((int)normalized);
+        int normalized = 0;
+
+        if (maxWorkScore != 0) {
+            normalized = (workScore * 100 / maxWorkScore);
+        }
+
+
+
+        if (normalized < 0) {
+            normalized = 0;
+        } else if (normalized > 100) {
+            normalized = 100;
+        }
+
+
+        report.setWorkScore(normalized);
     }
 
     private void matchEducation(CV cv, Report report) {
         int educationScore = educationInfoMatcher.getEducationScore(cv, parsedJobDescription);
         int maxEducationScore = educationInfoMatcher.getMaximumScore(parsedJobDescription);
 
-        int normalized = (educationScore * 100 / maxEducationScore);
+        int normalized = 0;
+
+        if (maxEducationScore != 0) {
+            normalized = (educationScore * 100 / maxEducationScore);
+        }
+
+
+
+        if (normalized < 0) {
+            normalized = 0;
+        } else if (normalized > 100) {
+            normalized = 100;
+        }
+
+
         report.setEducationScore(normalized);
     }
 
     private void matchSkill(CV cv, Report report) {
         int skillScore = skillMatcher.getSkillScore(cv, parsedJobDescription);
-        int maxSkillScore = skillMatcher.getMaximumScore(parsedJobDescription);
+        int maxSkillScore = skillMatcher.getMaximumScore(cv, parsedJobDescription);
 
-        int normalized = (skillScore * 100 / maxSkillScore) ;
+        int normalized = 0;
+
+        if (maxSkillScore == 0) {
+
+        } else {
+            normalized = (skillScore * 100 / maxSkillScore);
+
+
+
+            if (normalized < 0) {
+                normalized = 0;
+            } else if (normalized > 100) {
+                normalized = 100;
+            }
+        }
 
         List<Skill> matchedSkills = skillMatcher.getMatchedSkills();
         List<Skill> unmatchedSkills = skillMatcher.getUnmatchedSkills();
@@ -99,6 +141,14 @@ public class Matcher {
         List<Language> matchedLanguage = languageMatcher.getMatchedLanguages();
         List<Language> unmatchedLanguage = languageMatcher.getUnmatchedLanguages();
         List<Language> extraLanguage = languageMatcher.getExtraLanguages();
+
+
+        if (normalized < 0) {
+            normalized = 0;
+        } else if (normalized > 100) {
+            normalized = 100;
+        }
+
 
         report.setLanguageScore(normalized);
         report.setMatchedLanguages(matchedLanguage);

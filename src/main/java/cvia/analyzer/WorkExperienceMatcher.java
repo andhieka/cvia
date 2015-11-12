@@ -58,15 +58,18 @@ public class WorkExperienceMatcher {
     }
 
     public int getWorkExperienceScore(CV parsedCV, JobDescription parsedJobDescription) {
+        hasMatch = false;
         List<WorkExperience> listOfWorkExperience = parsedCV.getWorkExperienceList();
 
         WorkRequirement workRequirement = parsedJobDescription.getWorkRequirement();
 
-        Integer minimum = Integer.valueOf(workRequirement.getDuration());
+      int minimum;
 
-        if (minimum == null) {
-            minimum = 0;
-        }
+       try {
+           minimum = workRequirement.getDuration();
+       } catch (Exception e) {
+           minimum = 0;
+       }
 
         int total = 0;
 
@@ -103,6 +106,12 @@ public class WorkExperienceMatcher {
     }
 
     private boolean isEquivalent(WorkExperience we, WorkRequirement workRequirement) {
+
+        try {
+            workRequirement.getKeywords();
+        } catch (Exception e){
+            return false;
+        }
 
         for (String keyword : workRequirement.getKeywords()) {
             if (we.getPosition().toLowerCase().contains(keyword.toLowerCase())) {
