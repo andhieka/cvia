@@ -4,6 +4,7 @@ import cvia.model.CV;
 import cvia.model.WorkExperience;
 import cvia.reader_writer.TextChunk;
 import cvia.reader_writer.TextLine;
+import cvia.resources.KeywordBank;
 import cvia.utilities.StringUtilities;
 import cvia.utilities.TextChunkUtilities;
 import org.json.JSONArray;
@@ -27,8 +28,9 @@ public class WorkExperienceParser implements MiniParser {
     private ArrayList<TextChunk> textChunks = new ArrayList<TextChunk>();
 
     private DateRangeParser dateRangeParser = new DateRangeParser();
-    private ArrayList<String> positionKeywords = new ArrayList<String>();
-    private ArrayList<String> companyKeywords = new ArrayList<String>();
+
+    private KeywordBank positionBank = new KeywordBank(POSITION_KEYWORDS_FILENAME);
+    private KeywordBank companyBank = new KeywordBank(COMPANY_KEYWORDS_FILENAME);
 
     private ArrayList<WorkExperience> workExperiences;
     private DateRange dateRange;
@@ -49,46 +51,45 @@ public class WorkExperienceParser implements MiniParser {
     @Override
     public void parseAndSave() {
         assert(cv != null);
-        return;
 
-//        List<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
-//        for (TextLine textLine: textLines) {
-//            String line = textLine.getText();
-//            if (!StringUtilities.beginsWithBullet(line)) {
-//                saveWorkExperience();
-//            }
-//            boolean hasMatch = false;
-//            if (position == null) {
-//                position = findPosition(line);
-//                if (position != null) {
-//                    line = line.replace(position, "");
-//                    hasMatch = true;
-//                }
-//            }
-//            if (company == null) {
-//                company = findCompany(line);
-//                if (company != null) {
-//                    line = line.replace(company, "");
-//                    hasMatch = true;
-//                }
-//            }
-//            if (dateRange == null) {
-//                dateRange = dateRangeParser.parse(line);
-//                if (dateRange.getStartDate() != null || dateRange.getEndDate() != null) {
-//                    ParseEvidence evidence = dateRangeParser.getEvidence();
-//                    if (!line.trim().isEmpty()) {
-//                        line = line.replace(evidence.getText(), "");
-//                    }
-//                    hasMatch = true;
-//                }
-//            }
-//            if (!hasMatch) {
-//                description.append(line).append('\n');
-//            }
-//        }
-//        saveWorkExperience();
-//
-//        cv.setWorkExperienceList(workExperiences);
+        List<TextLine> textLines = TextChunkUtilities.combineLines(textChunks);
+        for (TextLine textLine: textLines) {
+            String line = textLine.getText();
+            if (!StringUtilities.beginsWithBullet(line)) {
+                saveWorkExperience();
+            }
+            boolean hasMatch = false;
+            if (position == null) {
+                position = findPosition(line);
+                if (position != null) {
+                    line = line.replace(position, "");
+                    hasMatch = true;
+                }
+            }
+            if (company == null) {
+                company = findCompany(line);
+                if (company != null) {
+                    line = line.replace(company, "");
+                    hasMatch = true;
+                }
+            }
+            if (dateRange == null) {
+                dateRange = dateRangeParser.parse(line);
+                if (dateRange != null && (dateRange.getStartDate() != null || dateRange.getEndDate() != null)) {
+                    ParseEvidence evidence = dateRangeParser.getEvidence();
+                    if (!line.trim().isEmpty()) {
+                        line = line.replace(evidence.getText(), "");
+                    }
+                    hasMatch = true;
+                }
+            }
+            if (!hasMatch && line.trim().length() > 0) {
+                description.append(line).append('\n');
+            }
+        }
+        saveWorkExperience();
+
+        cv.setWorkExperienceList(workExperiences);
     }
 
     @Override
@@ -126,7 +127,7 @@ public class WorkExperienceParser implements MiniParser {
             }
             if (dateRange == null) {
                 dateRange = dateRangeParser.parse(line);
-                if (dateRange.getStartDate() != null || dateRange.getEndDate() != null) {
+                if (dateRange != null && (dateRange.getStartDate() != null || dateRange.getEndDate() != null)) {
                     ParseEvidence evidence = dateRangeParser.getEvidence();
                     if (!line.trim().isEmpty()) {
                         line = line.replace(evidence.getText(), "");
@@ -134,7 +135,7 @@ public class WorkExperienceParser implements MiniParser {
                     hasMatch = true;
                 }
             }
-            if (!hasMatch) {
+            if (!hasMatch && line.trim().length() > 0) {
                 description.append(line).append('\n');
             }
         }
@@ -145,7 +146,7 @@ public class WorkExperienceParser implements MiniParser {
     }
 
     private void saveWorkExperience() {
-        if (company != null || position != null || description.length() > 0) {
+        if (company != null || position != null) {
             WorkExperience workExperience = new WorkExperience();
             workExperience.setCompany(company == null ? "" : company);
             workExperience.setPosition(position == null ? "" : position);
@@ -163,61 +164,12 @@ public class WorkExperienceParser implements MiniParser {
     }
 
     private String findCompany(String line) {
-        loadCompanyKeywords();
-        String company = null;
-        Integer lengthOfMatch = 0;
-
-        for (String companyKeyword: companyKeywords) {
-            if (line.contains(companyKeyword) && lengthOfMatch < companyKeyword.length()) {
-                company = companyKeyword;
-                lengthOfMatch = companyKeyword.length();
-            }
-        }
-
-        return company;
+        String candidate = companyBank.longestMatchedKeywordInString(line);
+        if (candidate == null) return null;
+        return (candidate.length() > 4) ? candidate : null;
     }
 
     private String findPosition(String line) {
-        loadPositionKeywords();
-        String position = null;
-        Integer lengthOfMatch = 0;
-
-        for (String positionKeyword: positionKeywords) {
-            if (line.contains(positionKeyword) && lengthOfMatch < positionKeyword.length()) {
-                position = positionKeyword;
-                lengthOfMatch = positionKeyword.length();
-            }
-        }
-        return position;
-    }
-
-    private void loadPositionKeywords() {
-        try {
-            InputStream inputStream = new FileInputStream(POSITION_KEYWORDS_FILENAME);
-            JSONTokener tokener = new JSONTokener(inputStream);
-            JSONArray array = new JSONArray(tokener);
-            for (int i = 0; i < array.length(); i++) {
-                String keyword = array.getString(i);
-                positionKeywords.add(keyword);
-            }
-        } catch (FileNotFoundException e) {
-            Logger logger = Logger.getGlobal();
-            logger.log(Level.SEVERE, String.format("Cannot find keyword list (%s)", POSITION_KEYWORDS_FILENAME), e);
-        }
-    }
-
-    private void loadCompanyKeywords() {
-        try {
-            InputStream inputStream = new FileInputStream(COMPANY_KEYWORDS_FILENAME);
-            JSONTokener tokener = new JSONTokener(inputStream);
-            JSONArray array = new JSONArray(tokener);
-            for (int i = 0; i < array.length(); i++) {
-                String keyword = array.getString(i);
-                companyKeywords.add(keyword);
-            }
-        } catch (FileNotFoundException e) {
-            Logger logger = Logger.getGlobal();
-            logger.log(Level.SEVERE, String.format("Cannot find keyword list (%s)", COMPANY_KEYWORDS_FILENAME), e);
-        }
+        return positionBank.longestMatchedKeywordInString(line);
     }
 }

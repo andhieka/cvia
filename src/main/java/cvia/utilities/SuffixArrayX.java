@@ -1,3 +1,5 @@
+package cvia.utilities;
+
 /******************************************************************************
  *  Compilation:  javac SuffixArrayX.java
  *  Execution:    java SuffixArrayX < input.txt
@@ -37,7 +39,7 @@
  *  <p>
  *  This implementation uses 3-way radix quicksort to sort the array of suffixes.
  *  For a simpler (but less efficient) implementations of the same API, see
- *  {@link SuffixArray}.
+ *  SuffixArray.
  *  The <em>index</em> and <em>length</em> operations takes constant time
  *  in the worst case. The <em>lcp</em> operation takes time proportional to the
  *  length of the longest common prefix.

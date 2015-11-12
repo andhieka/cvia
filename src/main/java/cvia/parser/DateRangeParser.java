@@ -43,7 +43,6 @@ public class DateRangeParser {
     public DateRange parse(String line) {
         parseEvidence = new ParseEvidence();
         String sentence = getRelevantPart(line);
-        parseEvidence.setText(sentence);
 
         String[] tokens = split(sentence);
         if (tokens.length == 0) return null;
@@ -96,10 +95,16 @@ public class DateRangeParser {
             }
         }
         if (startIdx == -1) return "";
+
         StringBuilder timeDescription = new StringBuilder();
         for (int i = startIdx; i <= endIdx; i++) {
             timeDescription.append(tokens[i]).append(' ');
         }
+
+        int evidenceStartIdx = line.indexOf(tokens[startIdx]);
+        int evidenceStopIdx = line.lastIndexOf(tokens[endIdx]) + tokens[endIdx].length();
+        parseEvidence.setText(line.substring(evidenceStartIdx, evidenceStopIdx));
+
         return timeDescription.toString();
     }
 
@@ -182,6 +187,6 @@ public class DateRangeParser {
     }
 
     public ParseEvidence getEvidence() {
-        return null;
+        return parseEvidence;
     }
 }

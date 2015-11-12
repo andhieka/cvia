@@ -16,6 +16,7 @@ public class WorkExperienceParserTest {
     @Before
     public void setUp() throws Exception {
         parser = new WorkExperienceParser();
+        parser.reset();
     }
 
     @After

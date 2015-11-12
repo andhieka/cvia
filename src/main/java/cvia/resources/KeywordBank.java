@@ -10,22 +10,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by andhieka on 12/11/15.
  */
 public class KeywordBank {
     private String sourceFilename;
-    private ArrayList<String> skillKeywords = new ArrayList<>();
-    private static SkillBank instance = null;
+    private ArrayList<String> keywords = new ArrayList<>();
 
     public KeywordBank(String sourceFilename) {
         this.sourceFilename = sourceFilename;
         loadKeywords();
     }
 
-    public List<String> getSkillKeywords() {
-        return skillKeywords;
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public List<String> matchedKeywordsInString(String input) {
+        ArrayList<String> results = new ArrayList<>();
+        for (String keyword: keywords) {
+            if (input.contains(keyword)) {
+                results.add(keyword);
+            }
+        }
+        return results;
+    }
+
+    public String longestMatchedKeywordInString(String input) {
+        List<String> results = matchedKeywordsInString(input);
+        String ans = null;
+        for (String result: results) {
+            if (ans == null || ans.length() < result.length()) {
+                ans = result;
+            }
+        }
+        return ans;
     }
 
     // Private methods
@@ -37,7 +59,7 @@ public class KeywordBank {
             JSONArray array = new JSONArray(tokener);
             for (int i = 0; i < array.length(); i++) {
                 String keyword = array.getString(i);
-                skillKeywords.add(keyword);
+                keywords.add(keyword);
             }
         } catch (FileNotFoundException e) {
             Logger logger = Logger.getGlobal();
