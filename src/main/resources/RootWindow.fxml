@@ -30,11 +30,6 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="searchMenu" layoutY="143.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" style="-fx-background-color: #2f3e4d;" text="Search" textFill="#a59d8e">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Button>
          </children></Pane>
    </children>
 </Pane>
