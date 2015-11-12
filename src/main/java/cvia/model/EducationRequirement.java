@@ -30,8 +30,9 @@ public class EducationRequirement {
         return id;
     }
 
-    public void setId(Long id) {
+    public EducationRequirement setId(Long id) {
         this.id = id;
+        return this;
     }
 
     // Empty constructor for Hibernate
@@ -43,24 +44,27 @@ public class EducationRequirement {
         return minimumEducation;
     }
 
-    public void setMinimumEducation(EducationLevel minimumEducation) {
+    public EducationRequirement setMinimumEducation(EducationLevel minimumEducation) {
         this.minimumEducation = minimumEducation;
+        return this;
     }
 
     public List<String> getAcceptedMajors() {
         return acceptedMajors;
     }
 
-    public void setAcceptedMajors(List<String> acceptedMajors) {
+    public EducationRequirement setAcceptedMajors(List<String> acceptedMajors) {
         this.acceptedMajors = acceptedMajors;
+        return this;
     }
 
     public Grade getMinimumGrade() {
         return minimumGrade;
     }
 
-    public void setMinimumGrade(Grade minimumGrade) {
+    public EducationRequirement setMinimumGrade(Grade minimumGrade) {
         this.minimumGrade = minimumGrade;
+        return this;
     }
 
     public int getEducationLevelScore() {

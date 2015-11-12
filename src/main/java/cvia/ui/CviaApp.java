@@ -3,6 +3,7 @@ package cvia.ui;/**
  */
 
 import cvia.model.*;
+import cvia.resources.JobDescriptionSeed;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -44,6 +45,7 @@ public class CviaApp extends Application {
     private void loadSeedData() {
         try {
             seedCV();
+            seedJD();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,46 +122,6 @@ public class CviaApp extends Application {
     }
 
     private void seedJD() {
-        JobDescription jd1 = new JobDescription();
-        jd1.setTitle("Sr. Software Engineer");
-        jd1.setVacancy(0);
-
-        List<String> responsibilities = new ArrayList<String>();
-        responsibilities.add("Responsibility 1");
-        responsibilities.add("Responsibility 2");
-        jd1.setResponsibilities(responsibilities);
-
-        EducationRequirement educationRequirement = new EducationRequirement();
-        educationRequirement.setAcceptedMajors(new ArrayList<String>());
-        educationRequirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
-        Grade grade = new Grade();
-        grade.setGrade(4f);
-        grade.setMaxGrade(5f);
-        educationRequirement.setMinimumGrade(grade);
-        jd1.setMinimumEducation(educationRequirement);
-
-        jd1.setRequiredLanguages(new ArrayList<Language>());
-        jd1.setRequiredSkills(new ArrayList<Skill>());
-
-        WorkRequirement workRequirement = new WorkRequirement();
-        List<String> keywords = new ArrayList<String>();
-        keywords.add("keyword 1");
-        keywords.add("keyword 2");
-        keywords.add("keyword 3");
-        workRequirement.setKeywords(keywords);
-        workRequirement.setDuration(12);
-        jd1.setWorkRequirement(workRequirement);
-
-        List<Integer> weightage = new ArrayList<Integer>();
-        weightage.add(1);
-        weightage.add(1);
-        weightage.add(2);
-        weightage.add(1);
-        jd1.setWeightage(weightage);
-
-        logicController.saveJD(jd1);
-        logicController.saveJD(jd1);
-        logicController.saveJD(jd1);
-        logicController.saveJD(jd1);
+        JobDescriptionSeed.getInstance().execute();
     }
 }

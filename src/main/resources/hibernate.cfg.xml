@@ -17,7 +17,7 @@
         <property name="show_sql">true</property>
 
         <!-- Start with a new database each time -->
-        <!--<property name="hibernate.hbm2ddl.auto">create-drop</property>-->
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!-- DB schema will be updated if needed -->
         <mapping class="cvia.model.CV"/>
