@@ -17,7 +17,7 @@ public class EducationRequirement {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "minimum_education")
-    private EducationLevel minimumEducation;
+    private EducationLevel educationLevel;
 
     @ElementCollection
     @CollectionTable(name = "accepted_major", joinColumns = {@JoinColumn(name = "edu_req_id")})
@@ -30,8 +30,9 @@ public class EducationRequirement {
         return id;
     }
 
-    public void setId(Long id) {
+    public EducationRequirement setId(Long id) {
         this.id = id;
+        return this;
     }
 
     // Empty constructor for Hibernate
@@ -39,42 +40,45 @@ public class EducationRequirement {
 
     }
 
-    public EducationLevel getMinimumEducation() {
-        return minimumEducation;
+    public EducationLevel getEducationLevel() {
+        return educationLevel;
     }
 
-    public void setMinimumEducation(EducationLevel minimumEducation) {
-        this.minimumEducation = minimumEducation;
+    public EducationRequirement setEducationLevel(EducationLevel minimumEducation) {
+        this.educationLevel = minimumEducation;
+        return this;
     }
 
     public List<String> getAcceptedMajors() {
         return acceptedMajors;
     }
 
-    public void setAcceptedMajors(List<String> acceptedMajors) {
+    public EducationRequirement setAcceptedMajors(List<String> acceptedMajors) {
         this.acceptedMajors = acceptedMajors;
+        return this;
     }
 
     public Grade getMinimumGrade() {
         return minimumGrade;
     }
 
-    public void setMinimumGrade(Grade minimumGrade) {
+    public EducationRequirement setMinimumGrade(Grade minimumGrade) {
         this.minimumGrade = minimumGrade;
+        return this;
     }
 
     public int getEducationLevelScore() {
-        if (this.minimumEducation.equals(EducationLevel.PRIMARY)) {
+        if (this.educationLevel.equals(EducationLevel.PRIMARY)) {
             return 0;
-        } else if (this.minimumEducation.equals(EducationLevel.SECONDARY)) {
+        } else if (this.educationLevel.equals(EducationLevel.SECONDARY)) {
             return 1;
-        } else if (this.minimumEducation.equals(EducationLevel.HIGHSCHOOL)) {
+        } else if (this.educationLevel.equals(EducationLevel.HIGHSCHOOL)) {
             return 2;
-        } else if (this.minimumEducation.equals(EducationLevel.DIPLOMA)) {
+        } else if (this.educationLevel.equals(EducationLevel.DIPLOMA)) {
             return 3;
-        } else if (this.minimumEducation.equals(EducationLevel.UNDERGRADUATE)) {
+        } else if (this.educationLevel.equals(EducationLevel.UNDERGRADUATE)) {
             return 4;
-        } else if (this.minimumEducation.equals(EducationLevel.GRADUATE)) {
+        } else if (this.educationLevel.equals(EducationLevel.GRADUATE)) {
             return 5;
         } else { //PHD
             return 6;

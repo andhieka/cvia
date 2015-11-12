@@ -3,7 +3,6 @@ package cvia.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,11 +26,11 @@ public class JobDescription {
     @CollectionTable(name = "jd_skill", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<Skill> requiredSkills;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private EducationRequirement minimumEducation;
+    private EducationRequirement educationRequirement;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private WorkRequirement workRequirement;
 
@@ -88,12 +87,12 @@ public class JobDescription {
         this.requiredSkills = requiredSkills;
     }
 
-    public EducationRequirement getMinimumEducation() {
-        return minimumEducation;
+    public EducationRequirement getEducationRequirement() {
+        return educationRequirement;
     }
 
-    public void setMinimumEducation(EducationRequirement minimumEducation) {
-        this.minimumEducation = minimumEducation;
+    public void setEducationRequirement(EducationRequirement minimumEducation) {
+        this.educationRequirement = minimumEducation;
     }
 
     public WorkRequirement getWorkRequirement() {

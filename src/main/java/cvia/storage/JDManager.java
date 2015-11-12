@@ -79,8 +79,10 @@ public class JDManager {
             for (JobDescription jd: jdList) {
                 Hibernate.initialize(jd.getRequiredSkills());
                 Hibernate.initialize(jd.getRequiredLanguages());
-                Hibernate.initialize(jd.getMinimumEducation());
+                Hibernate.initialize(jd.getEducationRequirement());
+                Hibernate.initialize(jd.getEducationRequirement().getAcceptedMajors());
                 Hibernate.initialize(jd.getWorkRequirement());
+                Hibernate.initialize(jd.getWorkRequirement().getKeywords());
                 Hibernate.initialize(jd.getResponsibilities());
                 Hibernate.initialize(jd.getWeightage());
             }
@@ -103,7 +105,7 @@ public class JDManager {
         try {
             transaction = session.beginTransaction();
             JobDescription jobDescription = session.get(JobDescription.class, id);
-            jobDescription.setMinimumEducation(newJobDescription.getMinimumEducation());
+            jobDescription.setEducationRequirement(newJobDescription.getEducationRequirement());
             jobDescription.setRequiredLanguages(newJobDescription.getRequiredLanguages());
             jobDescription.setRequiredSkills(newJobDescription.getRequiredSkills());
             jobDescription.setResponsibilities(newJobDescription.getResponsibilities());
@@ -191,12 +193,12 @@ public class JDManager {
         majors.add("major 1");
         majors.add("major 2");
         educationRequirement.setAcceptedMajors(majors);
-        educationRequirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        educationRequirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         Grade grade = new Grade();
         grade.setGrade(4f);
         grade.setMaxGrade(5f);
         educationRequirement.setMinimumGrade(grade);
-        jobDescription.setMinimumEducation(educationRequirement);
+        jobDescription.setEducationRequirement(educationRequirement);
 
         Long id = jdManager.save(jobDescription);
         JobDescription jobDescription1 = jdManager.getJobDescriptionDetailById(id);

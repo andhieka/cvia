@@ -32,7 +32,7 @@ public class EducationInfoMatcher {
     }
 
     public int getMaximumScore(JobDescription jobDescription) {
-        EducationRequirement minRequirement = jobDescription.getMinimumEducation();
+        EducationRequirement minRequirement = jobDescription.getEducationRequirement();
 
         if (minRequirement == null) {
             return EDUCATION_BASE;
@@ -59,7 +59,7 @@ public class EducationInfoMatcher {
         Collections.reverse(educationInfoList);
 
 
-        EducationRequirement educationRequirement = parsedJobDescription.getMinimumEducation();
+        EducationRequirement educationRequirement = parsedJobDescription.getEducationRequirement();
 
 
         try {

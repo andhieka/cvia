@@ -396,28 +396,28 @@ public class JobDescriptionDetailController {
             addResponsibility();
         }
 
-        EducationRequirement educationRequirement = jobDescription.getMinimumEducation();
+        EducationRequirement educationRequirement = jobDescription.getEducationRequirement();
         if (educationRequirement != null &&
-                educationRequirement.getMinimumEducation() != null) {
-            String minimumLevel = educationRequirement.getMinimumEducation().toString();
+                educationRequirement.getEducationLevel() != null) {
+            String minimumLevel = educationRequirement.getEducationLevel().toString();
             minimumLevel = minimumLevel.substring(0, 1).toUpperCase() + minimumLevel.substring(1).toLowerCase();
             minimumEducationLevelComboBox.setValue(minimumLevel);
 
             StringBuilder sb = new StringBuilder();
             if (educationRequirement.getAcceptedMajors() != null) {
-                for (int i = 0; i < jobDescription.getMinimumEducation().getAcceptedMajors().size(); i++) {
-                    if (i == jobDescription.getMinimumEducation().getAcceptedMajors().size() - 1) {
-                        sb.append(jobDescription.getMinimumEducation().getAcceptedMajors().get(i));
+                for (int i = 0; i < jobDescription.getEducationRequirement().getAcceptedMajors().size(); i++) {
+                    if (i == jobDescription.getEducationRequirement().getAcceptedMajors().size() - 1) {
+                        sb.append(jobDescription.getEducationRequirement().getAcceptedMajors().get(i));
                     } else {
-                        sb.append(jobDescription.getMinimumEducation().getAcceptedMajors().get(i) + ", ");
+                        sb.append(jobDescription.getEducationRequirement().getAcceptedMajors().get(i) + ", ");
                     }
                 }
             }
             txtMajor.setText(sb.toString());
-            Grade grade = jobDescription.getMinimumEducation().getMinimumGrade();
+            Grade grade = jobDescription.getEducationRequirement().getMinimumGrade();
             if (grade != null) {
-                String gradeString = jobDescription.getMinimumEducation().getMinimumGrade().getGrade() + "/" +
-                        jobDescription.getMinimumEducation().getMinimumGrade().getMaxGrade();
+                String gradeString = jobDescription.getEducationRequirement().getMinimumGrade().getGrade() + "/" +
+                        jobDescription.getEducationRequirement().getMinimumGrade().getMaxGrade();
                 txtGrade.setText(gradeString);
             }
         }
@@ -481,7 +481,7 @@ public class JobDescriptionDetailController {
         EducationRequirement educationRequirement = new EducationRequirement();
         if (minimumEducationLevelComboBox.getValue() != null &&
                 !minimumEducationLevelComboBox.getValue().toString().isEmpty()) {
-            educationRequirement.setMinimumEducation(EducationLevel.valueOf(
+            educationRequirement.setEducationLevel(EducationLevel.valueOf(
                     minimumEducationLevelComboBox.getValue().toString().toUpperCase()));
         }
         if (!txtMajor.getText().isEmpty()) {
@@ -492,14 +492,18 @@ public class JobDescriptionDetailController {
         }
         if (!txtGrade.getText().isEmpty()) {
             String[] gradeString = txtGrade.getText().split("/");
-            System.out.println(gradeString[0]);
-            System.out.println(gradeString[1]);
+
+            if (gradeString.length < 2) {
+                gradeString = new String[2];
+                gradeString[0] = "1";
+                gradeString[1] = "5";
+            }
             Grade grade = new Grade();
             grade.setGrade(Float.parseFloat(gradeString[0].trim()));
             grade.setMaxGrade(Float.parseFloat(gradeString[1].trim()));
             educationRequirement.setMinimumGrade(grade);
         }
-        jobDescription.setMinimumEducation(educationRequirement);
+        jobDescription.setEducationRequirement(educationRequirement);
 
         WorkRequirement workRequirement = new WorkRequirement();
         workRequirement.setDuration(0);

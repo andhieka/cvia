@@ -5,9 +5,7 @@ import cvia.model.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 /**
  * Created by johnkevin on 9/11/15.
@@ -48,7 +46,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
         requirement.setAcceptedMajors(accepted);
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 60/100
@@ -60,7 +58,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(340, score);
@@ -93,7 +91,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
         requirement.setAcceptedMajors(accepted);
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 60/100
@@ -105,7 +103,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(0, score);
@@ -139,7 +137,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
         requirement.setAcceptedMajors(accepted);
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 60/100
@@ -151,7 +149,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(260, score);
@@ -184,7 +182,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
         requirement.setAcceptedMajors(accepted);
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 60/100
@@ -196,7 +194,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(0, score);
@@ -229,7 +227,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
 
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 60/100
@@ -241,7 +239,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(340, score);
@@ -272,7 +270,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
 
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 0/100
@@ -284,7 +282,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(400, score);
@@ -314,7 +312,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
 
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 0/100
@@ -326,7 +324,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(300, score);
@@ -358,7 +356,7 @@ public class EducationInfoMatcherTest {
 
         EducationRequirement requirement = new EducationRequirement();
 
-        requirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        requirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         requirement.setMinimumGrade(minGrade);
 
         //min = 60/100
@@ -370,7 +368,7 @@ public class EducationInfoMatcherTest {
         myEducations.add(myEducation);
 
         parsedCV.setEducationInfoList(myEducations);
-        parsedJobDescription.setMinimumEducation(requirement);
+        parsedJobDescription.setEducationRequirement(requirement);
         int score = matcher.getEducationScore(parsedCV, parsedJobDescription);
 
         assertEquals(240, score);

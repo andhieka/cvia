@@ -49,7 +49,7 @@ public class CVDetailController2 {
     private static final Double EDUCATION_TAB_FIELD_WIDTH = 200.0;
     private static final Double WORK_TAB_FIELD_WIDTH = 200.0;
     private static final Double SKILl_TAB_FIELD_WIDTH = 200.0;
-    private static final Double OFFSET_BOTTOM = 50.0;
+    private static final Double OFFSET_BOTTOM = 150.0;
 
     @FXML
     private SplitPane splitPane;

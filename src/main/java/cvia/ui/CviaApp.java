@@ -6,13 +6,11 @@ import cvia.model.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -37,7 +35,7 @@ public class CviaApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(APPLICATION_NAME);
 
-        loadSeedData();
+//        loadSeedData();
         initializeMainLayout();
     }
 
@@ -131,12 +129,12 @@ public class CviaApp extends Application {
 
         EducationRequirement educationRequirement = new EducationRequirement();
         educationRequirement.setAcceptedMajors(new ArrayList<String>());
-        educationRequirement.setMinimumEducation(EducationInfo.EducationLevel.UNDERGRADUATE);
+        educationRequirement.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
         Grade grade = new Grade();
         grade.setGrade(4f);
         grade.setMaxGrade(5f);
         educationRequirement.setMinimumGrade(grade);
-        jd1.setMinimumEducation(educationRequirement);
+        jd1.setEducationRequirement(educationRequirement);
 
         jd1.setRequiredLanguages(new ArrayList<Language>());
         jd1.setRequiredSkills(new ArrayList<Skill>());
