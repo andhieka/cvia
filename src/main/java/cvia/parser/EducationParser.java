@@ -76,8 +76,10 @@ public class EducationParser implements MiniParser {
             EducationInfo educationInfo = new EducationInfo();
             educationInfo.setMajor(major == null ? "" : major);
             educationInfo.setEducationLevel(educationLevel);
-            educationInfo.setStartDate(dateRange.getStartDate());
-            educationInfo.setEndDate(dateRange.getEndDate());
+            if (dateRange != null) {
+                educationInfo.setStartDate(dateRange.getStartDate());
+                educationInfo.setEndDate(dateRange.getEndDate());
+            }
             educationInfo.setInstitutionName(institutionName == null ? "" : institutionName);
             educationInfos.add(educationInfo);
         }

@@ -14,9 +14,9 @@ public class DateRangeParser {
     private static final Pattern PATTERN_YEAR = Pattern.compile("\\b[12]{1}[0-9]{3}\\b");
     private static final List<String> MONTH_ABBREVIATED = Arrays.asList("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec");
     private static final List<String> MONTH_FULL = Arrays.asList("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
-
     private static final Pattern PATTERN_NOW = Pattern.compile("\\b(present|now|current)\\b", Pattern.CASE_INSENSITIVE);
 
+    private ParseEvidence parseEvidence;
 
     private enum CharType {
         ALPHABET, DIGIT, OTHERS
@@ -41,7 +41,10 @@ public class DateRangeParser {
     }
 
     public DateRange parse(String line) {
+        parseEvidence = new ParseEvidence();
         String sentence = getRelevantPart(line);
+        parseEvidence.setText(sentence);
+
         String[] tokens = split(sentence);
         if (tokens.length == 0) return null;
 
@@ -176,5 +179,9 @@ public class DateRangeParser {
         } else {
             return CharType.OTHERS;
         }
+    }
+
+    public ParseEvidence getEvidence() {
+        return null;
     }
 }
