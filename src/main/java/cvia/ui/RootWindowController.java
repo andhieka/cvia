@@ -25,8 +25,8 @@ public class RootWindowController {
     private Button manageCVMenu;
     @FXML
     private Button manageJobMenu;
-    @FXML
-    private Button searchMenu;
+//    @FXML
+//    private Button searchMenu;
 
     private enum MenuPosition {
         CV, JOB
@@ -79,18 +79,18 @@ public class RootWindowController {
             }
         });
 
-        searchMenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                searchMenu.setStyle(MENU_HOVER_STYLE);
-            }
-        });
-        searchMenu.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                searchMenu.setStyle(MENU_NORMAL_STYLE);
-            }
-        });
+//        searchMenu.setOnMouseEntered(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                searchMenu.setStyle(MENU_HOVER_STYLE);
+//            }
+//        });
+//        searchMenu.setOnMouseExited(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                searchMenu.setStyle(MENU_NORMAL_STYLE);
+//            }
+//        });
     }
 
     private void setOnActionMenuHandler() {
@@ -108,9 +108,9 @@ public class RootWindowController {
             showManageJobLayout();
         });
 
-        searchMenu.setOnAction(event -> {
-            showSearchLayout();
-        });
+//        searchMenu.setOnAction(event -> {
+//            showSearchLayout();
+//        });
     }
 
     private void giveEffectOnSelectedMenu() {
