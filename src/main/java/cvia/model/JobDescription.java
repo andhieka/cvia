@@ -1,5 +1,7 @@
 package cvia.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class JobDescription {
 
     // For manual verification by humans
     @ElementCollection
+    @Type(type = "text")
     @CollectionTable(name = "jd_responsibility", joinColumns = {@JoinColumn(name = "jd_id")})
     private List<String> responsibilities;
 
