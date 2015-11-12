@@ -3,6 +3,7 @@ package cvia.ui;/**
  */
 
 import cvia.model.*;
+import cvia.resources.CVSeed;
 import cvia.resources.JobDescriptionSeed;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -73,52 +74,7 @@ public class CviaApp extends Application {
 
     // For testing
     private void seedCV() throws IOException {
-        CV seedCV = new CV();
-        PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.setName("Michael Limantara");
-        personalInfo.setContactNumber("83677234");
-        personalInfo.setEmail("mike.bdg@gmail.com");
-        personalInfo.setAddress("");
-        seedCV.setPersonalInfo(personalInfo);
-        List<EducationInfo> educationInfoList = new ArrayList<EducationInfo>();
-        EducationInfo educationInfo = new EducationInfo();
-        educationInfo.setEducationLevel(EducationInfo.EducationLevel.UNDERGRADUATE);
-        educationInfo.setInstitutionName("National University of Singapore");
-        educationInfo.setMajor("Computer Science");
-        Grade grade = new Grade();
-        grade.setGrade(4.7f);
-        grade.setMaxGrade(5.0f);
-        educationInfo.setGrade(grade);
-        educationInfo.setStartDate(LocalDate.now());
-        educationInfo.setEndDate(LocalDate.now());
-        educationInfoList.add(educationInfo);
-        seedCV.setEducationInfoList(educationInfoList);
-        List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
-        WorkExperience workExperience = new WorkExperience();
-        workExperience.setCompany("Company 1");
-        workExperience.setPosition("Position 1");
-        workExperience.setStartDate(LocalDate.now());
-        workExperience.setEndDate(LocalDate.now());
-        workExperience.setDescription("");
-        workExperienceList.add(workExperience);
-        workExperienceList.add(workExperience);
-        seedCV.setWorkExperienceList(workExperienceList);
-        List<Skill> skillList = new ArrayList<Skill>();
-        skillList.add(new Skill("Javascript"));
-        skillList.add(new Skill("Ruby"));
-        skillList.add(new Skill("Java"));
-        seedCV.setSkills(skillList);
-        List<Language> languageList = new ArrayList<Language>();
-        languageList.add(new Language("English"));
-        languageList.add(new Language("Indonesian"));
-        seedCV.setLanguages(languageList);
-        RawSource rawSource = new RawSource();
-        File file = new File("Resume Michael Limantara.pdf");
-        rawSource.setFilename(file.getName());
-        rawSource.setRawContent(IOUtils.toByteArray(new FileReader(file)));
-        seedCV.setRawSource(rawSource);
-
-        logicController.saveCV(seedCV);
+        CVSeed.getInstance().execute();
     }
 
     private void seedJD() {
