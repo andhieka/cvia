@@ -400,36 +400,42 @@ public class JobDescriptionDetailController {
         if (educationRequirement != null &&
                 educationRequirement.getMinimumEducation() != null) {
             String minimumLevel = educationRequirement.getMinimumEducation().toString();
-            minimumLevel = minimumLevel.substring(0,1).toUpperCase() + minimumLevel.substring(1).toLowerCase();
+            minimumLevel = minimumLevel.substring(0, 1).toUpperCase() + minimumLevel.substring(1).toLowerCase();
             minimumEducationLevelComboBox.setValue(minimumLevel);
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < jobDescription.getMinimumEducation().getAcceptedMajors().size(); i++) {
-            if (i == jobDescription.getMinimumEducation().getAcceptedMajors().size() - 1) {
-                sb.append(jobDescription.getMinimumEducation().getAcceptedMajors().get(i));
-            } else {
-                sb.append(jobDescription.getMinimumEducation().getAcceptedMajors().get(i) + ", ");
+
+            StringBuilder sb = new StringBuilder();
+            if (educationRequirement.getAcceptedMajors() != null) {
+                for (int i = 0; i < jobDescription.getMinimumEducation().getAcceptedMajors().size(); i++) {
+                    if (i == jobDescription.getMinimumEducation().getAcceptedMajors().size() - 1) {
+                        sb.append(jobDescription.getMinimumEducation().getAcceptedMajors().get(i));
+                    } else {
+                        sb.append(jobDescription.getMinimumEducation().getAcceptedMajors().get(i) + ", ");
+                    }
+                }
             }
-        }
-        txtMajor.setText(sb.toString());
-        Grade grade = jobDescription.getMinimumEducation().getMinimumGrade();
-        if (grade != null) {
-            String gradeString = jobDescription.getMinimumEducation().getMinimumGrade().getGrade() + "/" +
-                    jobDescription.getMinimumEducation().getMinimumGrade().getMaxGrade();
-            txtGrade.setText(gradeString);
+            txtMajor.setText(sb.toString());
+            Grade grade = jobDescription.getMinimumEducation().getMinimumGrade();
+            if (grade != null) {
+                String gradeString = jobDescription.getMinimumEducation().getMinimumGrade().getGrade() + "/" +
+                        jobDescription.getMinimumEducation().getMinimumGrade().getMaxGrade();
+                txtGrade.setText(gradeString);
+            }
         }
 
-        Double expInYear = jobDescription.getWorkRequirement().getDuration() / 12.0;
-        txtYearsOfExp.setText(numberOfYearsFormat.format(expInYear));
-        sb = new StringBuilder();
-        for (int i = 0; i < jobDescription.getWorkRequirement().getKeywords().size(); i++) {
-            if (i == jobDescription.getWorkRequirement().getKeywords().size() - 1) {
-                sb.append(jobDescription.getWorkRequirement().getKeywords().get(i));
-            } else {
-                sb.append(jobDescription.getWorkRequirement().getKeywords().get(i) + ", ");
+        if (jobDescription.getWorkRequirement() != null) {
+            Double expInYear = jobDescription.getWorkRequirement().getDuration() / 12.0;
+            txtYearsOfExp.setText(numberOfYearsFormat.format(expInYear));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < jobDescription.getWorkRequirement().getKeywords().size(); i++) {
+                if (i == jobDescription.getWorkRequirement().getKeywords().size() - 1) {
+                    sb.append(jobDescription.getWorkRequirement().getKeywords().get(i));
+                } else {
+                    sb.append(jobDescription.getWorkRequirement().getKeywords().get(i) + ", ");
+                }
             }
+            txtKeyword.setText(sb.toString());
         }
-        txtKeyword.setText(sb.toString());
+
         List<Skill> skillList = jobDescription.getRequiredSkills();
         for (int i = 0; i < skillList.size(); i++) {
             txtSkillList.get(i).getTextField().setText(skillList.get(i).getName());
