@@ -116,7 +116,7 @@ public class SkillMatcher {
                 int diff = currentSkill.compareProficiency(currentRequiredSkill);
 
                 if (diff <= 0) {
-                    total += (currentSkill.getProficiencyScore() - 1) * EXTRA_LEVEL_SCORE;
+                    total -= (currentSkill.getProficiencyScore() - 1) * EXTRA_LEVEL_SCORE;
                 } else {
                     total += (currentRequiredSkill.getProficiencyScore() - 1) * EXTRA_LEVEL_SCORE;
                     total += diff * BONUS_SCORE;
