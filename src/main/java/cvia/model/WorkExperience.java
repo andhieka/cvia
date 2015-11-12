@@ -1,5 +1,7 @@
 package cvia.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.time.*;
@@ -21,6 +23,7 @@ public class WorkExperience {
     private LocalDate endDate;
 
     @Column(name = "description")
+    @Type(type = "text")
     private String description;
 
     // Empty Constructor for Hibernate
