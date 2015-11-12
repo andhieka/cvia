@@ -33,16 +33,18 @@ public class Skill implements Comparable<Skill> {
         return name;
     }
 
-    public void setName(String name) {
+    public Skill setName(String name) {
         this.name = name;
+        return this;
     }
 
     public SkillProficiency getProficiencyLevel() {
         return proficiencyLevel;
     }
 
-    public void setProficiencyLevel(SkillProficiency proficiencyLevel) {
+    public Skill setProficiencyLevel(SkillProficiency proficiencyLevel) {
         this.proficiencyLevel = proficiencyLevel;
+        return this;
     }
 
     public int compareProficiency (Skill other) {

@@ -35,8 +35,9 @@ public class Language implements Comparable<Language>{
         return proficiencyLevel;
     }
 
-    public void setProficiencyLevel(LanguageProficiency proficiencyLevel) {
+    public Language setProficiencyLevel(LanguageProficiency proficiencyLevel) {
         this.proficiencyLevel = proficiencyLevel;
+        return this;
     }
 
     public int getProficiencyScore() {
@@ -47,8 +48,9 @@ public class Language implements Comparable<Language>{
         return name;
     }
 
-    public void setName(String name) {
+    public Language setName(String name) {
         this.name = name;
+        return this;
     }
 
     public int compareTo(Language other) {

@@ -80,7 +80,7 @@ public class PersonalInfoParser implements MiniParser {
             return matcher.group(2);
         }
 
-        return null;
+        return "";
     }
 
     String parseEmail(String cv) {
@@ -90,7 +90,7 @@ public class PersonalInfoParser implements MiniParser {
             return matcher.group(2);
         }
 
-        return null;
+        return "";
     }
 
     String parseAddress(String cv) {
@@ -99,7 +99,7 @@ public class PersonalInfoParser implements MiniParser {
         if (matcher.find()) {
             return matcher.group(2).trim();
         }
-        return null;
+        return "";
     }
 
 }
